@@ -5,7 +5,7 @@ import { getPostBySlug, getAllPostSlugs } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import AnnouncementBanner from "@/components/announcement-banner";
@@ -89,12 +89,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </h1>
             
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              {post.author && (
-                <div className="flex items-center gap-1">
-                  <User className="h-4 w-4" />
-                  <span>{post.author}</span>
-                </div>
-              )}
               <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
                 <time dateTime={new Date(post.published_at).toISOString()}>

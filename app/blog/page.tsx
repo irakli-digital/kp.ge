@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getPublishedPosts } from "@/lib/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import AnnouncementBanner from "@/components/announcement-banner";
@@ -60,12 +60,6 @@ export default async function BlogPage() {
                             {format(new Date(post.published_at), "d MMM", { locale: ka })}
                           </time>
                         </div>
-                        {post.author && (
-                          <>
-                            <span>•</span>
-                            <span>{post.author}</span>
-                          </>
-                        )}
                       </div>
                       <CardTitle className="text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                         {post.title_ka}
