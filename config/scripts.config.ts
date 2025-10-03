@@ -67,10 +67,11 @@ export const scriptsConfig: ScriptConfig[] = [
   },
 
   // Facebook Pixel
+  // Same pixel ID as main app (chat.mypen.ge) for cross-domain tracking
   {
     id: 'facebook-pixel',
     name: 'Facebook Pixel',
-    enabled: isProduction && !!process.env.NEXT_PUBLIC_FB_PIXEL_ID,
+    enabled: !!process.env.NEXT_PUBLIC_FB_PIXEL_ID, // Enable in all environments when configured
     strategy: 'afterInteractive',
     content: `
       !function(f,b,e,v,n,t,s)
