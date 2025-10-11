@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Check, ArrowRight, Star, Zap, BarChart, Globe, Brain, Languages, LifeBuoy, X, Play, Users, FileText, Search, Briefcase, GraduationCap, MessageSquare, Code, Plane, Wallet, Shield, Layers } from "lucide-react"
+import { Check, ArrowRight, Star, Languages, LifeBuoy, Users, FileText, Search, Briefcase, GraduationCap, MessageSquare, Code, Plane, Wallet, Shield, Layers } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +11,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-// import AnnouncementBanner from "@/components/announcement-banner"
 
 export default function LandingPage() {
   const container = {
@@ -33,41 +32,66 @@ export default function LandingPage() {
     {
       title: "ქართული, როგორც მშობლიური",
       description: "ბუნებრივი სტილი, სწორი ტერმინოლოგია.",
-      icon: <Languages className="size-6 stroke-[1.5]" />,
+      icon: <Languages className="size-6 stroke-[1.5] text-blue-500" />,
+      iconBg: "bg-blue-500/10 dark:bg-blue-500/20",
     },
     {
       title: "ვებ-ძიება რეალურ დროში",
       description: "პასუხები წყაროებითა და სწრაფი fact-check-ით.",
-      icon: <Search className="size-6 stroke-[1.5]" />,
+      icon: <Search className="size-6 stroke-[1.5] text-purple-500" />,
+      iconBg: "bg-purple-500/10 dark:bg-purple-500/20",
     },
     {
       title: "ფაილების ღრმა ანალიზი",
       description: "დიდი PDFs/დოკები → შეჯამება, ცხრილები, ინსაითები.",
-      icon: <FileText className="size-6 stroke-[1.5]" />,
+      icon: <FileText className="size-6 stroke-[1.5] text-amber-500" />,
+      iconBg: "bg-amber-500/10 dark:bg-amber-500/20",
     },
     {
       title: "მრავალმოდელა არჩევანი",
       description: "Light/Pro/Ultra სიჩქარისა და სიღრმისთვის.",
-      icon: <Layers className="size-6 stroke-[1.5]" />,
+      icon: <Layers className="size-6 stroke-[1.5] text-emerald-500" />,
+      iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
     },
     {
       title: "კონფიდენციალურობა",
       description: "ფაილების/ჩათების წაშლა და კონტროლი შენს ხელშია.",
-      icon: <Shield className="size-6 stroke-[1.5]" />,
+      icon: <Shield className="size-6 stroke-[1.5] text-rose-500" />,
+      iconBg: "bg-rose-500/10 dark:bg-rose-500/20",
     },
     {
       title: "24/7 მხარდაჭერა",
       description: "მზად ვართ, როცა დაგჭირდება.",
-      icon: <LifeBuoy className="size-6 stroke-[1.5]" />,
+      icon: <LifeBuoy className="size-6 stroke-[1.5] text-cyan-500" />,
+      iconBg: "bg-cyan-500/10 dark:bg-cyan-500/20",
     },
   ]
 
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      {/* <AnnouncementBanner /> */}
       <Header />
-      <main className="flex-1 relative">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-[#171717] bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
+
+      {/* Sticky mobile CTA */}
+      <div className="sm:hidden fixed bottom-3 inset-x-3 z-50">
+        <Button
+          size="lg"
+          className="w-full rounded-full h-12 px-6 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
+          asChild
+        >
+          <Link
+            href="https://chat.mypen.ge"
+            aria-label="დაიწყე უფასოდ"
+            data-cta-id="cta_mobile_sticky"
+          >
+            დაიწყე უფასოდ
+            <ArrowRight className="ml-2 size-4" />
+          </Link>
+        </Button>
+      </div>
+
+      <main className="flex-1 relative pb-20 sm:pb-0">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-[#171717] bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 overflow-hidden">
           <div className="container px-4 md:px-6 relative">
@@ -78,7 +102,7 @@ export default function LandingPage() {
               className="text-center max-w-3xl mx-auto mb-8 md:mb-12"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 leading-tight">
-                MyPen — შენი ქართული AI ასისტენტი
+                შენი ქართული AI ასისტენტი
               </h1>
 
               {/* Social Proof Chip */}
@@ -109,32 +133,23 @@ export default function LandingPage() {
                 </Badge>
               </div>
 
-              {/* CTAs with more white space */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <div className="flex flex-col items-center gap-2">
-                  <Button
-                    size="lg"
-                    className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                    asChild
-                  >
-                    <Link href="https://chat.mypen.ge">
-                      დაიწყე უფასოდ
-                      <ArrowRight className="ml-2 size-4" />
-                    </Link>
-                  </Button>
-                  <span className="text-xs text-muted-foreground">საკრედიტო ბარათი არ არის საჭირო</span>
-                </div>
+              {/* CTAs with analytics ids */}
+              <div className="flex flex-col items-center gap-2 pt-4">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="rounded-full h-12 px-8 text-base transition-all hover:scale-105"
+                  className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                   asChild
                 >
-                  <a href="#how-it-works">
-                    <Play className="mr-2 size-4" />
-                    იხილე როგორ მუშაობს
-                  </a>
+                  <Link
+                    href="https://chat.mypen.ge"
+                    aria-label="დაიწყე უფასოდ"
+                    data-cta-id="cta_hero_start_free"
+                  >
+                    დაიწყე უფასოდ
+                    <ArrowRight className="ml-2 size-4" />
+                  </Link>
                 </Button>
+                <span className="text-xs text-muted-foreground">საკრედიტო ბარათი არ არის საჭირო</span>
               </div>
             </motion.div>
 
@@ -149,19 +164,17 @@ export default function LandingPage() {
                   src="/images/mypen-hero-dashboard.webp"
                   width={1280}
                   height={720}
-                  alt="Mypen.ge dashboard interface with AI assistant"
+                  alt="MyPen dashboard interface with AI assistant"
                   className="w-full h-auto"
                   priority
                 />
-                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/10 dark:ring-white/10"></div>
+                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/10 dark:ring-white/10" />
               </div>
-              <div className="absolute -bottom-6 -right-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-3xl opacity-70"></div>
-              <div className="absolute -top-6 -left-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-secondary/30 to-primary/30 blur-3xl opacity-70"></div>
+              <div className="absolute -bottom-6 -right-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-3xl opacity-70" />
+              <div className="absolute -top-6 -left-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-secondary/30 to-primary/30 blur-3xl opacity-70" />
             </motion.div>
           </div>
         </section>
-
-        {/* Logos Section */}
 
         {/* Features Section - რატომ MyPen */}
         <section id="features" className="w-full py-20 md:py-24">
@@ -173,9 +186,7 @@ export default function LandingPage() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                რატომ MyPen
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">რატომ MyPen</h2>
             </motion.div>
 
             <motion.div
@@ -183,19 +194,15 @@ export default function LandingPage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto mb-12"
+              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto mb-4"
             >
               {features.map((feature, i) => (
-                <motion.div key={i} variants={item}>
-                  <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-background to-muted/10 backdrop-blur transition-all hover:shadow-md hover:border-primary/50">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="size-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary mb-4">
-                        {feature.icon}
-                      </div>
-                      <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-                    </CardContent>
-                  </Card>
+                <motion.div key={i} variants={item} className="flex flex-col items-center text-center">
+                  <div className={`size-14 rounded-full ${feature.iconBg} flex items-center justify-center mb-4`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed max-w-[30ch]">{feature.description}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -203,8 +210,8 @@ export default function LandingPage() {
         </section>
 
         {/* Use Cases Section - რას აკეთებს */}
-        <section className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]"></div>
+        <section id="use-cases" className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
 
           <div className="container px-4 md:px-6 relative">
             <motion.div
@@ -214,50 +221,58 @@ export default function LandingPage() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">რას აკეთებს</h2>
+              <h2 className="text-3ლ md:text-4xl font-bold tracking-tight">რას აკეთებს</h2>
             </motion.div>
 
-            <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto mb-12">
+            <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto mb-8">
               {[
                 {
                   title: "სამუშაოს მოძებნა",
-                  description: "რეზიუმე, cover letter, ვაკანსიები და გასაუბრების კითხვები.",
-                  icon: <Briefcase className="size-5 stroke-[1.5]" />,
+                  description: "CV/cover letter, ვაკანსიები, გასაუბრებისთვის მზადება.",
+                  icon: <Briefcase className="size-5 stroke-[1.5] text-indigo-500" />,
+                  iconBg: "bg-indigo-500/10 dark:bg-indigo-500/20",
                 },
                 {
                   title: "ფაილების ანალიზი",
-                  description: "PDF/DOCX/სურათი → შეჯამება და მთავარი ინსაითები წამებში.",
-                  icon: <FileText className="size-5 stroke-[1.5]" />,
+                  description: "დიდი PDFs/დოკები → შეჯამება და მთავარი ინსაითები.",
+                  icon: <FileText className="size-5 stroke-[1.5] text-amber-500" />,
+                  iconBg: "bg-amber-500/10 dark:bg-amber-500/20",
                 },
                 {
                   title: "სწავლა & კვლევა",
-                  description: "აუხსენი რთული თემა, მიიღე წყაროები და კონსპექტები.",
-                  icon: <GraduationCap className="size-5 stroke-[1.5]" />,
+                  description: "რთული თემების ახსნა + წყაროები.",
+                  icon: <GraduationCap className="size-5 stroke-[1.5] text-emerald-500" />,
+                  iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
                 },
                 {
                   title: "ყოველდღიური კითხვები",
-                  description: "\"რა მოვამზადო?\", \"როგორ გავაკეთო?\" — სწრაფი, პრაქტიკული პასუხები.",
-                  icon: <MessageSquare className="size-5 stroke-[1.5]" />,
+                  description: "რეცეპტები, რჩევები, \"როგორ გავაკეთო?\".",
+                  icon: <MessageSquare className="size-5 stroke-[1.5] text-purple-500" />,
+                  iconBg: "bg-purple-500/10 dark:bg-purple-500/20",
                 },
                 {
                   title: "ბიზნეს დოკუმენტები",
-                  description: "ბრეიფი, შეთავაზება, მონახაზი (იურკონსულტაცია არაა).",
-                  icon: <Briefcase className="size-5 stroke-[1.5]" />,
+                  description: "ბრეიფები, შეთავაზებები, მონახაზები (იურ. კონსულტაცია არაა).",
+                  icon: <Briefcase className="size-5 stroke-[1.5] text-blue-500" />,
+                  iconBg: "bg-blue-500/10 dark:bg-blue-500/20",
                 },
                 {
                   title: "კოდირება",
                   description: "ახსნა, დებაგი, მოკლე სკრიპტები.",
-                  icon: <Code className="size-5 stroke-[1.5]" />,
+                  icon: <Code className="size-5 stroke-[1.5] text-slate-500" />,
+                  iconBg: "bg-slate-500/10 dark:bg-slate-500/20",
                 },
                 {
                   title: "მოგზაურობა",
                   description: "მარშრუტი, ბიუჯეტი, ლოკალური გაიდები.",
-                  icon: <Plane className="size-5 stroke-[1.5]" />,
+                  icon: <Plane className="size-5 stroke-[1.5] text-sky-500" />,
+                  iconBg: "bg-sky-500/10 dark:bg-sky-500/20",
                 },
                 {
                   title: "ფინანსები",
                   description: "გეგმები, ჩექლისტები, ხარჯების ორგანიზება.",
-                  icon: <Wallet className="size-5 stroke-[1.5]" />,
+                  icon: <Wallet className="size-5 stroke-[1.5] text-green-500" />,
+                  iconBg: "bg-green-500/10 dark:bg-green-500/20",
                 },
               ].map((useCase, i) => (
                 <motion.div
@@ -267,10 +282,16 @@ export default function LandingPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.05, ease: "easeOut" }}
                 >
-                  <Link href="https://chat.mypen.ge" className="block h-full">
+                  <Link
+                    href="https://chat.mypen.ge"
+                    className="block h-full"
+                    aria-label={`${useCase.title} – დაიწყე უფასოდ`}
+                    data-cta-id="cta_usecase_card"
+                    data-usecase={useCase.title}
+                  >
                     <Card className="h-full overflow-hidden border-border/40 bg-background/50 backdrop-blur transition-all hover:shadow-md hover:border-primary/50 group cursor-pointer">
                       <CardContent className="p-5">
-                        <div className="size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary mb-3">
+                        <div className={`size-10 rounded-full ${useCase.iconBg} flex items-center justify-center mb-3`}>
                           {useCase.icon}
                         </div>
                         <h3 className="text-base font-bold mb-2 group-hover:text-primary transition-colors">{useCase.title}</h3>
@@ -288,14 +309,14 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-4"
+              className="flex justify-center pt-2"
             >
               <Button
                 size="lg"
                 className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                 asChild
               >
-                <Link href="https://chat.mypen.ge">
+                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_usecases_section">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
@@ -317,8 +338,8 @@ export default function LandingPage() {
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">როგორ მუშაობს</h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative mb-12">
-              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -translate-y-1/2 z-0"></div>
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative mb-10">
+              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -translate-y-1/2 z-0" />
 
               {[
                 {
@@ -360,14 +381,14 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-4"
+              className="flex justify-center pt-2"
             >
               <Button
                 size="lg"
                 className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                 asChild
               >
-                <Link href="https://chat.mypen.ge">
+                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_how_it_works">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
@@ -396,65 +417,58 @@ export default function LandingPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
               {[
                 {
-                  quote: "სამი მოდელი ერთ პლატფორმაზე - გაოცებული ვარ Mypen-ის მოქნილობით და სიმარტივით.",
+                  quote: "სამი მოდელი ერთ პლატფორმაზე — მოქნილი და მარტივი გამოყენება.",
                   author: "გიორგი ვ.",
                   role: "პროგრამული უზრუნველყოფის ინჟინერი",
                   rating: 5,
                 },
                 {
-                  quote: "PRO პაკეტი სრულიად აკმაყოფილებს ჩვენს მოთხოვნებს და ზოგავს უამრავ დროს.",
+                  quote: "PRO პაკეტი ჩვენს გუნდს პირდაპირ დროს უზოგავს.",
                   author: "ნინო ე.",
                   role: "მცირე ბიზნესის მფლობელი",
                   rating: 5,
                 },
                 {
-                  quote: "ULTRA მოდელი - ჩემი საიდუმლო იარაღი. შესანიშნავი კრეატიული პარტნიორი.",
+                  quote: "ULTRA მოდელი — ჩემი საიდუმლო იარაღი კვლევისთვის.",
                   author: "დავით ჩ.",
                   role: "მარკეტერი და ბლოგერი",
                   rating: 5,
                 },
                 {
-                  quote: "უფასო ვერსია სრულად მყოფნის ყოველდღიური დავალებებისთვის. სტუდენტებისთვის იდეალური!",
+                  quote: "უფასო ვერსია მყოფნის ყოველდღიური დავალებებისთვის.",
                   author: "ანა გ.",
                   role: "უნივერსიტეტის სტუდენტი",
                   rating: 5,
                 },
                 {
-                  quote: "PRO მოდელი ძლიერი და ჭკვიანია. ფასი სრულიად მისაღებია.",
+                  quote: "Pro ძლიერი და სწრაფია — ფასი სამართლიანია.",
                   author: "ლევან ს.",
                   role: "ფრილანსერი",
                   rating: 5,
                 },
                 {
-                  quote: "Mypen-მა მოლოდინს გადააჭარბა. პასუხები ზუსტი და ბუნებრივია.",
+                  quote: "პასუხები ბუნებრივია და ზუსტი ქართულად.",
                   author: "მარიამ რ.",
                   role: "პროექტის მენეჯერი",
                   rating: 5,
                 },
-              ].map((testimonial, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.05 }}
-                >
+              ].map((t, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.05 }}>
                   <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-background to-muted/10 backdrop-blur transition-all hover:shadow-md">
                     <CardContent className="p-6 flex flex-col h-full">
                       <div className="flex mb-4">
-                        {Array(testimonial.rating)
-                          .fill(0)
-                          .map((_, j) => (
-                            <Star key={j} className="size-4 text-yellow-500" />
-                          ))}
+                        {Array(t.rating).fill(0).map((_, j) => (
+                          <Star key={j} className="size-4 text-yellow-500" />
+                        ))}
                       </div>
-                      <p className="mb-6 flex-grow text-sm">{testimonial.quote}</p>
+                      <p className="mb-6 flex-grow text-sm">{t.quote}</p>
                       <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border/40">
                         <div className="size-10 rounded-full bg-muted flex items-center justify-center text-foreground font-medium">
-                          {testimonial.author.charAt(0)}
+                          {t.author.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-medium">{testimonial.author}</p>
-                          <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                          <p className="font-medium">{t.author}</p>
+                          <p className="text-sm text-muted-foreground">{t.role}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -471,12 +485,8 @@ export default function LandingPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex justify-center pt-8"
             >
-              <Button
-                size="lg"
-                className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                asChild
-              >
-                <Link href="https://chat.mypen.ge">
+              <Button size="lg" className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg" asChild>
+                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_testimonials">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
@@ -487,7 +497,7 @@ export default function LandingPage() {
 
         {/* Pricing Section */}
         <section id="pricing" className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]"></div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
 
           <div className="container px-4 md:px-6 relative">
             <motion.div
@@ -500,12 +510,9 @@ export default function LandingPage() {
               <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
                 მარტივი, გამჭვირვალე ფასები
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                თქვენს საჭიროებებზე მორგებული AI პაკეტები
-              </h2>
-              <p className="max-w-[70ch] text-muted-foreground md:text-lg mx-auto">
-                მიუხედავად იმისა, ახლა იწყებთ თუ გჭირდებათ პროფესიონალური დონის AI ინსტრუმენტები, ჩვენ გვაქვს საფასო
-                პაკეტი, რომელიც შეესაბამება თქვენს მოთხოვნებს
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">თქვენს საჭიროებებზე მორგებული AI პაკეტები</h2>
+              <p className="max-w-[70ჩ] text-muted-foreground md:text-lg mx-auto">
+                მიუხედავად იმისა, ახლა იწყებთ თუ გჭირდებათ პროფესიონალური დონის AI ინსტრუმენტები — გვაქვს პაკეტი, რომელიც შეესაბამება თქვენს მოთხოვნებს.
               </p>
             </motion.div>
 
@@ -513,19 +520,16 @@ export default function LandingPage() {
               <Tabs defaultValue="monthly" className="w-full">
                 <div className="flex justify-center mb-8">
                   <TabsList className="rounded-full p-1">
-                    <TabsTrigger value="monthly" className="rounded-full px-6">
-                      თვიურად
-                    </TabsTrigger>
-                    <TabsTrigger value="business" className="rounded-full px-6">
-                      ბიზნესისთვის
-                    </TabsTrigger>
+                    <TabsTrigger value="monthly" className="rounded-full px-6">თვიურად</TabsTrigger>
+                    <TabsTrigger value="business" className="rounded-full px-6">ბიზნესისთვის</TabsTrigger>
                   </TabsList>
                 </div>
+
                 <TabsContent value="monthly">
                   <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
                     {[
                       {
-                        name: "MyPen Starter",
+                        name: "MyPen Light",
                         price: "უფასო",
                         description: "ყველა საბაზისო ინსტრუმენტი AI-სთან მუშაობის დასაწყებად.",
                         features: [
@@ -535,6 +539,7 @@ export default function LandingPage() {
                           "დღეში 20,000 ტოკენი",
                         ],
                         cta: "დაიწყე უფასოდ",
+                        ctaId: "cta_pricing_starter",
                       },
                       {
                         name: "MyPen Pro",
@@ -547,12 +552,13 @@ export default function LandingPage() {
                           "თვეში 250,000 ტოკენი",
                         ],
                         cta: "აირჩიე Pro",
+                        ctaId: "cta_pricing_pro",
                         popular: true,
                       },
                       {
                         name: "MyPen Ultra",
                         price: "₾52",
-                        description: "შეუზღუდავი შემოქმედებისა და რთული ამოცანებისთვის.",
+                        description: "რთული ამოცანებისა და მაქსიმალური სიჩქარისთვის.",
                         features: [
                           "Ultra მოდელი",
                           "ყველაზე სწრაფი პასუხები",
@@ -560,18 +566,11 @@ export default function LandingPage() {
                           "ღრმა კვლევა და დიდი მოცულობები",
                         ],
                         cta: "აირჩიე Ultra",
+                        ctaId: "cta_pricing_ultra",
                       },
                     ].map((plan, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: i * 0.1 }}
-                      >
-                        <Card
-                          className={`relative overflow-hidden h-full ${plan.popular ? "border-primary shadow-lg" : "border-border/40 shadow-md"} bg-gradient-to-b from-background to-muted/10 backdrop-blur`}
-                        >
+                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
+                        <Card className={`relative overflow-hidden h-full ${plan.popular ? "border-primary shadow-lg" : "border-border/40 shadow-md"} bg-gradient-to-b from-background to-muted/10 backdrop-blur`}>
                           {plan.popular && (
                             <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-medium rounded-bl-lg">
                               ყველაზე პოპულარული
@@ -583,7 +582,7 @@ export default function LandingPage() {
                               <span className="text-4xl font-bold">{plan.price}</span>
                               {plan.price !== "უფასო" && <span className="text-muted-foreground ml-1">/თვე</span>}
                             </div>
-                            <p className="text-muted-foreground mt-2 max-w-[40ch]">{plan.description}</p>
+                            <p className="text-muted-foreground mt-2 max-w-[40ჩ]">{plan.description}</p>
                             <ul className="space-y-3 my-6 flex-grow">
                               {plan.features.map((feature, j) => (
                                 <li key={j} className="flex items-center">
@@ -592,12 +591,10 @@ export default function LandingPage() {
                                 </li>
                               ))}
                             </ul>
-                            <Button
-                              className="w-full mt-auto rounded-full transition-all hover:scale-105"
-                              variant={plan.popular ? "default" : "outline"}
-                              asChild
-                            >
-                              <Link href="https://chat.mypen.ge">{plan.cta}</Link>
+                            <Button className="w-full mt-auto rounded-full transition-all hover:scale-105" variant={plan.popular ? "default" : "outline"} asChild>
+                              <Link href="https://chat.mypen.ge" aria-label={plan.cta} data-cta-id={plan.ctaId}>
+                                {plan.cta}
+                              </Link>
                             </Button>
                           </CardContent>
                         </Card>
@@ -616,12 +613,12 @@ export default function LandingPage() {
                     ნებისმიერ დროს გაუქმდება. ანგარიშსწორება დაცულია.
                   </motion.div>
                 </TabsContent>
+
                 <TabsContent value="business">
                   <div className="flex flex-col items-center justify-center text-center py-12 px-4 space-y-4">
                     <h3 className="text-3xl md:text-4xl font-bold tracking-tight">ბიზნეს გადაწყვეტები</h3>
                     <p className="max-w-[600px] text-muted-foreground md:text-lg">
-                      მიიღეთ მორგებული ფასები და ფუნქციები თქვენი ორგანიზაციის საჭიროებების შესაბამისად. ჩვენი ბიზნეს
-                      გეგმები მოიცავს გაძლიერებულ უსაფრთხოებას, გუნდის მართვას და პრიორიტეტულ მხარდაჭერას.
+                      მიიღეთ მორგებული ფასები და ფუნქციები თქვენი ორგანიზაციის საჭიროებების შესაბამისად. ბიზნეს გეგმები მოიცავს გაძლიერებულ უსაფრთხოებას, გუნდის მართვას და პრიორიტეტულ მხარდაჭერას.
                     </p>
                     დაგვიკავშირდით:{" "}
                     <Link href="mailto:support@mypen.ge" className="text-primary hover:underline text-lg font-medium">
@@ -645,90 +642,74 @@ export default function LandingPage() {
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
             >
               <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                მიიღეთ დამატებით ინფორმაცია
+                მიიღეთ დამატებითი ინფორმაცია
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">ხშირად დასმული კითხვები</h2>
-              <p className="max-w-[65ch] text-muted-foreground md:text-lg mx-auto">
-                აქ იპოვით პასუხებს ყველაზე ხშირად დასმულ კითხვებზე.
-              </p>
+              <p className="max-w-[65ჩ] text-muted-foreground md:text-lg mx-auto">აქ იპოვით პასუხებს ყველაზე ხშირად დასმულ კითხვებზე.</p>
             </motion.div>
 
             <div className="mx-auto max-w-3xl">
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion type="multiple" defaultValue={["item-0", "item-1", "item-2"]} className="w-full">
                 {[
+                  {
+                    question: "MyPen უბრალოდ \"მომწერინე\" ხომ არაა?",
+                    answer:
+                      "არა. ეს არის სრულფასოვანი ქართული AI ასისტენტი: სამუშაო, ფაილები, კვლევა და ყოველდღიური კითხვები — ერთ სივრცეში.",
+                  },
+                  {
+                    question: "ბარათი მჭირდება დასაწყებად?",
+                    answer:
+                      "არა. დაიწყე უფასო პაკეტით და გადაიყვანე როცა დაგჭირდება.",
+                  },
+                  {
+                    question: "რამდენად ზუსტია პასუხები?",
+                    answer:
+                      "რთულ თემებზე მოაქვთ წყაროები/ციტირებები; საჭიროებისას სწრაფი fact-check.",
+                  },
                   {
                     question: "რა არის Mypen.ge?",
                     answer:
-                      "Mypen.ge არის მოწინავე ჩათ-პლატფორმა, რომელიც გაძლევთ საშუალებას, ერთიან ინტერფეისში იმუშაოთ მრავალფეროვან მოდელებთან. ის შექმნილია მძლავრი, მოქნილი და რეალურ დროში მუშაობის გამოცდილებისთვის, ისეთი ფუნქციებით, როგორიცაა ფაილების ატვირთვა, კოდის წერა და სტატიების მომზადება.",
+                      "Mypen.ge არის მოწინავე ჩათ-პლატფორმა მრავალ მოდელზე მუშაობისთვის — ფაილები, კოდი, სტატიები, ყველაფერი ერთ ინტერფეისში.",
                   },
                   {
-                    question: "როგორ დავიწყო და არსებობს თუ არა უფასო ვერსია?",
+                    question: "რომელ AI მოდელებზე მაქვს წვდომა?",
                     answer:
-                      'დაწყება მარტივია. შეგიძლიათ დარეგისტრირდეთ უფასო ანგარიშზე, რომ პლატფორმის ძირითადი ფუნქციები აღმოაჩინოთ. უფასო პაკეტი მოიცავს ტოკენების ყოველდღიურ ლიმიტს და წვდომას ისეთ AI მოდელებზე, როგორიცაა "Mypen LIGHT". ეს საუკეთესო გზაა, რომ სერვისი ყოველგვარი ვალდებულების გარეშე გამოსცადოთ.',
+                      'წვდომა დამოკიდებულია პაკეტზე ("Mypen LIGHT", "Mypen PRO", "Mypen ULTRA").',
                   },
                   {
-                    question: "რომელ AI მოდელებზე მაქვს წვდომა პლატფორმაზე?",
+                    question: "როგორ მუშაობს გადახდა და გამოწერა?",
                     answer:
-                      'პლატფორმაზე ინტეგრირებულ Mypen-ის მოდელებზე წვდომა, (როგორიცაა "Mypen LIGHT", "Mypen PRO", "Mypen ULTRA"), დამოკიდებულია თქვენს სააბონენტო პაკეტზე. Pro ან Ultra პაკეტზე გადასვლა გაგიხსნით წვდომას ჩვენს ყველაზე მძლავრ და დიდი შესაძლებლობების მქონე მოდელებზე.',
+                      "PRO/ULTRA პაკეტები თვიური გადახდით მუშაობს Flitt-ის მეშვეობით. გაუქმება ნებისმიერ დროსაა შესაძლებელი.",
                   },
                   {
-                    question: "როგორ მუშაობს ტოკენებისა და გამოწერის სისტემა?",
+                    question: "ფაილები უსაფრთხოა?",
                     answer:
-                      "ჩვენი პლატფორმა ორმაგ სისტემას იყენებს. უფასო პაკეტი გთავაზობთ ტოკენების ყოველდღიურ ლიმიტს, რომელიც ყოველ 24 საათში ახლდება. ჩვენი ფასიანი PRO და ULTRA პაკეტები კი გაძლევთ ყოველთვიურ და შეუზღუდავ ტოკენებს, რომელიც თქვენი ინდივიდუალური გამოწერის თარიღიდან ყოველ 30 დღეში განახლდება. თქვენ შეგიძლიათ თვალი ადევნოთ დეტალურ გამოყენებასა და დარჩენილ ტოკენებს თქვენი ანგარიშის პარამეტრებში.",
-                  },
-                  {
-                    question: "შემიძლია ფაილების ატვირთვა? რა ტიპის ფაილების მხარდაჭერაა?",
-                    answer:
-                      'დიახ, შეგიძლიათ ატვირთოთ სხვადასხვა ფაილი, მათ შორის სურათები და ტექსტური დოკუმენტები. ინტერფეისი გამარტივებულია და გთავაზობთ "სურათის ატვირთვის" და "ტექსტად ატვირთვის" ოფციებს. ეს ფაილები უსაფრთხოდ მუშავდება და შეგიძლიათ გამოიყენოთ კონტექსტად თქვენს საუბრებში, რაც AI-ს საშუალებას აძლევს, გააანალიზოს, შეაჯამოს ან უპასუხოს კითხვებს მათი შინაარსის შესახებ.',
-                  },
-                  {
-                    question: "რამდენად დაცულია ჩემი საუბრები და მონაცემები?",
-                    answer:
-                      "უსაფრთხოება ჩვენი მთავარი პრიორიტეტია. თქვენი ანგარიშის დასაცავად ვიყენებთ ავთენტიფიკაციის მყარ მეთოდებს Passport.js-ითა და JWT ტოკენებით. მონაცემთა გადაცემის ყველა არხი დაცულია, ხოლო მოწყვლადობების თავიდან ასაცილებლად ვიყენებთ შეყვანის მკაცრ ვალიდაციასა და სანიტიზაციას. თქვენი პირადი მონაცემები და საუბრები უსაფრთხოდაა შენახული.",
-                  },
-                  {
-                    question: "ჩათის გამოცდილება რეალურ დროშია, თუ სრული პასუხის ლოდინი მიწევს?",
-                    answer:
-                      "ჩათის გამოცდილება შექმნილია, რომ იყოს სწრაფი და უწყვეტი. ჩვენ ვიყენებთ Server-Sent Events (SSE) ტექნოლოგიას, რომ AI-ს პასუხები გენერირებისთანავე გადმოგცეთ სტრიმინგით. ეს ნიშნავს, რომ ტექსტს ხედავთ ნაწილ-ნაწილ რეალურ დროში, რაც უზრუნველყოფს სწრაფ და ბუნებრივ საუბარს ხანგრძლივი ლოდინის გარეშე.",
-                  },
-                  {
-                    question: "შემიძლია საკუთარი AI ასისტენტების შექმნა?",
-                    answer:
-                      "დიახ, Mypen.ge-ს აქვს საკუთარი AI ასისტენტებისა და აგენტების კონფიგურაციის მხარდაჭერა. ეს მძლავრი ფუნქცია გაძლევთ საშუალებას, შექმნათ და მართოთ სპეციალიზებული AI პერსონაჟები, რომლებიც მორგებული იქნება თქვენს კონკრეტულ სამუშაო პროცესებსა და ამოცანებზე, რაც პლატფორმას უაღრესად მოქნილსა და პერსონალიზებულს ხდის.",
-                  },
-                  {
-                    question: "როგორ მუშაობს გადახდის სისტემა გამოწერისთვის?",
-                    answer:
-                      "გამოწერების უსაფრთხო მართვისთვის ვიყენებთ Flitt-ის გადახდის სისტემას. შეგიძლიათ თქვენი ანგარიში Pro ან Ultra პაკეტზე გადაიყვანოთ სტანდარტული გადახდის მეთოდებით. სისტემა ავტომატურად ამუშავებს განმეორებით ყოველთვიურ გადახდებს.",
-                  },
-                  {
-                    question: "შემიძლია ჩემი ჩათების ისტორიაზე წვდომა სხვადასხვა მოწყობილობიდან?",
-                    answer:
-                      "რა თქმა უნდა. თქვენი ყველა საუბარი დაკავშირებულია თქვენს ანგარიშთან და უსაფრთხოდ ინახება ჩვენს მონაცემთა ბაზაში. შეგიძლიათ შეხვიდეთ ნებისმიერი მოწყობილობიდან - კომპიუტერი, პლანშეტი თუ მობილური - და უწყვეტად განაგრძოთ საუბარი ან გადახედოთ ისტორიას ზუსტად იმ ადგილიდან, სადაც გაჩერდით.",
+                      "ფაილები ინახება დაშიფრულად; შეგიძლია წაშალო ნებისმიერ დროს.",
                   },
                 ].map((faq, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                  >
+                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.05 }}>
                     <AccordionItem value={`item-${i}`} className="border-b border-border/40 py-2">
-                      <AccordionTrigger className="text-left font-medium hover:no-underline">
-                        {faq.question}
-                      </AccordionTrigger>
+                      <AccordionTrigger className="text-left font-medium hover:no-underline">{faq.question}</AccordionTrigger>
                       <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
                     </AccordionItem>
                   </motion.div>
                 ))}
               </Accordion>
+
+              {/* FAQ end small CTA */}
+              <div className="flex justify-center mt-8">
+                <Button variant="ghost" className="rounded-full" asChild>
+                  <Link href="https://chat.mypen.ge" data-cta-id="cta_faq" aria-label="დაიწყე უფასოდ">
+                    დაიწყე უფასოდ
+                    <ArrowRight className="ml-2 size-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
-
-        {/* CTA Section */}
       </main>
+
       <Footer />
     </div>
   )
