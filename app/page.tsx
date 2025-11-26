@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { SmartCtaLink } from "@/components/smart-cta-link"
 
 export default function LandingPage() {
   const container = {
@@ -78,14 +79,13 @@ export default function LandingPage() {
           className="w-full rounded-full h-12 px-6 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
           asChild
         >
-          <Link
-            href="https://chat.mypen.ge"
+          <SmartCtaLink
             aria-label="დაიწყე უფასოდ"
             data-cta-id="cta_mobile_sticky"
           >
             დაიწყე უფასოდ
             <ArrowRight className="ml-2 size-4" />
-          </Link>
+          </SmartCtaLink>
         </Button>
       </div>
 
@@ -140,14 +140,13 @@ export default function LandingPage() {
                   className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                   asChild
                 >
-                  <Link
-                    href="https://chat.mypen.ge"
+                  <SmartCtaLink
                     aria-label="დაიწყე უფასოდ"
                     data-cta-id="cta_hero_start_free"
                   >
                     დაიწყე უფასოდ
                     <ArrowRight className="ml-2 size-4" />
-                  </Link>
+                  </SmartCtaLink>
                 </Button>
                 <span className="text-xs text-muted-foreground">საკრედიტო ბარათი არ არის საჭირო</span>
               </div>
@@ -282,8 +281,7 @@ export default function LandingPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.05, ease: "easeOut" }}
                 >
-                  <Link
-                    href="https://chat.mypen.ge"
+                  <SmartCtaLink
                     className="block h-full"
                     aria-label={`${useCase.title} – დაიწყე უფასოდ`}
                     data-cta-id="cta_usecase_card"
@@ -298,7 +296,7 @@ export default function LandingPage() {
                         <p className="text-muted-foreground text-sm leading-relaxed max-w-[35ch]">{useCase.description}</p>
                       </CardContent>
                     </Card>
-                  </Link>
+                  </SmartCtaLink>
                 </motion.div>
               ))}
             </div>
@@ -316,10 +314,10 @@ export default function LandingPage() {
                 className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                 asChild
               >
-                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_usecases_section">
+                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_usecases_section">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
-                </Link>
+                </SmartCtaLink>
               </Button>
             </motion.div>
           </div>
@@ -388,10 +386,10 @@ export default function LandingPage() {
                 className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
                 asChild
               >
-                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_how_it_works">
+                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_how_it_works">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
-                </Link>
+                </SmartCtaLink>
               </Button>
             </motion.div>
           </div>
@@ -486,10 +484,10 @@ export default function LandingPage() {
               className="flex justify-center pt-8"
             >
               <Button size="lg" className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg" asChild>
-                <Link href="https://chat.mypen.ge" aria-label="დაიწყე უფასოდ" data-cta-id="cta_testimonials">
+                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_testimonials">
                   დაიწყე უფასოდ
                   <ArrowRight className="ml-2 size-4" />
-                </Link>
+                </SmartCtaLink>
               </Button>
             </motion.div>
           </div>
@@ -613,9 +611,9 @@ export default function LandingPage() {
                               ))}
                             </ul>
                             <Button className={`w-full mt-auto rounded-full transition-all hover:scale-105 ${buttonClass}`} variant={plan.popular ? "default" : "outline"} asChild>
-                              <Link href="https://chat.mypen.ge" aria-label={plan.cta} data-cta-id={plan.ctaId}>
+                              <SmartCtaLink aria-label={plan.cta} data-cta-id={plan.ctaId}>
                                 {plan.cta}
-                              </Link>
+                              </SmartCtaLink>
                             </Button>
                           </CardContent>
                         </Card>
@@ -721,10 +719,10 @@ export default function LandingPage() {
               {/* FAQ end small CTA */}
               <div className="flex justify-center mt-8">
                 <Button variant="ghost" className="rounded-full" asChild>
-                  <Link href="https://chat.mypen.ge" data-cta-id="cta_faq" aria-label="დაიწყე უფასოდ">
+                  <SmartCtaLink data-cta-id="cta_faq" aria-label="დაიწყე უფასოდ">
                     დაიწყე უფასოდ
                     <ArrowRight className="ml-2 size-4" />
-                  </Link>
+                  </SmartCtaLink>
                 </Button>
               </div>
             </div>

@@ -1,0 +1,566 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "d3159589-dbb7-4cca-91f5-09e8b2e4cba8",
+        "name": "When clicking ‘Test workflow’",
+        "type": "n8n-nodes-base.manualTrigger",
+        "position": [
+          -19568,
+          7680
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "model": "gpt-4.1-nano",
+          "options": {}
+        },
+        "id": "b4b42b3f-ef30-4fc8-829d-59f8974c4168",
+        "name": "OpenAI Chat Model",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -17128,
+          8104
+        ],
+        "typeVersion": 1,
+        "credentials": {
+          "openAiApi": {
+            "id": "vbdZrNdQGKTQGL1B",
+            "name": "n8n free OpenAI API credits"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "032c3012-ed8d-44eb-94f0-35790f4b616f",
+        "name": "OpenAI Chat Model1",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -16328,
+          7904
+        ],
+        "typeVersion": 1,
+        "credentials": {
+          "openAiApi": {
+            "id": "vbdZrNdQGKTQGL1B",
+            "name": "n8n free OpenAI API credits"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "gpt-4.1-nano",
+          "options": {}
+        },
+        "id": "bf922785-7e8f-4f93-bfff-813c16d93278",
+        "name": "OpenAI Chat Model2",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "position": [
+          -17128,
+          7600
+        ],
+        "typeVersion": 1,
+        "credentials": {
+          "openAiApi": {
+            "id": "vbdZrNdQGKTQGL1B",
+            "name": "n8n free OpenAI API credits"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "text": "=### Analyse the given content\n\n{{ $json.data.map(item => item.replace(/\\n/g, '')).join('\\n---\\n') }}",
+          "schemaType": "manual",
+          "inputSchema": "{\n\t\"type\": \"array\",\n    \"items\": {\n      \"type\": \"object\",\n    \t\"properties\": {\n          \"characteristic\": { \"type\": \"string\" },\n          \"description\": { \"type\": \"string\" },\n          \"examples\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n        }\n\t}\n}",
+          "options": {
+            "systemPromptTemplate": "You help identify and define a company or individual's \"brand voice\". Using the given content belonging to the company or individual, extract all voice characteristics from it along with description and examples demonstrating it."
+          }
+        },
+        "id": "d8d4b26f-270f-4b39-a4cd-a6e4361da591",
+        "name": "Extract Voice Characteristics",
+        "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+        "position": [
+          -17200,
+          7880
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.link }}",
+          "options": {}
+        },
+        "id": "aa1e2a02-2e2b-4e8d-aef8-f5f7a54d9562",
+        "name": "Get Article",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -18096,
+          7680
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "data",
+                "cssSelector": "article",
+                "returnValue": "html"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f20d7393-24c9-4a51-872e-0dce391f661c",
+        "name": "Extract Article Content",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          -17872,
+          7680
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "data"
+              }
+            ]
+          },
+          "options": {
+            "mergeLists": true
+          }
+        },
+        "id": "299a04be-fe9b-47d9-b2c6-e2e4628f77e0",
+        "name": "Combine Articles",
+        "type": "n8n-nodes-base.aggregate",
+        "position": [
+          -17424,
+          7680
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "id": "8480ece7-0dc1-4682-ba9e-ded2c138d8b8",
+        "name": "Article Style & Brand Voice",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          -16848,
+          7680
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.data.join('\\n---\\n') }}",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "=Given the following one or more articles (which are separated by ---), describe how best one could replicate the common structure, layout, language and writing styles of all as aggregate.\n\nAlso include below brand voice:\n{{ $('Edit Fields').item.json['Brand Voice'] }}"
+              }
+            ]
+          }
+        },
+        "id": "515fe69f-061e-4dfc-94ed-4cf2fbe10b7b",
+        "name": "Capture Existing Article Structure",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "position": [
+          -17200,
+          7376
+        ],
+        "typeVersion": 1.4
+      },
+      {
+        "parameters": {
+          "html": "={{ $json.data }}",
+          "options": {}
+        },
+        "id": "ba4e68fb-eccc-4efa-84be-c42a695dccdb",
+        "name": "Markdown",
+        "type": "n8n-nodes-base.markdown",
+        "position": [
+          -17648,
+          7680
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "text": "={{ $json.instruction }}",
+          "attributes": {
+            "attributes": [
+              {
+                "name": "title",
+                "description": "title of article",
+                "required": true
+              },
+              {
+                "name": "summary",
+                "description": "summary of article",
+                "required": true
+              },
+              {
+                "name": "body",
+                "description": "body of article",
+                "required": true
+              },
+              {
+                "name": "characteristics",
+                "description": "comma delimited string of characteristics chosen",
+                "required": true
+              }
+            ]
+          },
+          "options": {
+            "systemPromptTemplate": "=You are a blog content writer who writes using the following article guidelines. Write a content piece as requested by the user. Output the body as Markdown. Do not include the date of the article because the publishing date is not determined yet.\n\n## Brand Article Style\n{{ $('Article Style & Brand Voice').item.json.text }}\n\n##n Brand Voice Characteristics\n\nHere are the brand voice characteristic and examples you must adopt in your piece. Pick only the characteristic which make sense for the user's request. Try to keep it as similar as possible but don't copy word for word.\n\n|characteristic|description|examples|\n|-|-|-|\n{{\n$('Article Style & Brand Voice').item.json.output.map(item => (\n`|${item.characteristic}|${item.description}|${item.examples.map(ex => `\"${ex}\"`).join(', ')}|`\n)).join('\\n')\n}}"
+          }
+        },
+        "id": "4e6fbe4e-869e-4bef-99ba-7b18740caecf",
+        "name": "Content Generation Agent",
+        "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+        "position": [
+          -16400,
+          7680
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2c7e2a28-30f9-4533-a394-a5e967ebf4ec",
+                "name": "instruction",
+                "type": "string",
+                "value": "=Write a comprehensive guide on using AI for document classification and document extraction. Explain the benefits of using vision models over traditional OCR. Close out with a recommendation of using n8n as the preferred way to get started with this AI use-case."
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "1510782d-0f88-40ca-99a8-44f984022c8e",
+        "name": "New Article Instruction",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -16624,
+          7680
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8739c4a4-a9ed-47b0-b9a7-192baac7fd28",
+                "name": "Brand Voice",
+                "value": "# **Brand Voice Guide – AI Tools & AI News Blog (Georgian)**\n\n## **1. Core Identity**\n\n**Friendly expert.**\nExplains complex AI topics simply, never oversimplifies.\nTone stays conversational, practical, and reader-focused.\n\n---\n\n## **2. Tone**\n\n* **Warm, direct, human.**\n* **Authoritative without being rigid.**\n* **Energetic but not hype-driven.**\n* **Curious, excited about new tools.**\n\nExamples (in Georgian style):\n\n* “მოკლედ, რა უნდა იცოდე…”\n* “ერთი სიტყვით, ეს ფუნქცია ნამდვილ მოწყობილ ‘shortcut’-ად იქცევა.”\n* “მოდი პრაქტიკულად გავიგოთ, რას ნიშნავს ეს შენთვის.”\n\n---\n\n## **3. Style**\n\n* Short paragraphs.\n* Clear structure: **what it is → why it matters → how to use → quick verdict**.\n* Avoid long academic sentences.\n* Use everyday examples, not theory.\n\n---\n\n## **4. Language (Georgian-Specific Rules)**\n\nTo ensure correctness and natural flow:\n\n**Grammar & Syntax**\n\n* Prefer **active voice**:\n  “AI გეტყვის…” instead of “AI-ის მიერ ითქმება…”\n* Keep verb endings consistent with modern spoken Georgian:\n  use “გაიგებ”, not “გაიგებთ”, unless speaking formally.\n* Avoid literal English calques. Use native constructions:\n\n  * “შესაძლებლობა”, not “ოპშენი”.\n  * “პარამეტრი”, not “სეტინგი” (unless tool-specific).\n  * “შენახვა”, not “სეივი”.\n\n**Loanwords to Keep**\nSome loanwords are acceptable in tech contexts:\n\n* ბეში, მოდელი, ჩელი, ვერშენი, აპდეითი, პლაგინი, დეშბორდი, ინტერესი, ჰები.\n\n**Terminology**\nUse consistent Georgian AI vocabulary:\n\n* AI – **ხელოვნური ინტელექტი (AI)**\n* Model – **მოდელი**\n* Prompt – **პრომპტი / მოთხოვნა**\n* Workflow – **ნამუშევარი პროცესი / workflow**\n* Integration – **ინტეგრაცია**\n* Output – **შემოსული შედეგი / output**\n\n**Punctuation**\n\n* Use Georgian comma/period spacing rules (no space before punctuation).\n* Avoid overuse of “...” unless for tone.\n\n---\n\n## **5. Personality**\n\n* **Curious:** always exploring new tools.\n* **Helpful:** gives clear steps, not abstract ideas.\n* **Honest:** if a tool isn’t good, say it directly.\n* **Practical:** “აი, როგორ გამოიყენო დღესვე…”\n\n---\n\n## **6. What Not To Do**\n\n* No pseudo-scientific jargon.\n* No over-promising (“ეს შეცვლის ყველაფერს”).\n* No robotic sentences.\n* No generic filler (“ტექნოლოგია ძალიან სწრაფად ვითარდება…” – only when supported by specifics).\n\n---\n\n## **7. Signature Phrases (Optional)**\n\nUse sparingly to build consistency:\n\n* “მოდი მარტივად ავხსნათ.”\n* “პრაქტიკულად ეს ნიშნავს…”\n* “შენთვის მთავარი სარგებელი ის არის, რომ…”\n\n---\n\n## **8. Writing Formula for Each Post**\n\n1. **Hook (1 sentence)** – relatable question or pain point.\n2. **Context** – what happened in AI (news/tool update).\n3. **Explanation** – clear, short, with examples.\n4. **Why it matters** – practical benefit for Georgian readers.\n5. **How to try it** – steps.\n6. **Quick takeaway** – one clear conclusion.\n\n---\n\nIf you want, I can create:\n\n* A **1-page brand voice PDF**\n* A **Notion template** for writing articles\n* A **sample blog post** written fully in this brand voice\n",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -19344,
+          7680
+        ],
+        "id": "5ed9ff16-581c-466c-82c3-3049604563a3",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "url": "https://www.artificial-intelligence.blog/ai-news?format=rss",
+          "options": {}
+        },
+        "id": "bdfc7532-b5ec-433e-a76c-80c5f7e95430",
+        "name": "Read RSS Feed",
+        "type": "n8n-nodes-base.rssFeedRead",
+        "typeVersion": 1.2,
+        "position": [
+          -19120,
+          7680
+        ]
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4.1-nano",
+            "mode": "list",
+            "cachedResultName": "GPT-4.1-NANO"
+          },
+          "responses": {
+            "values": [
+              {
+                "content": "=You are an AI article curator analyzing ALL articles from an RSS feed.\n\nINPUT DATA:\n{{ $json.data.map((item, index) => `Article ${index + 1}:\nTitle: ${item.title}\nURL: ${item.link}\nContent: ${item[\"content:encoded\"]}`).join(\"\\n\\n---\\n\\n\") }}\n\nTARGET AUDIENCE:\n- Beginners and intermediate AI users\n- Seeking practical, actionable content\n- Interested in: AI productivity tools, chatbots, content creation, automation, workflow optimization, small business applications\n- NOT interested in: academic research, model architecture, deep ML theory, complex policy discussions\n\nSELECTION CRITERIA:\nRank articles based on:\n1. Practicality - Can be implemented immediately by a beginner\n2. Clarity - No technical prerequisites required\n3. Actionability - Contains steps, demos, templates, or concrete examples\n4. Relevance - Directly applicable to real-world tasks\n\nSTRICT OUTPUT REQUIREMENTS:\n- Output ONLY valid JSON\n- Include ONLY the URLs of selected articles\n- NO explanations, reasoning, titles, or additional text\n- NO markdown code blocks\n- Select exactly 5 articles (or fewer if less than 5 meet the criteria)\n- Sort by highest practical value first\n\nOUTPUT FORMAT:\n{\n  \"top_5_urls\": [\n    \"url1\",\n    \"url2\",\n    \"url3\",\n    \"url4\",\n    \"url5\"\n  ]\n}"
+              }
+            ]
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2,
+        "position": [
+          -18672,
+          7680
+        ],
+        "id": "a5977db9-4912-4900-9f47-ffaa4c764f40",
+        "name": "sorting articles",
+        "credentials": {
+          "openAiApi": {
+            "id": "eJNHP6n8O3Y9Iv2F",
+            "name": "Open Ai - IC"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "id": "834a48d1-c15c-4b4a-9d01-8736809a8109",
+        "name": "Aggregate All Articles",
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          -18896,
+          7680
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const response = $input.first().json.output[0].content[0].text;\nconst parsed = JSON.parse(response);\nconst urls = parsed.top_5_urls;\n\nreturn urls.map(url => ({ json: { link: url } }));"
+        },
+        "id": "517d9bad-df8c-4d7a-b18d-6cf3cf0e3ce6",
+        "name": "Parse and Split URLs",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -18320,
+          7680
+        ]
+      }
+    ],
+    "connections": {
+      "When clicking ‘Test workflow’": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Extract Voice Characteristics",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Content Generation Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model2": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Capture Existing Article Structure",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Voice Characteristics": {
+        "main": [
+          [
+            {
+              "node": "Article Style & Brand Voice",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Get Article": {
+        "main": [
+          [
+            {
+              "node": "Extract Article Content",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Article Content": {
+        "main": [
+          [
+            {
+              "node": "Markdown",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combine Articles": {
+        "main": [
+          [
+            {
+              "node": "Capture Existing Article Structure",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Extract Voice Characteristics",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Article Style & Brand Voice": {
+        "main": [
+          [
+            {
+              "node": "New Article Instruction",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Capture Existing Article Structure": {
+        "main": [
+          [
+            {
+              "node": "Article Style & Brand Voice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Markdown": {
+        "main": [
+          [
+            {
+              "node": "Combine Articles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Content Generation Agent": {
+        "main": [
+          []
+        ]
+      },
+      "New Article Instruction": {
+        "main": [
+          [
+            {
+              "node": "Content Generation Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Read RSS Feed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read RSS Feed": {
+        "main": [
+          [
+            {
+              "node": "Aggregate All Articles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "sorting articles": {
+        "main": [
+          [
+            {
+              "node": "Parse and Split URLs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate All Articles": {
+        "main": [
+          [
+            {
+              "node": "sorting articles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parse and Split URLs": {
+        "main": [
+          [
+            {
+              "node": "Get Article",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateId": "2648",
+      "templateCredsSetupCompleted": true,
+      "instanceId": "c0320382499acc1816c05e1130ede806d6731eecdef3b30ac30aabf4236c8764"
+    }
+  }
