@@ -10,6 +10,7 @@ interface SmartCtaLinkProps {
   "aria-label"?: string
   "data-cta-id"?: string
   "data-usecase"?: string
+  onClick?: () => void
 }
 
 export function SmartCtaLink({ 
@@ -18,6 +19,7 @@ export function SmartCtaLink({
   "aria-label": ariaLabel,
   "data-cta-id": ctaId,
   "data-usecase": usecase,
+  onClick,
 }: SmartCtaLinkProps) {
   const [mounted, setMounted] = useState(false)
   const deviceType = useDeviceRedirect()
@@ -37,6 +39,7 @@ export function SmartCtaLink({
       data-cta-id={ctaId}
       data-usecase={usecase}
       data-device-type={mounted ? deviceType : "web"}
+      onClick={onClick}
     >
       {children}
     </Link>

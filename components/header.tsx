@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { Menu, X, Moon, Sun, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
+import { SmartCtaLink } from "@/components/smart-cta-link"
 
 interface HeaderProps {
   hideLoginButton?: boolean
@@ -93,10 +94,10 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
                 </Link>
               </Button>
               <Button variant="default" className="rounded-full" asChild>
-                <Link href="https://chat.mypen.ge">
+                <SmartCtaLink>
                   დაიწყე უფასოდ
                   <ChevronRight className="ml-1 size-4" />
-                </Link>
+                </SmartCtaLink>
               </Button>
             </>
           )}
@@ -141,10 +142,10 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
                   </Link>
                 </Button>
                 <Button variant="default" className="rounded-full w-full" asChild>
-                  <Link href="https://chat.mypen.ge" onClick={() => setMobileMenuOpen(false)}>
+                  <SmartCtaLink onClick={() => setMobileMenuOpen(false)}>
                     დაიწყე უფასოდ
                     <ChevronRight className="ml-1 size-4" />
-                  </Link>
+                  </SmartCtaLink>
                 </Button>
               </div>
             )}
