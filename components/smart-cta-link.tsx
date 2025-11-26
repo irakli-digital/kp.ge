@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { useDeviceRedirect, getCtaUrl } from "@/hooks/use-device-redirect"
 import { ReactNode, useEffect, useState } from "react"
 
@@ -31,18 +30,30 @@ export function SmartCtaLink({
   // Use web URL during SSR and initial render to prevent hydration mismatch
   const targetUrl = mounted ? getCtaUrl(deviceType) : "https://chat.mypen.ge"
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Call custom onClick handler if provided
+    if (onClick) {
+      onClick()
+    }
+    
+    // For external links (App Store, Play Store), ensure they always work
+    // Don't prevent default - let the browser handle the navigation naturally
+  }
+
+  // Use regular anchor tag for external URLs to avoid Next.js Link issues with App Store links
   return (
-    <Link
+    <a
       href={targetUrl}
       className={className}
       aria-label={ariaLabel}
       data-cta-id={ctaId}
       data-usecase={usecase}
       data-device-type={mounted ? deviceType : "web"}
-      onClick={onClick}
+      onClick={handleClick}
+      rel="noopener noreferrer"
     >
       {children}
-    </Link>
+    </a>
   )
 }
 
