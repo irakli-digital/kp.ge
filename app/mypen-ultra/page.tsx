@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { SmartCtaLink } from "@/components/smart-cta-link"
 // import AnnouncementBanner from "@/components/announcement-banner"
 
 export default function LandingPage() {
@@ -705,7 +706,13 @@ export default function LandingPage() {
                             className="w-full mt-auto rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 py-4 h-auto text-xl font-semibold"
                             asChild
                           >
-                            <Link href="https://chat.mypen.ge?utm_source=web&utm_campaing=ultra-landing">გახდი Mypen ULTRA</Link>
+                            <SmartCtaLink 
+                              data-cta-id="cta_ultra_landing"
+                              data-tier="ultra"
+                              data-value="69"
+                            >
+                              გახდი Mypen ULTRA
+                            </SmartCtaLink>
                           </Button>
                         </CardContent>
                       </Card>

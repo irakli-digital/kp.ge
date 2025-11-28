@@ -611,7 +611,12 @@ export default function LandingPage() {
                               ))}
                             </ul>
                             <Button className={`w-full mt-auto rounded-full transition-all hover:scale-105 ${buttonClass}`} variant={plan.popular ? "default" : "outline"} asChild>
-                              <SmartCtaLink aria-label={plan.cta} data-cta-id={plan.ctaId}>
+                              <SmartCtaLink 
+                                aria-label={plan.cta} 
+                                data-cta-id={plan.ctaId}
+                                data-tier={plan.name.toLowerCase().replace('mypen ', '')}
+                                data-value={plan.price !== "უფასო" ? plan.price.replace('₾', '').trim() : undefined}
+                              >
                                 {plan.cta}
                               </SmartCtaLink>
                             </Button>
