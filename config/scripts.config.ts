@@ -71,7 +71,7 @@ export const scriptsConfig: ScriptConfig[] = [
   {
     id: 'facebook-pixel',
     name: 'Facebook Pixel',
-    enabled: !!process.env.NEXT_PUBLIC_FB_PIXEL_ID, // Enable in all environments when configured
+    enabled: !!process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID, // Enable in all environments when configured
     strategy: 'afterInteractive',
     content: `
       !function(f,b,e,v,n,t,s)
@@ -82,7 +82,7 @@ export const scriptsConfig: ScriptConfig[] = [
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '${process.env.NEXT_PUBLIC_FB_PIXEL_ID}');
+      fbq('init', '${process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID}');
       fbq('track', 'PageView');
     `
   },

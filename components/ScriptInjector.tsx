@@ -32,13 +32,30 @@ export default function ScriptInjector({
   useEffect(() => {
     // Add GTM noscript fallback for users with JavaScript disabled
     const gtmScript = enabledScripts.find(script => script.id === 'google-tag-manager');
-    if (gtmScript && process.env.NEXT_PUBLIC_GTM_ID) {
-      const noscript = document.createElement('noscript');
-      noscript.innerHTML = `
-        <iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
-      `;
-      document.body.insertBefore(noscript, document.body.firstChild);
+    if (gtmScript) {
+      const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+      if (gtmId) {
+        const noscript = document.createElement('noscript');
+        noscript.innerHTML = `
+          <iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        `;
+        document.body.insertBefore(noscript, document.body.firstChild);
+      }
+    }
+
+    // Add Facebook Pixel noscript fallback for users with JavaScript disabled
+    const fbScript = enabledScripts.find(script => script.id === 'facebook-pixel');
+    if (fbScript) {
+      const fbPixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
+      if (fbPixelId) {
+        const noscript = document.createElement('noscript');
+        noscript.innerHTML = `
+          <img height="1" width="1" style="display:none"
+               src="https://www.facebook.com/tr?id=${fbPixelId}&ev=PageView&noscript=1"/>
+        `;
+        document.body.insertBefore(noscript, document.body.firstChild);
+      }
     }
   }, [enabledScripts]);
 

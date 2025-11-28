@@ -2,7 +2,8 @@
 
 import { useDeviceRedirect, getCtaUrl } from "@/hooks/use-device-redirect"
 import { ReactNode, useEffect, useState } from "react"
-import { trackInitiateCheckout } from "@/lib/tiktok-pixel"
+import { trackInitiateCheckout as trackTikTokInitiateCheckout } from "@/lib/tiktok-pixel"
+import { trackInitiateCheckout as trackFacebookInitiateCheckout } from "@/lib/facebook-pixel"
 
 interface SmartCtaLinkProps {
   children: ReactNode
@@ -36,15 +37,26 @@ export function SmartCtaLink({
   const targetUrl = mounted ? getCtaUrl(deviceType) : "https://chat.mypen.ge"
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Track TikTok InitiateCheckout for pricing-related CTAs
+    // Track TikTok and Facebook InitiateCheckout for pricing-related CTAs
     if (tier && value) {
       const numericValue = parseFloat(value.replace(/[^\d.]/g, '')) || 0
       if (numericValue > 0) {
-        trackInitiateCheckout({
+        const eventId = `InitiateCheckout_${ctaId || 'unknown'}_${Date.now()}`
+        
+        // Track TikTok event
+        trackTikTokInitiateCheckout({
           tier: tier.toLowerCase(),
           value: numericValue,
           currency: '₾',
-          eventId: `InitiateCheckout_${ctaId || 'unknown'}_${Date.now()}`,
+          eventId: eventId,
+        })
+        
+        // Track Facebook event
+        trackFacebookInitiateCheckout({
+          tier: tier.toLowerCase(),
+          value: numericValue,
+          currency: 'GEL', // Facebook uses ISO currency codes
+          eventId: eventId, // Same event ID for deduplication
         })
       }
     }
