@@ -2,15 +2,18 @@
   "nodes": [
     {
       "parameters": {
+        "method": "GET",
         "url": "={{ $json.originalUrl }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "User-Agent",
-              "value": "n8n-workflow/1.121.0 (https://n8n.io/)"
+              "value": "Mozilla/5.0 (compatible; MypenBot/1.0)"
+            },
+            {
+              "name": "Accept",
+              "value": "image/*"
             }
           ]
         },
@@ -29,13 +32,7 @@
       "position": [
         5264,
         7224
-      ],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "e4xkr4s6jVKWYVY0",
-          "name": "MPEN - IC"
-        }
-      }
+      ]
     },
     {
       "parameters": {
@@ -70,7 +67,24 @@
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
-        "specifyBody": "json",
+        "specifyBody": "multipart-form-data",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-original-url",
+              "value": "={{ $('Validate Image URL1').item.json.originalUrl }}"
+            }
+          ]
+        },
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "image",
+              "value": "={{ $binary }}"
+            }
+          ]
+        },
         "options": {
           "response": {
             "response": {

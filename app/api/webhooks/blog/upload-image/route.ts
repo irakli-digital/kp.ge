@@ -18,72 +18,99 @@ export async function POST(req: NextRequest) {
     }
 
     const contentType = req.headers.get('content-type') || '';
+    const originalUrl = req.headers.get('x-original-url') || '';
+    
+    console.log('Upload Image - Content-Type:', contentType);
+    console.log('Upload Image - Original URL:', originalUrl);
 
-    // 2. Handle file upload (multipart/form-data) or URL-based upload (JSON)
+    // 2. Handle binary upload or URL-based upload (JSON)
     let imageBuffer: Buffer;
-    let originalUrl: string;
     let filename: string;
 
-    if (contentType.includes('multipart/form-data')) {
-      // File upload approach
-      const formData = await req.formData();
-      const file = formData.get('image') as File;
-      
-      if (!file) {
-        return NextResponse.json({ error: 'No image file provided' }, { status: 400 });
-      }
+    // Check if it's binary data (image/* or application/octet-stream)
+    if (contentType.startsWith('image/') || contentType === 'application/octet-stream' || contentType.includes('multipart/form-data')) {
+      try {
+        let file: File | null = null;
+        
+        // If multipart/form-data, extract file from form
+        if (contentType.includes('multipart/form-data')) {
+          const formData = await req.formData();
+          file = formData.get('image') as File | null;
+          if (!file) {
+            return NextResponse.json({ error: 'No image file in form data' }, { status: 400 });
+          }
+        } else {
+          // Direct binary upload - convert request body to File
+          const arrayBuffer = await req.arrayBuffer();
+          if (arrayBuffer.byteLength === 0) {
+            return NextResponse.json({ error: 'No image data provided' }, { status: 400 });
+          }
+          // Create a File-like object from the binary data
+          const blob = new Blob([arrayBuffer], { type: contentType });
+          file = blob as unknown as File;
+        }
 
-      const arrayBuffer = await file.arrayBuffer();
-      imageBuffer = Buffer.from(arrayBuffer);
-      originalUrl = formData.get('originalUrl') as string || file.name;
-      filename = file.name;
+        const arrayBuffer = await file.arrayBuffer();
+        imageBuffer = Buffer.from(arrayBuffer);
+        filename = file.name || originalUrl.split('/').pop()?.split('?')[0] || 'image';
 
-      console.log(`Received file upload: ${filename}, size: ${imageBuffer.length} bytes`);
+        console.log(`Received binary upload: ${filename}, size: ${imageBuffer.length} bytes`);
 
-    } else {
-      // URL-based approach (backward compatibility)
-      const body = await req.json();
-      const { imageUrl } = body;
-
-      if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.startsWith('http')) {
-        return NextResponse.json({ error: 'Invalid imageUrl' }, { status: 400 });
-      }
-
-      originalUrl = imageUrl;
-      
-      // Download image
-      const response = await fetch(imageUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; MypenBot/1.0)',
-          'Accept': 'image/*',
-        },
-      });
-
-      if (!response.ok) {
-        console.error(`Failed to download image ${imageUrl}: ${response.status} ${response.statusText}`);
+      } catch (binaryError) {
+        console.error('Error processing binary data:', binaryError);
         return NextResponse.json({ 
-          error: 'Failed to download image', 
-          details: `${response.status} ${response.statusText}` 
-        }, { status: 500 });
-      }
-
-      imageBuffer = Buffer.from(await response.arrayBuffer());
-      const responseContentType = response.headers.get('content-type') || 'image/jpeg';
-
-      if (!responseContentType.startsWith('image/')) {
-        console.error(`URL does not point to an image: ${imageUrl}, content-type: ${responseContentType}`);
-        return NextResponse.json({ 
-          error: 'URL does not point to an image', 
-          details: `Content-Type: ${responseContentType}` 
+          error: 'Failed to process binary data',
+          details: binaryError instanceof Error ? binaryError.message : 'Unknown error'
         }, { status: 400 });
       }
+    } else {
+      // JSON approach (backward compatibility - URL-based upload)
+      try {
+        const body = await req.json();
+        const { imageUrl } = body;
 
-      filename = imageUrl.split('/').pop()?.split('?')[0] || 'image';
-      console.log(`Downloaded image from URL: ${imageUrl}, size: ${imageBuffer.length} bytes`);
+        if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.startsWith('http')) {
+          return NextResponse.json({ error: 'Invalid imageUrl' }, { status: 400 });
+        }
+        
+        // Download image
+        const response = await fetch(imageUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; MypenBot/1.0)',
+            'Accept': 'image/*',
+          },
+        });
+
+        if (!response.ok) {
+          console.error(`Failed to download image ${imageUrl}: ${response.status} ${response.statusText}`);
+          return NextResponse.json({ 
+            error: 'Failed to download image', 
+            details: `${response.status} ${response.statusText}` 
+          }, { status: 500 });
+        }
+
+        imageBuffer = Buffer.from(await response.arrayBuffer());
+        filename = imageUrl.split('/').pop()?.split('?')[0] || 'image';
+        console.log(`Downloaded image from URL: ${imageUrl}, size: ${imageBuffer.length} bytes`);
+      } catch (jsonError) {
+        console.error('Error parsing JSON body:', jsonError);
+        return NextResponse.json({ 
+          error: 'Invalid request format',
+          details: jsonError instanceof Error ? jsonError.message : 'Expected binary image data or JSON with imageUrl'
+        }, { status: 400 });
+      }
     }
 
-    // 3. Process and host image
-    const hostedUrl = await processAndHostImage(imageBuffer, originalUrl, filename);
+    // 3. Validate we have imageBuffer
+    if (!imageBuffer || imageBuffer.length === 0) {
+      return NextResponse.json({ error: 'No image data received' }, { status: 400 });
+    }
+
+    // Use originalUrl from header, or fallback to filename
+    const finalOriginalUrl = originalUrl || filename;
+
+    // 4. Process and host image
+    const hostedUrl = await processAndHostImage(imageBuffer, finalOriginalUrl, filename);
 
     if (!hostedUrl) {
       return NextResponse.json({ error: 'Failed to process image' }, { status: 500 });
@@ -91,7 +118,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ 
       success: true, 
-      originalUrl: originalUrl,
+      originalUrl: finalOriginalUrl,
       hostedUrl: hostedUrl,
       fullUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mypen.ge'}${hostedUrl}`
     });
