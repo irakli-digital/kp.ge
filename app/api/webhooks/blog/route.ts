@@ -190,14 +190,21 @@ async function replaceImageUrlsInHtml(html: string): Promise<string> {
   }
 
   // Replace URLs in HTML - need to replace in img src attributes
+  // Handle both lowercase 'src' and uppercase 'SRC' attributes
   let updatedHtml = html;
   for (const [originalUrl, hostedUrl] of urlMap.entries()) {
-    // Replace in img src attributes
-    const imgTagRegex = new RegExp(`(<img[^>]+src=["'])${originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(["'][^>]*>)`, 'gi');
-    updatedHtml = updatedHtml.replace(imgTagRegex, `$1${hostedUrl}$2`);
+    // Replace in img src attributes (case-insensitive)
+    const escapedUrl = originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    
+    // Replace in img tags with src (lowercase)
+    const imgTagRegexLower = new RegExp(`(<img[^>]+src=["'])${escapedUrl}(["'][^>]*>)`, 'gi');
+    updatedHtml = updatedHtml.replace(imgTagRegexLower, `$1${hostedUrl}$2`);
+    
+    // Replace in img tags with SRC (uppercase)
+    const imgTagRegexUpper = new RegExp(`(<img[^>]+SRC=["'])${escapedUrl}(["'][^>]*>)`, 'gi');
+    updatedHtml = updatedHtml.replace(imgTagRegexUpper, `$1${hostedUrl}$2`);
     
     // Also replace standalone URLs (in case they appear outside img tags)
-    const escapedUrl = originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     updatedHtml = updatedHtml.replace(new RegExp(escapedUrl, 'g'), hostedUrl);
     
     console.log(`Replaced URL: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);
