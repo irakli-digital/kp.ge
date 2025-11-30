@@ -11,7 +11,10 @@ const blogPostSchema = z.object({
   slug: z.string().optional(),
   excerpt: z.string().optional(),
   author: z.string().optional().default('Mypen Team'),
-  featured_image: z.string().url().optional().nullable(),
+  featured_image: z.preprocess(
+    (val) => (val === '' || val === null || val === undefined ? null : val),
+    z.string().url().nullable().optional()
+  ),
   published: z.boolean().optional().default(true),
   
   // Georgian fields (optional, will fallback to English if not provided)
@@ -47,6 +50,19 @@ export async function POST(req: NextRequest) {
     const content_ka = validatedData.content_ka || validatedData.content;
     const excerpt_ka = validatedData.excerpt_ka || validatedData.excerpt || '';
     const excerpt = validatedData.excerpt || '';
+    
+    // Handle featured_image: convert empty string to null, validate URL
+    let featuredImage = validatedData.featured_image;
+    if (featuredImage === '' || featuredImage === null || featuredImage === undefined) {
+      featuredImage = null;
+    } else if (typeof featuredImage === 'string') {
+      // Validate it's a proper URL
+      try {
+        new URL(featuredImage);
+      } catch {
+        featuredImage = null; // Invalid URL, set to null
+      }
+    }
 
     // 4. Database Insertion
     // Using the same table structure as defined in schema.sql
@@ -68,7 +84,7 @@ export async function POST(req: NextRequest) {
         ${excerpt}, ${excerpt_ka},
         ${validatedData.author},
         ${validatedData.published},
-        ${validatedData.featured_image || null},
+        ${featuredImage},
         NOW()
       )
       RETURNING id, slug
