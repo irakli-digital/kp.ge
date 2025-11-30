@@ -4,35 +4,10 @@ import { join } from 'path';
 import sharp from 'sharp';
 import { existsSync } from 'fs';
 
-// Ensure directories exist
-const BLOG_IMAGE_DIR = join(process.cwd(), 'public', 'images', 'blog', 'content');
-const OPTIMIZED_DIR = join(process.cwd(), 'public', 'images', 'blog', 'optimized');
-
-async function ensureDirectories() {
-  if (!existsSync(BLOG_IMAGE_DIR)) {
-    await mkdir(BLOG_IMAGE_DIR, { recursive: true });
-  }
-  if (!existsSync(OPTIMIZED_DIR)) {
-    await mkdir(OPTIMIZED_DIR, { recursive: true });
-  }
-}
-
-function generateFilename(url: string): string {
-  // Extract filename from URL or generate one
-  try {
-    const urlObj = new URL(url);
-    const pathname = urlObj.pathname;
-    const filename = pathname.split('/').pop() || 'image';
-    // Remove query params and clean filename
-    const cleanName = filename.split('?')[0].replace(/[^a-zA-Z0-9.-]/g, '-');
-    // Add timestamp to ensure uniqueness
-    const timestamp = Date.now();
-    const ext = cleanName.includes('.') ? cleanName.split('.').pop()?.toLowerCase() : 'jpg';
-    return `${timestamp}-${cleanName.replace(/\.[^/.]+$/, '')}.${ext}`;
-  } catch {
-    return `image-${Date.now()}.jpg`;
-  }
-}
+// Define the schema for the incoming image upload request
+const imageUploadSchema = {
+  imageUrl: (val: any) => typeof val === 'string' && val.startsWith('http'),
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,66 +21,95 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { imageUrl } = body;
 
-    if (!imageUrl || typeof imageUrl !== 'string') {
-      return NextResponse.json({ error: 'imageUrl is required' }, { status: 400 });
+    if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.startsWith('http')) {
+      return NextResponse.json({ error: 'Invalid imageUrl' }, { status: 400 });
     }
 
-    // Validate URL
-    let url: URL;
-    try {
-      url = new URL(imageUrl);
-    } catch {
-      return NextResponse.json({ error: 'Invalid image URL' }, { status: 400 });
+    // 3. Download and process image (reuse existing logic)
+    const hostedUrl = await uploadAndHostImage(imageUrl);
+
+    if (!hostedUrl) {
+      return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
     }
 
-    // 3. Download Image
+    return NextResponse.json({ 
+      success: true, 
+      originalUrl: imageUrl,
+      hostedUrl: hostedUrl,
+      fullUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mypen.ge'}${hostedUrl}`
+    });
+
+  } catch (error) {
+    console.error('Image Upload Error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+async function uploadAndHostImage(imageUrl: string): Promise<string | null> {
+  try {
+    console.log(`uploadAndHostImage: Starting download for ${imageUrl}`);
+    
+    // Download image
     const response = await fetch(imageUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; MypenBot/1.0)',
+        'Accept': 'image/*',
       },
     });
 
     if (!response.ok) {
-      return NextResponse.json(
-        { error: `Failed to download image: ${response.status} ${response.statusText}` },
-        { status: 400 }
-      );
+      console.error(`Failed to download image ${imageUrl}: ${response.status} ${response.statusText}`);
+      return null;
     }
 
     const imageBuffer = Buffer.from(await response.arrayBuffer());
     const contentType = response.headers.get('content-type') || 'image/jpeg';
 
-    // Validate it's an image
     if (!contentType.startsWith('image/')) {
-      return NextResponse.json({ error: 'URL does not point to an image' }, { status: 400 });
+      console.error(`URL does not point to an image: ${imageUrl}, content-type: ${contentType}`);
+      return null;
     }
 
-    // 4. Ensure directories exist
-    await ensureDirectories();
+    console.log(`uploadAndHostImage: Successfully downloaded ${imageUrl}, size: ${imageBuffer.length} bytes, type: ${contentType}`);
 
-    // 5. Generate filename
-    const filename = generateFilename(imageUrl);
-    const baseName = filename.replace(/\.[^/.]+$/, '');
+    // Ensure directories exist
+    const BLOG_IMAGE_DIR = join(process.cwd(), 'public', 'images', 'blog', 'content');
+    const OPTIMIZED_DIR = join(process.cwd(), 'public', 'images', 'blog', 'optimized');
+    
+    if (!existsSync(BLOG_IMAGE_DIR)) {
+      await mkdir(BLOG_IMAGE_DIR, { recursive: true });
+    }
+    if (!existsSync(OPTIMIZED_DIR)) {
+      await mkdir(OPTIMIZED_DIR, { recursive: true });
+    }
 
-    // 6. Save original to content directory
-    const originalPath = join(BLOG_IMAGE_DIR, filename);
+    // Generate filename - preserve original name as much as possible
+    const timestamp = Date.now();
+    const urlObj = new URL(imageUrl);
+    const pathname = urlObj.pathname;
+    const filename = pathname.split('/').pop() || 'image';
+    const cleanName = filename.split('?')[0].replace(/[^a-zA-Z0-9.-]/g, '-');
+    const ext = cleanName.includes('.') ? cleanName.split('.').pop()?.toLowerCase() : 'jpg';
+    const baseName = `${timestamp}-${cleanName.replace(/\.[^/.]+$/, '')}`;
+    const finalFilename = `${baseName}.${ext}`;
+
+    // Save original
+    const originalPath = join(BLOG_IMAGE_DIR, finalFilename);
     await writeFile(originalPath, imageBuffer);
 
-    // 7. Optimize and create variants using Sharp
+    // Optimize with Sharp
     try {
       const image = sharp(imageBuffer);
-
-      // Get image metadata
       const metadata = await image.metadata();
       const width = metadata.width || 1200;
       const height = metadata.height || 800;
 
-      // Create optimized versions
+      // Create WebP versions
       const variants = [
-        { suffix: '', width: width, height: height, quality: 85 }, // Original size
-        { suffix: '-thumb', width: 400, height: 225, quality: 85 }, // Thumbnail
-        { suffix: '-medium', width: 800, height: null, quality: 85 }, // Medium
-        { suffix: '-large', width: 1200, height: null, quality: 85 }, // Large
+        { suffix: '', width: width, height: height },
+        { suffix: '-thumb', width: 400, height: 225 },
+        { suffix: '-medium', width: 800, height: null },
+        { suffix: '-large', width: 1200, height: null },
       ];
 
       for (const variant of variants) {
@@ -113,37 +117,20 @@ export async function POST(req: NextRequest) {
           fit: 'inside',
           withoutEnlargement: true,
         });
-
-        // Convert to WebP
         const webpPath = join(OPTIMIZED_DIR, `${baseName}${variant.suffix}.webp`);
-        await processed.webp({ quality: variant.quality }).toFile(webpPath);
-
-        // Also create JPEG fallback for original size only
-        if (variant.suffix === '') {
-          const jpegPath = join(OPTIMIZED_DIR, `${baseName}.jpg`);
-          await image.clone().jpeg({ quality: variant.quality }).toFile(jpegPath);
-        }
+        await processed.webp({ quality: 85 }).toFile(webpPath);
       }
+
+      // Create JPEG fallback
+      const jpegPath = join(OPTIMIZED_DIR, `${baseName}.jpg`);
+      await image.clone().jpeg({ quality: 85 }).toFile(jpegPath);
     } catch (error) {
       console.error('Error optimizing image:', error);
-      // Continue even if optimization fails
     }
 
-    // 8. Return hosted URL
-    const hostedUrl = `/images/blog/optimized/${baseName}.webp`;
-
-    return NextResponse.json({
-      success: true,
-      originalUrl: imageUrl,
-      hostedUrl: hostedUrl,
-      filename: baseName,
-    });
+    return `/images/blog/optimized/${baseName}.webp`;
   } catch (error) {
-    console.error('Image upload error:', error);
-    return NextResponse.json(
-      { error: 'Internal Server Error', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
+    console.error(`Error uploading image ${imageUrl}:`, error);
+    return null;
   }
 }
-

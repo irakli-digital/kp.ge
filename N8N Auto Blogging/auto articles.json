@@ -2,20 +2,104 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "// Pass through article data - webhook will automatically upload and host images\n// The webhook endpoint handles image uploads server-side when it receives the content\nconst input = $input.first().json;\nconst article = input.output || input;\n\n// Debug: Log the body to see if images are present\nconsole.log('Article body length:', article.body?.length || 0);\nif (article.body) {\n  const imgMatches = article.body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/gi);\n  console.log('Found images in body:', imgMatches?.length || 0);\n  if (imgMatches && imgMatches.length > 0) {\n    console.log('First image tag:', imgMatches[0]);\n  }\n}\n\n// Return article data as-is - webhook will:\n// 1. Extract image URLs from HTML content\n// 2. Download images from external URLs\n// 3. Upload them to our server\n// 4. Replace URLs in HTML with hosted URLs\nreturn [{\n  json: {\n    output: article\n  }\n}];"
+        "jsCode": "// Parse all image URLs from the article HTML and prepare for processing\nconst input = $input.first().json;\nconst article = input.output || input;\nconst body = article.body || '';\n\n// Extract all image URLs from HTML (handle both src and SRC)\nconst imageUrlRegex = /<img[^>]+(?:src|SRC)=[\"']([^\"']+)[\"'][^>]*>/gi;\nconst imageUrls = [];\nlet match;\n\nwhile ((match = imageUrlRegex.exec(body)) !== null) {\n  const url = match[1];\n  // Only process external URLs (not already hosted on our server)\n  if (url && url.startsWith('http') && !url.includes('mypen.ge')) {\n    imageUrls.push({\n      originalUrl: url,\n      // Extract filename for matching\n      filename: url.split('/').pop()?.split('?')[0] || 'image'\n    });\n  }\n}\n\nconsole.log(`Parsed ${imageUrls.length} images from article`);\nimageUrls.forEach((img, idx) => {\n  console.log(`  Image ${idx + 1}: ${img.originalUrl.substring(0, 60)}...`);\n});\n\n// Store article data for later use, and output image URLs as separate items\nconst articleData = {\n  ...article,\n  imageUrls: imageUrls,\n  imageCount: imageUrls.length\n};\n\n// If no images, just pass through article\nif (imageUrls.length === 0) {\n  return [{\n    json: {\n      output: article,\n      skipImageProcessing: true\n    }\n  }];\n}\n\n// Output article data first, then each image URL as separate item\nconst result = [{\n  json: {\n    output: articleData,\n    skipImageProcessing: false\n  }\n}];\n\n// Add each image URL as a separate item for processing\nimageUrls.forEach(img => {\n  result.push({\n    json: {\n      originalUrl: img.originalUrl,\n      filename: img.filename,\n      articleData: articleData\n    }\n  });\n});\n\nreturn result;"
       },
+      "id": "parse-images-node",
+      "name": "Parse Images from Article",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        1968
+      ]
+    },
+    {
+      "id": "upload-images-node",
+      "name": "Upload Images to Server",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        1968
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields1').item.json.Webhook.replace('/blog', '/blog/upload-image') }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { imageUrl: $json.originalUrl } }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json",
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "e4xkr4s6jVKWYVY0",
+          "name": "MPEN - IC"
+        }
+      }
+    },
+    {
+      "id": "map-upload-response",
+      "name": "Map Upload Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        1968
+      ],
+      "parameters": {
+        "jsCode": "// Map upload response to include originalUrl and hostedUrl\nconst input = $input.first().json;\nconst uploadResponse = input;\n\n// The upload endpoint returns: { success, originalUrl, hostedUrl, fullUrl }\nconst originalUrl = uploadResponse.originalUrl || '';\nconst hostedUrl = uploadResponse.hostedUrl || '';\n\nif (!hostedUrl) {\n  console.error('No hostedUrl in upload response:', uploadResponse);\n  throw new Error('Failed to upload image - no hostedUrl returned');\n}\n\nconsole.log(`Image uploaded successfully: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);\n\nreturn [{\n  json: {\n    originalUrl: originalUrl,\n    hostedUrl: hostedUrl,\n    fullUrl: uploadResponse.fullUrl || hostedUrl,\n    filename: originalUrl.split('/').pop()?.split('?')[0] || 'image'\n  }\n}];"
+      }
+    },
+    {
+      "id": "aggregate-image-replacements",
+      "name": "Aggregate Image Replacements",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1968
+      ],
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {},
+        "keepOnlySet": false
+      }
+    },
+    {
+      "id": "replace-image-urls-node",
+      "name": "Replace Image URLs in HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        1968
+      ],
+      "parameters": {
+        "jsCode": "// Replace all original image URLs with hosted URLs in HTML\n// Get article data from the first item (stored when parsing images)\nconst allItems = $input.all();\nconst articleItem = allItems.find(item => item.json.output && item.json.output.body) || allItems.find(item => item.json.skipImageProcessing !== undefined);\nconst articleData = articleItem?.json.output || articleItem?.json || {};\nlet body = articleData.body || '';\n\n// Get all image replacements from aggregated upload responses\nconst replacements = [];\nallItems.forEach(item => {\n  const json = item.json;\n  if (json.originalUrl && json.hostedUrl) {\n    replacements.push({\n      originalUrl: json.originalUrl,\n      hostedUrl: json.hostedUrl\n    });\n  }\n});\n\nconsole.log(`Replacing ${replacements.length} image URLs in HTML`);\n\n// If no replacements, pass through original article\nif (replacements.length === 0) {\n  return [{\n    json: {\n      output: articleData\n    }\n  }];\n}\n\n// Replace each URL in the HTML body\nreplacements.forEach(({ originalUrl, hostedUrl }) => {\n  const escapedUrl = originalUrl.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n  \n  // Replace in img tags with src (lowercase)\n  body = body.replace(\n    new RegExp(`(<img[^>]+src=[\"'])${escapedUrl}([\"'][^>]*>)`, 'gi'),\n    `$1${hostedUrl}$2`\n  );\n  \n  // Replace in img tags with SRC (uppercase)\n  body = body.replace(\n    new RegExp(`(<img[^>]+SRC=[\"'])${escapedUrl}([\"'][^>]*>)`, 'gi'),\n    `$1${hostedUrl}$2`\n  );\n  \n  // Also replace standalone URLs\n  body = body.replace(new RegExp(escapedUrl, 'g'), hostedUrl);\n  \n  console.log(`Replaced: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);\n});\n\n// Update article with replaced URLs\nconst updatedArticle = {\n  ...articleData,\n  body: body\n};\n\nreturn [{\n  json: {\n    output: updatedArticle\n  }\n}];"
+      }
+    },
+    {
       "id": "75e3030d-93b6-438d-a0c3-144131f8abf5",
       "name": "Prepare for Webhook1",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1056,
+        1400,
         1968
       ]
     },
     {
       "parameters": {
-        "jsCode": "// Prepare webhook payload with proper data mapping\nconst input = $input.first().json;\n\n// Information Extractor outputs data nested under 'output' object\n// Structure: { output: { title: '...', summary: '...', body: '...', featured_image: '...' } }\nconst article = input.output || input;\n\n// Extract fields from nested output structure\nconst title = article.title || '';\nconst summary = article.summary || '';\nlet body = article.body || '';\nconst featured_image = article.featured_image || null;\n\n// Validate required fields\nif (!title || typeof title !== 'string' || title.trim() === '') {\n  throw new Error('Title is required but was empty or missing');\n}\n\nif (!body || typeof body !== 'string' || body.trim() === '') {\n  throw new Error('Body/content is required but was empty or missing');\n}\n\n// Normalize image tags: convert uppercase SRC to lowercase src for consistency\n// This ensures the webhook regex can properly match all image tags\nbody = body.replace(/<img\\s+([^>]*?)SRC=/gi, '<img $1src=');\nbody = body.replace(/<img\\s+([^>]*?)src=/gi, '<img $1src=');\n\n// Debug: Log images found in body before sending to webhook\nconst imgMatches = body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/gi);\nconsole.log('Images in body before webhook:', imgMatches?.length || 0);\nif (imgMatches && imgMatches.length > 0) {\n  imgMatches.forEach((img, idx) => {\n    const urlMatch = img.match(/src=[\"']([^\"']+)[\"']/i);\n    const url = urlMatch ? urlMatch[1] : 'N/A';\n    console.log(`  Image ${idx + 1}: ${url.substring(0, 80)}...`);\n  });\n}\n\n// Get first image from processed images as fallback\nconst processedImages = $('Process Images1').first().json.imageUrls || [];\nconst firstImage = processedImages.length > 0 ? processedImages[0] : null;\n\n// Use LLM-provided featured_image or fallback to first image\n// Handle case where LLM might return 'null' as string\nlet finalFeaturedImage = featured_image;\nif (!finalFeaturedImage || finalFeaturedImage === 'null' || finalFeaturedImage === 'None' || finalFeaturedImage === '') {\n  finalFeaturedImage = firstImage;\n}\n\n// Validate featured_image URL format if provided\n// Note: Webhook will handle uploading external images\nif (finalFeaturedImage && typeof finalFeaturedImage === 'string') {\n  try {\n    new URL(finalFeaturedImage);\n  } catch (e) {\n    // Invalid URL, set to null\n    finalFeaturedImage = null;\n  }\n}\n\n// Prepare payload matching webhook schema\n// Note: Webhook will automatically download and replace external image URLs in content\nconst payload = {\n  title: title.trim(),\n  title_ka: title.trim(),\n  content: body.trim(),\n  content_ka: body.trim(),\n  excerpt: (summary || '').trim(),\n  excerpt_ka: (summary || '').trim(),\n  featured_image: finalFeaturedImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\n// Final validation\nif (payload.title.length === 0) {\n  throw new Error('Title cannot be empty after trimming');\n}\n\nif (payload.content.length === 0) {\n  throw new Error('Content cannot be empty after trimming');\n}\n\nconsole.log('Payload prepared - content length:', payload.content.length);\nconsole.log('Payload prepared - images will be processed by webhook');\n\nreturn [{ json: payload }];"
+        "jsCode": "// Prepare webhook payload with proper data mapping\nconst input = $input.first().json;\n\n// Information Extractor outputs data nested under 'output' object\n// Structure: { output: { title: '...', summary: '...', body: '...', featured_image: '...' } }\nconst article = input.output || input;\n\n// Extract fields from nested output structure\nconst title = article.title || '';\nconst summary = article.summary || '';\nlet body = article.body || '';\nconst featured_image = article.featured_image || null;\n\n// Validate required fields\nif (!title || typeof title !== 'string' || title.trim() === '') {\n  throw new Error('Title is required but was empty or missing');\n}\n\nif (!body || typeof body !== 'string' || body.trim() === '') {\n  throw new Error('Body/content is required but was empty or missing');\n}\n\n// Normalize image tags: convert uppercase SRC to lowercase src for consistency\n// This ensures the webhook regex can properly match all image tags\nbody = body.replace(/<img\\s+([^>]*?)SRC=/gi, '<img $1src=');\nbody = body.replace(/<img\\s+([^>]*?)src=/gi, '<img $1src=');\n\n// Debug: Log images found in body before sending to webhook\nconst imgMatches = body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/gi);\nconsole.log('Images in body before webhook:', imgMatches?.length || 0);\nif (imgMatches && imgMatches.length > 0) {\n  imgMatches.forEach((img, idx) => {\n    const urlMatch = img.match(/src=[\"']([^\"']+)[\"']/i);\n    const url = urlMatch ? urlMatch[1] : 'N/A';\n    console.log(`  Image ${idx + 1}: ${url.substring(0, 80)}...`);\n  });\n}\n\n// Extract first image from body HTML as fallback for featured_image\n// The webhook will handle downloading and hosting all images in the content\nlet firstImageFromBody = null;\nif (body) {\n  const imgMatch = body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/i);\n  if (imgMatch && imgMatch[1]) {\n    firstImageFromBody = imgMatch[1];\n  }\n}\n\n// Use LLM-provided featured_image or fallback to first image from body\n// Handle case where LLM might return 'null' as string\nlet finalFeaturedImage = featured_image;\nif (!finalFeaturedImage || finalFeaturedImage === 'null' || finalFeaturedImage === 'None' || finalFeaturedImage === '') {\n  finalFeaturedImage = firstImageFromBody;\n}\n\n// Validate featured_image URL format if provided\n// Note: Webhook will handle uploading external images\nif (finalFeaturedImage && typeof finalFeaturedImage === 'string') {\n  try {\n    new URL(finalFeaturedImage);\n  } catch (e) {\n    // Invalid URL, set to null\n    finalFeaturedImage = null;\n  }\n}\n\n// Prepare payload matching webhook schema\n// Note: Webhook will automatically download and replace external image URLs in content\nconst payload = {\n  title: title.trim(),\n  title_ka: title.trim(),\n  content: body.trim(),\n  content_ka: body.trim(),\n  excerpt: (summary || '').trim(),\n  excerpt_ka: (summary || '').trim(),\n  featured_image: finalFeaturedImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\n// Final validation\nif (payload.title.length === 0) {\n  throw new Error('Title cannot be empty after trimming');\n}\n\nif (payload.content.length === 0) {\n  throw new Error('Content cannot be empty after trimming');\n}\n\nconsole.log('Payload prepared - content length:', payload.content.length);\nconsole.log('Payload prepared - images will be processed by webhook');\n\nreturn [{ json: payload }];"
       },
       "id": "b1440068-680c-4eee-9886-0536b02939be",
       "name": "Prepare Webhook Payload1",
@@ -496,6 +580,125 @@
       ]
     },
     "Rewrite and Translate Article1": {
+      "main": [
+        [
+          {
+            "node": "Parse Images from Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Images from Article": {
+      "main": [
+        [
+          {
+            "node": "Split Images for Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Images for Processing": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Filter Image Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        1968
+      ],
+      "id": "split-images-node"
+    },
+    "Filter Image Items": {
+      "main": [
+        [
+          {
+            "node": "Upload Images to Server",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "filter-condition",
+              "leftValue": "={{ $json.originalUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "isNotEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1000,
+        2100
+      ],
+      "id": "filter-image-items-node"
+    },
+    "Upload Images to Server": {
+      "main": [
+        [
+          {
+            "node": "Map Upload Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Upload Response": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Image Replacements",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Image Replacements": {
+      "main": [
+        [
+          {
+            "node": "Replace Image URLs in HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Image URLs in HTML": {
       "main": [
         [
           {
