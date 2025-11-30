@@ -5,42 +5,55 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2512,
-        1376
+        -2624,
+        3240
       ],
       "id": "fd91bf13-0b4c-4466-8c9b-45b2ff3f8d77",
       "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
-        "jsCode": "// Extract and format images from the article\nconst input = $input.first().json;\nconst htmlData = input.data || '';\nlet imageSrcs = input.images || [];\n\n// Handle case where images might be a single value or array\nif (!Array.isArray(imageSrcs)) {\n  imageSrcs = imageSrcs ? [imageSrcs] : [];\n}\n\n// Convert relative URLs to absolute URLs if needed\nconst articleUrl = $('Get Article').first().json.url || '';\nconst baseUrl = articleUrl ? new URL(articleUrl).origin : '';\n\nconst processedImages = imageSrcs.map(src => {\n  if (!src || typeof src !== 'string') return null;\n  // If relative URL, make it absolute\n  if (src.startsWith('//')) {\n    return 'https:' + src;\n  }\n  if (src.startsWith('/')) {\n    return baseUrl + src;\n  }\n  if (src.startsWith('http')) {\n    return src;\n  }\n  return baseUrl + '/' + src;\n}).filter(Boolean);\n\n// Format images as a list for the LLM\nconst imagesList = processedImages.length > 0 \n  ? processedImages.map((url, idx) => `Image ${idx + 1}: ${url}`).join('\\n')\n  : 'No images found in article';\n\nreturn [{\n  json: {\n    data: htmlData,\n    images: imagesList,\n    imageUrls: processedImages\n  }\n}];"
+        "jsCode": "// Pass through article data - webhook will automatically upload and host images\n// The webhook endpoint handles image uploads server-side when it receives the content\nconst input = $input.first().json;\nconst article = input.output || input;\n\n// Return article data as-is - webhook will:\n// 1. Extract image URLs from HTML content\n// 2. Download images from external URLs\n// 3. Upload them to our server\n// 4. Replace URLs in HTML with hosted URLs\nreturn [{\n  json: {\n    output: article\n  }\n}];"
       },
-      "id": "0c45e4e8-35d9-4540-991a-d4850eece917",
-      "name": "Process Images1",
+      "id": "730d2737-2782-45ae-84db-56de5e4fd6e5",
+      "name": "Prepare for Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        3240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract and format images from the article\nconst input = $input.first().json;\nconst htmlData = input.data || '';\nlet imageSrcs = input.images || [];\n\n// Handle case where images might be a single value or array\nif (!Array.isArray(imageSrcs)) {\n  imageSrcs = imageSrcs ? [imageSrcs] : [];\n}\n\n// Convert relative URLs to absolute URLs if needed\nconst articleUrl = $('Get Article3').first().json.url || '';\nconst baseUrl = articleUrl ? new URL(articleUrl).origin : '';\n\nconst processedImages = imageSrcs.map(src => {\n  if (!src || typeof src !== 'string') return null;\n  // If relative URL, make it absolute\n  if (src.startsWith('//')) {\n    return 'https:' + src;\n  }\n  if (src.startsWith('/')) {\n    return baseUrl + src;\n  }\n  if (src.startsWith('http')) {\n    return src;\n  }\n  return baseUrl + '/' + src;\n}).filter(Boolean);\n\n// Format images as a list for the LLM\nconst imagesList = processedImages.length > 0 \n  ? processedImages.map((url, idx) => `Image ${idx + 1}: ${url}`).join('\\n')\n  : 'No images found in article';\n\nreturn [{\n  json: {\n    data: htmlData,\n    images: imagesList,\n    imageUrls: processedImages\n  }\n}];"
+      },
+      "id": "fd1aa36e-d9e4-41d8-8f5e-58285e29e39d",
+      "name": "Process Images3",
       "type": "n8n-nodes-base.code",
       "position": [
-        -368,
-        1840
+        -704,
+        3240
       ],
       "typeVersion": 2
     },
     {
       "parameters": {
-        "jsCode": "// Prepare webhook payload with proper data mapping\nconst article = $input.first().json;\n\n// Validate required fields\nif (!article.title || article.title.trim() === '') {\n  throw new Error('Title is required but was empty or missing');\n}\n\nif (!article.body || article.body.trim() === '') {\n  throw new Error('Body/content is required but was empty or missing');\n}\n\n// Get first image from processed images as fallback\nconst processedImages = $('Process Images1').first().json.imageUrls || [];\nconst firstImage = processedImages.length > 0 ? processedImages[0] : null;\n\n// Use LLM-provided featured_image or fallback to first image\n// Handle case where LLM might return 'null' as string\nlet featuredImage = article.featured_image;\nif (!featuredImage || featuredImage === 'null' || featuredImage === 'None' || featuredImage === '') {\n  featuredImage = firstImage;\n}\n\n// Validate featured_image URL format if provided\nif (featuredImage && typeof featuredImage === 'string') {\n  try {\n    new URL(featuredImage);\n  } catch (e) {\n    // Invalid URL, set to null\n    featuredImage = null;\n  }\n}\n\n// Prepare payload matching webhook schema\nconst payload = {\n  title: article.title.trim(),\n  title_ka: article.title.trim(),\n  content: article.body.trim(),\n  content_ka: article.body.trim(),\n  excerpt: (article.summary || '').trim(),\n  excerpt_ka: (article.summary || '').trim(),\n  featured_image: featuredImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\n// Final validation\nif (payload.title.length === 0) {\n  throw new Error('Title cannot be empty after trimming');\n}\n\nif (payload.content.length === 0) {\n  throw new Error('Content cannot be empty after trimming');\n}\n\nreturn [{ json: payload }];"
+        "jsCode": "// Prepare webhook payload with proper data mapping\nconst input = $input.first().json;\n\n// Information Extractor outputs data nested under 'output' object\n// Structure: { output: { title: '...', summary: '...', body: '...', featured_image: '...' } }\nconst article = input.output || input;\n\n// Extract fields from nested output structure\nconst title = article.title || '';\nconst summary = article.summary || '';\nconst body = article.body || '';\nconst featured_image = article.featured_image || null;\n\n// Validate required fields\nif (!title || typeof title !== 'string' || title.trim() === '') {\n  throw new Error('Title is required but was empty or missing');\n}\n\nif (!body || typeof body !== 'string' || body.trim() === '') {\n  throw new Error('Body/content is required but was empty or missing');\n}\n\n// Get first image from processed images as fallback\nconst processedImages = $('Process Images3').first().json.imageUrls || [];\nconst firstImage = processedImages.length > 0 ? processedImages[0] : null;\n\n// Use LLM-provided featured_image or fallback to first image\n// Handle case where LLM might return 'null' as string\nlet finalFeaturedImage = featured_image;\nif (!finalFeaturedImage || finalFeaturedImage === 'null' || finalFeaturedImage === 'None' || finalFeaturedImage === '') {\n  finalFeaturedImage = firstImage;\n}\n\n// Validate featured_image URL format if provided\n// Note: Webhook will handle uploading external images\nif (finalFeaturedImage && typeof finalFeaturedImage === 'string') {\n  try {\n    new URL(finalFeaturedImage);\n  } catch (e) {\n    // Invalid URL, set to null\n    finalFeaturedImage = null;\n  }\n}\n\n// Prepare payload matching webhook schema\nconst payload = {\n  title: title.trim(),\n  title_ka: title.trim(),\n  content: body.trim(),\n  content_ka: body.trim(),\n  excerpt: (summary || '').trim(),\n  excerpt_ka: (summary || '').trim(),\n  featured_image: finalFeaturedImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\n// Final validation\nif (payload.title.length === 0) {\n  throw new Error('Title cannot be empty after trimming');\n}\n\nif (payload.content.length === 0) {\n  throw new Error('Content cannot be empty after trimming');\n}\n\nreturn [{ json: payload }];"
       },
-      "id": "33c94784-41c6-48df-9333-28c74103dc12",
-      "name": "Prepare Webhook Payload1",
+      "id": "36c55f68-f7ef-4119-ad05-ca6dec757ad6",
+      "name": "Prepare Webhook Payload3",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        208,
-        1840
+        96,
+        3240
       ]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Edit Fields').item.json.Webhook }}",
+        "url": "={{ $('Edit Fields3').item.json.Webhook }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
@@ -48,13 +61,13 @@
         "jsonBody": "={{ $json }}",
         "options": {}
       },
-      "id": "b1e4fdab-205d-48dc-b424-8eea7ca61a51",
-      "name": "Send to Webhook1",
+      "id": "607cfbbc-9eec-451c-be77-cebaa049ddca",
+      "name": "Send to Webhook3",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        480,
-        1840
+        320,
+        3240
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -90,15 +103,15 @@
           ]
         },
         "options": {
-          "systemPromptTemplate": "=You are a blog content writer who rewrites and translates articles to Georgian following strict brand voice guidelines and SEO best practices.\n\n## CRITICAL INSTRUCTIONS:\n1. **TRANSLATE TO GEORGIAN** - The entire article (title, summary, body) must be in Georgian\n2. **REWRITE, DON'T COPY** - Rewrite the content in your own words while preserving the core message and information\n3. **FOLLOW BRAND VOICE** - Use the brand voice guide below strictly\n4. **OUTPUT FORMAT** - Body must be clean, semantic HTML (NOT Markdown)\n5. **NO DATES** - Do not include the date of the article because the publishing date is not determined yet\n6. **INCLUDE IMAGES** - Use the images provided from the original article, embed them naturally in the HTML body\n\n## SEO HTML Requirements:\n{{ $('Edit Fields').item.json['SEO Writing rules'] }}\n\n## HTML Structure Example:\n<h2>სათაური</h2>\n<p>პარაგრაფი ტექსტით...</p>\n<img src=\"image-url.jpg\" alt=\"აღწერა ქართულად\" />\n<h3>ქვესათაური</h3>\n<p>მეტი ტექსტი...</p>\n<ul>\n<li>სიის ელემენტი 1</li>\n<li>სიის ელემენტი 2</li>\n</ul>\n\n## Brand Voice Guide\n{{ $('Edit Fields').item.json['Brand Voice'] }}\n\n## Original Article to Rewrite/Translate:\nThe following article might be English. Rewrite it in Georgian following the brand voice guide above. Make it natural, engaging, and adapted for Georgian readers while maintaining all key information and insights. Include images from the original article naturally within the content."
+          "systemPromptTemplate": "=You are a professional blog content writer specializing in rewriting and translating articles to Georgian. You follow strict brand voice guidelines and SEO best practices.\n\n## PRIMARY TASK\nRewrite the provided article in Georgian, creating original content that preserves the core message, information, and approximate length of the source material.\n\n## CRITICAL RULES\n\n### Content Rules\n1. **TRANSLATE TO GEORGIAN** - The entire output (title, summary, body) must be in Georgian\n2. **REWRITE COMPLETELY** - Create original Georgian content; do not translate word-for-word or copy phrases\n3. **MAINTAIN LENGTH** - Keep the rewritten article roughly the same length as the original\n4. **PRESERVE KEY INFORMATION** - All important facts, insights, and takeaways must be retained\n\n### Removal Rules (STRICT)\n5. **NO DATES** - Remove all publication dates; the publishing date is not yet determined\n6. **NO SOURCE ATTRIBUTION** - Do not mention the original website name, company name, or source\n7. **NO AUTHOR CREDIT** - Do not include author names or bylines\n8. **NO EXTERNAL HYPERLINKS** - Remove all URLs and hyperlinks from the original article; do not link to external websites\n\n### Image Rules\n9. **PRESERVE IMAGE URLs** - Use the exact original image URLs provided; do not modify them\n10. **TRANSLATE ALT TEXT** - Write descriptive alt text in Georgian for each image\n11. **EMBED NATURALLY** - Place images contextually within the content where they make sense\n\n### Format Rules\n12. **OUTPUT HTML ONLY** - Body must be clean, semantic HTML (NOT Markdown)\n13. **FOLLOW BRAND VOICE** - Strictly adhere to the brand voice guide provided below\n\n## SEO & HTML REQUIREMENTS\n{{ $('Edit Fields3').item.json['SEO Writing rules'] }}\n## HTML STRUCTURE EXAMPLE\n<h2>სათაური</h2>\n<p>პარაგრაფი ტექსტით...</p>\n<img src=\"original-image-url.jpg\" alt=\"აღწერა ქართულად\" />\n<h3>ქვესათაური</h3>\n<p>მეტი ტექსტი...</p>\n<ul>\n  <li>სიის ელემენტი 1</li>\n  <li>სიის ელემენტი 2</li>\n</ul>\n\n## BRAND VOICE GUIDE\n{{ $('Edit Fields3').item.json['Brand Voice'] }}\n## SELF-CHECK BEFORE OUTPUT\nBefore finalizing, verify:\n- [ ] All text is in Georgian (no English words except proper nouns if necessary)\n- [ ] All HTML tags are properly opened and closed\n- [ ] No hyperlinks or URLs appear in the text content\n- [ ] No mention of original source, website, or author\n- [ ] No publication dates included\n- [ ] All images use original URLs with Georgian alt text\n- [ ] Content length is approximately equal to the original\n\n\nNow rewrite this article in Georgian following all rules above. Output only the final HTML content with no additional commentary."
         }
       },
-      "id": "ddc8833c-36a1-4506-baa5-1ca2bdb350e5",
-      "name": "Rewrite and Translate Article",
+      "id": "db3710ca-3cfc-4f13-a349-74192f4047f9",
+      "name": "Rewrite and Translate Article3",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        -144,
-        1840
+        -480,
+        3240
       ],
       "typeVersion": 1
     },
@@ -107,12 +120,12 @@
         "url": "={{ $json.link }}",
         "options": {}
       },
-      "id": "78899259-bafd-4289-a3c0-0bc5a484a3fc",
-      "name": "Get Article",
+      "id": "b38dc0de-1181-4be4-a278-3d56935db0d7",
+      "name": "Get Article3",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -816,
-        1840
+        -1152,
+        3240
       ],
       "typeVersion": 4.2
     },
@@ -136,12 +149,12 @@
         },
         "options": {}
       },
-      "id": "113c310c-2752-4464-909d-970e2b4b8018",
-      "name": "Extract Article Content",
+      "id": "2fabe33f-c38e-47be-9519-17d13302517d",
+      "name": "Extract Article Content3",
       "type": "n8n-nodes-base.html",
       "position": [
-        -592,
-        1840
+        -928,
+        3240
       ],
       "typeVersion": 1.2
     },
@@ -180,24 +193,24 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2064,
-        1840
+        -2400,
+        3240
       ],
-      "id": "d1f5039a-227e-459a-b4e5-ffcee75a301b",
-      "name": "Edit Fields"
+      "id": "cbd91919-d41b-4700-b338-0f4483fc0048",
+      "name": "Edit Fields3"
     },
     {
       "parameters": {
         "url": "https://www.artificial-intelligence.blog/ai-news?format=rss",
         "options": {}
       },
-      "id": "7ac3f4ec-b0d8-4b1c-b269-9f992e53e60e",
-      "name": "Read RSS Feed",
+      "id": "198e9ebb-cd41-4f88-a239-0eb75ca95614",
+      "name": "Read RSS Feed3",
       "type": "n8n-nodes-base.rssFeedRead",
       "typeVersion": 1.2,
       "position": [
-        -1840,
-        1840
+        -2176,
+        3240
       ]
     },
     {
@@ -221,11 +234,11 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        -1392,
-        1840
+        -1728,
+        3240
       ],
-      "id": "04a0b919-f532-46c3-afad-b3210a03ad5b",
-      "name": "sorting articles",
+      "id": "e41d9263-4a33-4a97-bfe3-d091f0bf524a",
+      "name": "sorting articles3",
       "credentials": {
         "openAiApi": {
           "id": "eJNHP6n8O3Y9Iv2F",
@@ -238,50 +251,44 @@
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
-      "id": "891d2886-a923-414e-9ca6-411300bce482",
-      "name": "Aggregate All Articles",
+      "id": "e5cf8063-988b-4a50-99a3-99fae813ab99",
+      "name": "Aggregate All Articles3",
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -1616,
-        1840
+        -1952,
+        3240
       ]
     },
     {
       "parameters": {
         "jsCode": "const response = $input.first().json.output[0].content[0].text;\nconst parsed = JSON.parse(response);\nconst url = parsed.selected_url;\n\nreturn [{ json: { link: url } }];"
       },
-      "id": "4465d685-fb07-4c7f-a483-fde24ec7d47e",
-      "name": "Parse and Split URLs",
+      "id": "a9523555-7d52-47ac-b0eb-af880de13435",
+      "name": "Parse and Split URLs3",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1040,
-        1840
+        -1376,
+        3240
       ]
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "builtInTools": {},
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
       "position": [
-        32,
-        2096
+        -408,
+        3464
       ],
-      "id": "4489b584-d439-422c-8923-42128a804573",
-      "name": "OpenAI Chat Model",
+      "id": "3d109e64-1b13-497b-84e7-29c80605c544",
+      "name": "Google Gemini Chat Model",
       "credentials": {
-        "openAiApi": {
-          "id": "eJNHP6n8O3Y9Iv2F",
-          "name": "Open Ai - IC"
+        "googlePalmApi": {
+          "id": "grfmAQP2FnQMoPJu",
+          "name": "Gemini - IC"
         }
       }
     }
@@ -291,128 +298,139 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Edit Fields3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Process Images1": {
+    "Prepare for Webhook": {
       "main": [
         [
           {
-            "node": "Rewrite and Translate Article",
+            "node": "Prepare Webhook Payload3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Prepare Webhook Payload1": {
+    "Process Images3": {
       "main": [
         [
           {
-            "node": "Send to Webhook1",
+            "node": "Rewrite and Translate Article3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Rewrite and Translate Article": {
+    "Prepare Webhook Payload3": {
       "main": [
         [
           {
-            "node": "Prepare Webhook Payload1",
+            "node": "Send to Webhook3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Article": {
+    "Rewrite and Translate Article3": {
       "main": [
         [
           {
-            "node": "Extract Article Content",
+            "node": "Prepare for Webhook",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Extract Article Content": {
+    "Get Article3": {
       "main": [
         [
           {
-            "node": "Process Images1",
+            "node": "Extract Article Content3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Fields": {
+    "Extract Article Content3": {
       "main": [
         [
           {
-            "node": "Read RSS Feed",
+            "node": "Process Images3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Read RSS Feed": {
+    "Edit Fields3": {
       "main": [
         [
           {
-            "node": "Aggregate All Articles",
+            "node": "Read RSS Feed3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "sorting articles": {
+    "Read RSS Feed3": {
       "main": [
         [
           {
-            "node": "Parse and Split URLs",
+            "node": "Aggregate All Articles3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Aggregate All Articles": {
+    "sorting articles3": {
       "main": [
         [
           {
-            "node": "sorting articles",
+            "node": "Parse and Split URLs3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Parse and Split URLs": {
+    "Aggregate All Articles3": {
       "main": [
         [
           {
-            "node": "Get Article",
+            "node": "sorting articles3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
+    "Parse and Split URLs3": {
+      "main": [
+        [
+          {
+            "node": "Get Article3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
           {
-            "node": "Rewrite and Translate Article",
+            "node": "Rewrite and Translate Article3",
             "type": "ai_languageModel",
             "index": 0
           }
