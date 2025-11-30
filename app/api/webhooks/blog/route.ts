@@ -36,15 +36,18 @@ function generateSlug(title: string): string {
 
 async function uploadAndHostImage(imageUrl: string): Promise<string | null> {
   try {
+    console.log(`uploadAndHostImage: Starting download for ${imageUrl}`);
+    
     // Download image
     const response = await fetch(imageUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; MypenBot/1.0)',
+        'Accept': 'image/*',
       },
     });
 
     if (!response.ok) {
-      console.error(`Failed to download image ${imageUrl}: ${response.status}`);
+      console.error(`Failed to download image ${imageUrl}: ${response.status} ${response.statusText}`);
       return null;
     }
 
@@ -52,9 +55,11 @@ async function uploadAndHostImage(imageUrl: string): Promise<string | null> {
     const contentType = response.headers.get('content-type') || 'image/jpeg';
 
     if (!contentType.startsWith('image/')) {
-      console.error(`URL does not point to an image: ${imageUrl}`);
+      console.error(`URL does not point to an image: ${imageUrl}, content-type: ${contentType}`);
       return null;
     }
+
+    console.log(`uploadAndHostImage: Successfully downloaded ${imageUrl}, size: ${imageBuffer.length} bytes, type: ${contentType}`);
 
     // Ensure directories exist
     const BLOG_IMAGE_DIR = join(process.cwd(), 'public', 'images', 'blog', 'content');
@@ -136,7 +141,12 @@ function extractFirstImageFromHtml(html: string): string | null {
 }
 
 async function replaceImageUrlsInHtml(html: string): Promise<string> {
-  // Extract all image URLs from HTML
+  if (!html || typeof html !== 'string') {
+    console.log('replaceImageUrlsInHtml: No HTML content provided');
+    return html;
+  }
+
+  // Extract all image URLs from HTML - handle both single and double quotes
   const imageUrlRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
   const imageUrls = new Set<string>();
   let match;
@@ -145,24 +155,52 @@ async function replaceImageUrlsInHtml(html: string): Promise<string> {
     const url = match[1];
     if (url && url.startsWith('http') && !url.includes('mypen.ge')) {
       imageUrls.add(url);
+      console.log(`Found external image URL: ${url}`);
     }
   }
+
+  if (imageUrls.size === 0) {
+    console.log('replaceImageUrlsInHtml: No external images found to process');
+    return html;
+  }
+
+  console.log(`replaceImageUrlsInHtml: Processing ${imageUrls.size} images`);
 
   // Upload and replace each image
   const urlMap = new Map<string, string>();
   
   for (const originalUrl of Array.from(imageUrls)) {
-    const hostedUrl = await uploadAndHostImage(originalUrl);
-    if (hostedUrl) {
-      urlMap.set(originalUrl, hostedUrl);
+    console.log(`Attempting to download and host: ${originalUrl}`);
+    try {
+      const hostedUrl = await uploadAndHostImage(originalUrl);
+      if (hostedUrl) {
+        urlMap.set(originalUrl, hostedUrl);
+        console.log(`Successfully hosted image: ${originalUrl} -> ${hostedUrl}`);
+      } else {
+        console.error(`Failed to host image: ${originalUrl}`);
+      }
+    } catch (error) {
+      console.error(`Error processing image ${originalUrl}:`, error);
     }
   }
 
-  // Replace URLs in HTML
+  if (urlMap.size === 0) {
+    console.log('replaceImageUrlsInHtml: No images were successfully hosted');
+    return html;
+  }
+
+  // Replace URLs in HTML - need to replace in img src attributes
   let updatedHtml = html;
   for (const [originalUrl, hostedUrl] of urlMap.entries()) {
+    // Replace in img src attributes
+    const imgTagRegex = new RegExp(`(<img[^>]+src=["'])${originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(["'][^>]*>)`, 'gi');
+    updatedHtml = updatedHtml.replace(imgTagRegex, `$1${hostedUrl}$2`);
+    
+    // Also replace standalone URLs (in case they appear outside img tags)
     const escapedUrl = originalUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     updatedHtml = updatedHtml.replace(new RegExp(escapedUrl, 'g'), hostedUrl);
+    
+    console.log(`Replaced URL: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);
   }
 
   return updatedHtml;
@@ -209,11 +247,30 @@ export async function POST(req: NextRequest) {
     const excerpt = validatedData.excerpt || '';
     
     // Replace external image URLs with hosted versions in both content and content_ka
+    console.log('Starting image processing...');
     if (content && typeof content === 'string') {
-      content = await replaceImageUrlsInHtml(content);
+      console.log(`Processing English content, length: ${content.length}`);
+      try {
+        content = await replaceImageUrlsInHtml(content);
+        console.log(`English content processed, new length: ${content.length}`);
+      } catch (error) {
+        console.error('Error processing English content images:', error);
+      }
     }
     if (content_ka && typeof content_ka === 'string') {
-      content_ka = await replaceImageUrlsInHtml(content_ka);
+      console.log(`Processing Georgian content, length: ${content_ka.length}`);
+      try {
+        const originalContentKa = content_ka;
+        content_ka = await replaceImageUrlsInHtml(content_ka);
+        console.log(`Georgian content processed, new length: ${content_ka.length}`);
+        if (originalContentKa !== content_ka) {
+          console.log('Content was modified - images were replaced');
+        } else {
+          console.log('Content was NOT modified - no images replaced');
+        }
+      } catch (error) {
+        console.error('Error processing Georgian content images:', error);
+      }
     }
     
     // Handle featured_image: upload if external URL, convert empty string to null
@@ -335,3 +392,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
