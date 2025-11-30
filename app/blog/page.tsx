@@ -28,7 +28,7 @@ export default async function BlogPage() {
       <main className="container mx-auto px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12 text-center">
-            <h1 className="mb-4 text-4xl font-bold tracking-tight">ბლოგი</h1>
+            <h1 className="mb-4 text-4xl font-bold tracking-tight text-primary">ბლოგი</h1>
             <p className="text-xl text-muted-foreground">
               AI-ს სამყაროს სიახლეები, რჩევები და საუკეთესო პრაქტიკები
             </p>
@@ -61,7 +61,7 @@ export default async function BlogPage() {
                           </time>
                         </div>
                       </div>
-                      <CardTitle className="text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                      <CardTitle className="text-lg leading-tight line-clamp-2 text-primary group-hover:text-primary/90 transition-colors">
                         {post.title_ka}
                       </CardTitle>
                       {post.excerpt_ka && (
