@@ -1,24 +1,73 @@
 {
   "nodes": [
     {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2512,
+        1376
+      ],
+      "id": "fd91bf13-0b4c-4466-8c9b-45b2ff3f8d77",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
       "parameters": {
-        "model": "gpt-4.1-nano",
+        "jsCode": "// Extract and format images from the article\nconst input = $input.first().json;\nconst htmlData = input.data || '';\nlet imageSrcs = input.images || [];\n\n// Handle case where images might be a single value or array\nif (!Array.isArray(imageSrcs)) {\n  imageSrcs = imageSrcs ? [imageSrcs] : [];\n}\n\n// Convert relative URLs to absolute URLs if needed\nconst articleUrl = $('Get Article1').first().json.url || '';\nconst baseUrl = articleUrl ? new URL(articleUrl).origin : '';\n\nconst processedImages = imageSrcs.map(src => {\n  if (!src || typeof src !== 'string') return null;\n  // If relative URL, make it absolute\n  if (src.startsWith('//')) {\n    return 'https:' + src;\n  }\n  if (src.startsWith('/')) {\n    return baseUrl + src;\n  }\n  if (src.startsWith('http')) {\n    return src;\n  }\n  return baseUrl + '/' + src;\n}).filter(Boolean);\n\n// Format images as a list for the LLM\nconst imagesList = processedImages.length > 0 \n  ? processedImages.map((url, idx) => `Image ${idx + 1}: ${url}`).join('\\n')\n  : 'No images found in article';\n\nreturn [{\n  json: {\n    data: htmlData,\n    images: imagesList,\n    imageUrls: processedImages\n  }\n}];"
+      },
+      "id": "9b1d611a-55d7-4a80-9b0f-2596a582a7a7",
+      "name": "Process Images",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -592,
+        1376
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare webhook payload with proper data mapping\nconst article = $input.first().json;\n\n// Get first image from processed images as fallback\nconst processedImages = $('Process Images').first().json.imageUrls || [];\nconst firstImage = processedImages.length > 0 ? processedImages[0] : null;\n\n// Use LLM-provided featured_image or fallback to first image\n// Handle case where LLM might return 'null' as string\nlet featuredImage = article.featured_image;\nif (!featuredImage || featuredImage === 'null' || featuredImage === 'None') {\n  featuredImage = firstImage;\n}\n\n// Prepare payload matching webhook schema\nconst payload = {\n  title: article.title || '',\n  title_ka: article.title || '',\n  content: article.body || '',\n  content_ka: article.body || '',\n  excerpt: article.summary || '',\n  excerpt_ka: article.summary || '',\n  featured_image: featuredImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\nreturn [{ json: payload }];"
+      },
+      "id": "db72f536-ffce-48b9-88a3-73239f30b47f",
+      "name": "Prepare Webhook Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        1376
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields1').item.json.Webhook }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-n8n-webhook-secret",
+              "value": "={{ $('Edit Fields1').item.json.Secret }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
         "options": {}
       },
-      "id": "cb2b961b-a784-450f-82fa-74cd64e0522f",
-      "name": "OpenAI Chat Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "id": "89e6eb2d-0648-4428-9b8b-fb82ce074f91",
+      "name": "Send to Webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        -168,
-        1600
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "openAiApi": {
-          "id": "vbdZrNdQGKTQGL1B",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
+        256,
+        1376
+      ]
     },
     {
       "parameters": {
@@ -42,20 +91,19 @@
             },
             {
               "name": "featured_image",
-              "description": "URL of the best image from the article to use as featured image (first relevant image, or null if none)",
-              "required": false
+              "description": "URL of the best image from the article to use as featured image (first relevant image, or null if none)"
             }
           ]
         },
         "options": {
-          "systemPromptTemplate": "=You are a blog content writer who rewrites and translates articles to Georgian following strict brand voice guidelines and SEO best practices.\n\n## CRITICAL INSTRUCTIONS:\n1. **TRANSLATE TO GEORGIAN** - The entire article (title, summary, body) must be in Georgian\n2. **REWRITE, DON'T COPY** - Rewrite the content in your own words while preserving the core message and information\n3. **FOLLOW BRAND VOICE** - Use the brand voice guide below strictly\n4. **OUTPUT FORMAT** - Body must be clean, semantic HTML (NOT Markdown)\n5. **NO DATES** - Do not include the date of the article because the publishing date is not determined yet\n6. **INCLUDE IMAGES** - Use the images provided from the original article, embed them naturally in the HTML body\n\n## SEO HTML Requirements:\n- Use proper heading hierarchy: <h2> for main sections, <h3> for subsections, <h4> for sub-subsections\n- NEVER use <h1> in body (h1 is reserved for page title)\n- Wrap paragraphs in <p> tags\n- Use <ul> and <li> for lists\n- Use <blockquote> for quotes\n- Include images with proper <img> tags: <img src=\"URL\" alt=\"descriptive text in Georgian\" />\n- Use <strong> for bold, <em> for italic\n- Use <a href=\"URL\"> for links with descriptive anchor text\n- Ensure images have descriptive alt text in Georgian\n- Place images contextually within the content flow\n- Use semantic HTML structure for better SEO\n\n## HTML Structure Example:\n<h2>სათაური</h2>\n<p>პარაგრაფი ტექსტით...</p>\n<img src=\"image-url.jpg\" alt=\"აღწერა ქართულად\" />\n<h3>ქვესათაური</h3>\n<p>მეტი ტექსტი...</p>\n<ul>\n<li>სიის ელემენტი 1</li>\n<li>სიის ელემენტი 2</li>\n</ul>\n\n## Brand Voice Guide\n{{ $('Edit Fields').item.json['Brand Voice'] }}\n\n## Original Article to Rewrite/Translate:\nThe following article is in English. Rewrite it in Georgian following the brand voice guide above. Make it natural, engaging, and adapted for Georgian readers while maintaining all key information and insights. Include images from the original article naturally within the content."
+          "systemPromptTemplate": "=You are a blog content writer who rewrites and translates articles to Georgian following strict brand voice guidelines and SEO best practices.\n\n## CRITICAL INSTRUCTIONS:\n1. **TRANSLATE TO GEORGIAN** - The entire article (title, summary, body) must be in Georgian\n2. **REWRITE, DON'T COPY** - Rewrite the content in your own words while preserving the core message and information\n3. **FOLLOW BRAND VOICE** - Use the brand voice guide below strictly\n4. **OUTPUT FORMAT** - Body must be clean, semantic HTML (NOT Markdown)\n5. **NO DATES** - Do not include the date of the article because the publishing date is not determined yet\n6. **INCLUDE IMAGES** - Use the images provided from the original article, embed them naturally in the HTML body\n\n## SEO HTML Requirements:\n{{ $('Edit Fields1').item.json['SEO Writing rules'] }}\n\n## HTML Structure Example:\n<h2>სათაური</h2>\n<p>პარაგრაფი ტექსტით...</p>\n<img src=\"image-url.jpg\" alt=\"აღწერა ქართულად\" />\n<h3>ქვესათაური</h3>\n<p>მეტი ტექსტი...</p>\n<ul>\n<li>სიის ელემენტი 1</li>\n<li>სიის ელემენტი 2</li>\n</ul>\n\n## Brand Voice Guide\n{{ $('Edit Fields1').item.json['Brand Voice'] }}\n\n## Original Article to Rewrite/Translate:\nThe following article might be English. Rewrite it in Georgian following the brand voice guide above. Make it natural, engaging, and adapted for Georgian readers while maintaining all key information and insights. Include images from the original article naturally within the content."
         }
       },
-      "id": "55b64e03-5c1f-485a-a2f1-5a5c0556502e",
-      "name": "Rewrite and Translate Article",
+      "id": "a2a7a453-0eb4-4f4d-8938-dc182a4001d3",
+      "name": "Rewrite and Translate Article1",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        -240,
+        -368,
         1376
       ],
       "typeVersion": 1
@@ -65,11 +113,11 @@
         "url": "={{ $json.link }}",
         "options": {}
       },
-      "id": "0390da0e-5cd3-41e2-b753-5add8919af44",
-      "name": "Get Article",
+      "id": "eb7f599f-d8da-4ba1-a354-29c5f702c91a",
+      "name": "Get Article1",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -912,
+        -1040,
         1376
       ],
       "typeVersion": 4.2
@@ -94,27 +142,14 @@
         },
         "options": {}
       },
-      "id": "b818a182-311c-449b-8e4f-c80522d2e236",
-      "name": "Extract Article Content",
+      "id": "4cf4546f-605c-4113-8f7f-d952676d0161",
+      "name": "Extract Article Content1",
       "type": "n8n-nodes-base.html",
       "position": [
-        -688,
+        -816,
         1376
       ],
       "typeVersion": 1.2
-    },
-    {
-      "parameters": {
-        "jsCode": "// Extract and format images from the article\nconst input = $input.first().json;\nconst htmlData = input.data || '';\nlet imageSrcs = input.images || [];\n\n// Handle case where images might be a single value or array\nif (!Array.isArray(imageSrcs)) {\n  imageSrcs = imageSrcs ? [imageSrcs] : [];\n}\n\n// Convert relative URLs to absolute URLs if needed\nconst articleUrl = $('Get Article').first().json.url || '';\nconst baseUrl = articleUrl ? new URL(articleUrl).origin : '';\n\nconst processedImages = imageSrcs.map(src => {\n  if (!src || typeof src !== 'string') return null;\n  // If relative URL, make it absolute\n  if (src.startsWith('//')) {\n    return 'https:' + src;\n  }\n  if (src.startsWith('/')) {\n    return baseUrl + src;\n  }\n  if (src.startsWith('http')) {\n    return src;\n  }\n  return baseUrl + '/' + src;\n}).filter(Boolean);\n\n// Format images as a list for the LLM\nconst imagesList = processedImages.length > 0 \n  ? processedImages.map((url, idx) => `Image ${idx + 1}: ${url}`).join('\\n')\n  : 'No images found in article';\n\nreturn [{\n  json: {\n    data: htmlData,\n    images: imagesList,\n    imageUrls: processedImages\n  }\n}];"
-      },
-      "id": "61741d50-5900-4ee8-8d3b-0167c6e1363a",
-      "name": "Process Images",
-      "type": "n8n-nodes-base.code",
-      "position": [
-        -464,
-        1376
-      ],
-      "typeVersion": 2
     },
     {
       "parameters": {
@@ -125,6 +160,24 @@
               "name": "Brand Voice",
               "value": "# **Brand Voice Guide – AI Tools & AI News Blog (Georgian)**\n\n## **1. Core Identity**\n\n**Friendly expert.**\nExplains complex AI topics simply, never oversimplifies.\nTone stays conversational, practical, and reader-focused.\n\n---\n\n## **2. Tone**\n\n* **Warm, direct, human.**\n* **Authoritative without being rigid.**\n* **Energetic but not hype-driven.**\n* **Curious, excited about new tools.**\n\nExamples (in Georgian style):\n\n* “მოკლედ, რა უნდა იცოდე…”\n* “ერთი სიტყვით, ეს ფუნქცია ნამდვილ მოწყობილ ‘shortcut’-ად იქცევა.”\n* “მოდი პრაქტიკულად გავიგოთ, რას ნიშნავს ეს შენთვის.”\n\n---\n\n## **3. Style**\n\n* Short paragraphs.\n* Clear structure: **what it is → why it matters → how to use → quick verdict**.\n* Avoid long academic sentences.\n* Use everyday examples, not theory.\n\n---\n\n## **4. Language (Georgian-Specific Rules)**\n\nTo ensure correctness and natural flow:\n\n**Grammar & Syntax**\n\n* Prefer **active voice**:\n  “AI გეტყვის…” instead of “AI-ის მიერ ითქმება…”\n* Keep verb endings consistent with modern spoken Georgian:\n  use “გაიგებ”, not “გაიგებთ”, unless speaking formally.\n* Avoid literal English calques. Use native constructions:\n\n  * “შესაძლებლობა”, not “ოპშენი”.\n  * “პარამეტრი”, not “სეტინგი” (unless tool-specific).\n  * “შენახვა”, not “სეივი”.\n\n**Loanwords to Keep**\nSome loanwords are acceptable in tech contexts:\n\n* ბეში, მოდელი, ჩელი, ვერშენი, აპდეითი, პლაგინი, დეშბორდი, ინტერესი, ჰები.\n\n**Terminology**\nUse consistent Georgian AI vocabulary:\n\n* AI – **ხელოვნური ინტელექტი (AI)**\n* Model – **მოდელი**\n* Prompt – **პრომპტი / მოთხოვნა**\n* Workflow – **ნამუშევარი პროცესი / workflow**\n* Integration – **ინტეგრაცია**\n* Output – **შემოსული შედეგი / output**\n\n**Punctuation**\n\n* Use Georgian comma/period spacing rules (no space before punctuation).\n* Avoid overuse of “...” unless for tone.\n\n---\n\n## **5. Personality**\n\n* **Curious:** always exploring new tools.\n* **Helpful:** gives clear steps, not abstract ideas.\n* **Honest:** if a tool isn’t good, say it directly.\n* **Practical:** “აი, როგორ გამოიყენო დღესვე…”\n\n---\n\n## **6. What Not To Do**\n\n* No pseudo-scientific jargon.\n* No over-promising (“ეს შეცვლის ყველაფერს”).\n* No robotic sentences.\n* No generic filler (“ტექნოლოგია ძალიან სწრაფად ვითარდება…” – only when supported by specifics).\n\n---\n\n## **7. Signature Phrases (Optional)**\n\nUse sparingly to build consistency:\n\n* “მოდი მარტივად ავხსნათ.”\n* “პრაქტიკულად ეს ნიშნავს…”\n* “შენთვის მთავარი სარგებელი ის არის, რომ…”\n\n---\n\n## **8. Writing Formula for Each Post**\n\n1. **Hook (1 sentence)** – relatable question or pain point.\n2. **Context** – what happened in AI (news/tool update).\n3. **Explanation** – clear, short, with examples.\n4. **Why it matters** – practical benefit for Georgian readers.\n5. **How to try it** – steps.\n6. **Quick takeaway** – one clear conclusion.",
               "type": "string"
+            },
+            {
+              "id": "0437c8cc-ef07-4fe8-ad8b-a503597ba24f",
+              "name": "SEO Writing rules",
+              "value": "**ROLE**\nYou are a Senior SEO Content Strategist and Information Architect. Your goal is to structure web content that satisfies both search engine algorithms (Google EEAT standards) and human user experience (UX). You prioritize scannability, logical hierarchy, and semantic relevance.\n\n**CORE STRUCTURAL RULES**\n\n1.  **Heading Hierarchy (Strict):**\n    * **H1:** One per page. Must contain the primary keyword.\n    * **H2:** Use for main sections. Must be semantically related to the H1.\n    * **H3:** Use for sub-points within H2s. Do not skip from H2 to H4.\n    * **H4:** Use rarely, only for very deep dives or lists within H3s.\n\n2.  **The \"F-Pattern\" Layout:**\n    * Front-load important information.\n    * Keep the introduction concise (under 150 words).\n    * Place a \"Key Takeaways\" or \"Quick Summary\" box immediately after the H1.\n\n3.  **Table of Contents (ToC):**\n    * For any content over 1,000 words, generate a nested Table of Contents anchor list immediately after the Introduction and before the first H2.\n\n4.  **Paragraph & Sentence Structure:**\n    * Maximum 3 sentences per paragraph.\n    * Use simple, active voice.\n    * Target a Flesch-Kincaid reading score of 60-70 (8th-grade level) unless the topic is highly technical.\n\n**VISUAL & MEDIA PLACEMENT**\n\n1.  **Image Frequency:**\n    * **Rule of Thumb:** Insert one visual element (image, infographic, or chart) for every 300 words of text.\n    * **Placement:** Place a visual immediately after every other H2 header to break up text walls.\n    * **Alt Text:** You must provide descriptive Alt Text for every image placeholder.\n\n2.  **Rich Media:**\n    * If a concept is complex, suggest where to embed a video or place a comparison table.\n\n**CONTENT ENHANCERS**\n\n1.  **Bolding:** Bold key phrases and semantic entities (not just keywords) to facilitate skimming. Do not bold entire sentences.\n2.  **Lists:** Use bullet points for non-ordered items and numbered lists for steps. Never write a list as a comma-separated sentence.\n3.  **Tables:** Use Markdown tables whenever comparing 3+ items or data points.\n\n**OUTPUT FORMAT**\nWhen asked to write or structure content, output the response in Markdown. Include placeholders for images using the format:\n`> [IMAGE INSERTION: Description of image | Alt Text: optimized alt text]`\n\n**SEO METADATA (Always include at the top)**\n* **Target Keyword:** [Keyword]\n* **Slug:** /keyword-rich-slug\n* **Title Tag:** [Main Keyword] + [Power Word] | [Brand] (Max 60 chars)\n* **Meta Description:** Actionable summary including the keyword. (Max 155 chars)",
+              "type": "string"
+            },
+            {
+              "id": "306718ce-dbe0-4cc3-98e7-f4b53edd0ce6",
+              "name": "Webhook",
+              "value": "=https://mypen.ge/api/webhooks/blog",
+              "type": "string"
+            },
+            {
+              "id": "5151d04f-a772-44fb-932d-72783b17fb04",
+              "name": "Secret",
+              "value": "mypen-n8n-webhook-secret-2024-secure-key-change-this",
+              "type": "string"
             }
           ]
         },
@@ -133,23 +186,23 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2160,
+        -2288,
         1376
       ],
-      "id": "828dec5c-5d1c-428b-8462-c33bd11bd30f",
-      "name": "Edit Fields"
+      "id": "83f7c8b6-b50c-4b02-a248-e573cda63613",
+      "name": "Edit Fields1"
     },
     {
       "parameters": {
         "url": "https://www.artificial-intelligence.blog/ai-news?format=rss",
         "options": {}
       },
-      "id": "ab4a7c5e-1def-414e-8ef8-9535307674aa",
-      "name": "Read RSS Feed",
+      "id": "b4ac1f88-575a-4c2c-a1e8-73802e9d8e15",
+      "name": "Read RSS Feed1",
       "type": "n8n-nodes-base.rssFeedRead",
       "typeVersion": 1.2,
       "position": [
-        -1936,
+        -2064,
         1376
       ]
     },
@@ -174,11 +227,11 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        -1488,
+        -1616,
         1376
       ],
-      "id": "3e31c8dc-2a78-428a-9f79-9767147e2d18",
-      "name": "sorting articles",
+      "id": "4d5dee92-591d-444e-9496-b5577e551512",
+      "name": "sorting articles1",
       "credentials": {
         "openAiApi": {
           "id": "eJNHP6n8O3Y9Iv2F",
@@ -191,12 +244,12 @@
         "aggregate": "aggregateAllItemData",
         "options": {}
       },
-      "id": "5bbfeac5-0405-451c-a9ea-6dcc53eb8236",
-      "name": "Aggregate All Articles",
+      "id": "e3b651c6-2e1b-4296-b7ce-1b82eb78bbeb",
+      "name": "Aggregate All Articles1",
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -1712,
+        -1840,
         1376
       ]
     },
@@ -204,114 +257,41 @@
       "parameters": {
         "jsCode": "const response = $input.first().json.output[0].content[0].text;\nconst parsed = JSON.parse(response);\nconst url = parsed.selected_url;\n\nreturn [{ json: { link: url } }];"
       },
-      "id": "347571dc-8c61-4383-b0bf-c4eb69c6744e",
-      "name": "Parse and Split URLs",
+      "id": "8ad7ff53-76fd-45e7-95ea-dd736649df02",
+      "name": "Parse and Split URLs1",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1136,
-        1376
-      ]
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -2384,
-        1376
-      ],
-      "id": "fd91bf13-0b4c-4466-8c9b-45b2ff3f8d77",
-      "name": "When clicking 'Execute workflow'"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Prepare webhook payload with proper data mapping\nconst article = $input.first().json;\n\n// Get first image from processed images as fallback\nconst processedImages = $('Process Images').first().json.imageUrls || [];\nconst firstImage = processedImages.length > 0 ? processedImages[0] : null;\n\n// Use LLM-provided featured_image or fallback to first image\n// Handle case where LLM might return 'null' as string\nlet featuredImage = article.featured_image;\nif (!featuredImage || featuredImage === 'null' || featuredImage === 'None') {\n  featuredImage = firstImage;\n}\n\n// Prepare payload matching webhook schema\nconst payload = {\n  title: article.title || '',\n  title_ka: article.title || '',\n  content: article.body || '',\n  content_ka: article.body || '',\n  excerpt: article.summary || '',\n  excerpt_ka: article.summary || '',\n  featured_image: featuredImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\nreturn [{ json: payload }];"
-      },
-      "id": "prepare-webhook-payload",
-      "name": "Prepare Webhook Payload",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        0,
+        -1264,
         1376
       ]
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "={{ $env.WEBHOOK_URL || 'https://mypen.ge/api/webhooks/blog' }}",
-        "authentication": "none",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "x-n8n-webhook-secret",
-              "value": "={{ $env.N8N_WEBHOOK_SECRET }}"
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": []
-        },
-        "specifyBody": "json",
-        "jsonBody": "={{ $json }}",
         "options": {}
       },
-      "id": "send-webhook",
-      "name": "Send to Webhook",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
       "position": [
-        240,
-        1376
-      ]
+        -384,
+        1616
+      ],
+      "id": "ad422fcc-040c-493e-870b-17421ed63611",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "grfmAQP2FnQMoPJu",
+          "name": "Gemini - IC"
+        }
+      }
     }
   ],
   "connections": {
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Rewrite and Translate Article",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Rewrite and Translate Article": {
+    "When clicking ‘Execute workflow’": {
       "main": [
         [
           {
-            "node": "Prepare Webhook Payload",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Article": {
-      "main": [
-        [
-          {
-            "node": "Extract Article Content",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract Article Content": {
-      "main": [
-        [
-          {
-            "node": "Process Images",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -322,73 +302,7 @@
       "main": [
         [
           {
-            "node": "Rewrite and Translate Article",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Read RSS Feed",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Read RSS Feed": {
-      "main": [
-        [
-          {
-            "node": "Aggregate All Articles",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "sorting articles": {
-      "main": [
-        [
-          {
-            "node": "Parse and Split URLs",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate All Articles": {
-      "main": [
-        [
-          {
-            "node": "sorting articles",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Parse and Split URLs": {
-      "main": [
-        [
-          {
-            "node": "Get Article",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When clicking 'Execute workflow'": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
+            "node": "Rewrite and Translate Article1",
             "type": "main",
             "index": 0
           }
@@ -405,10 +319,110 @@
           }
         ]
       ]
+    },
+    "Rewrite and Translate Article1": {
+      "main": [
+        [
+          {
+            "node": "Prepare Webhook Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Article1": {
+      "main": [
+        [
+          {
+            "node": "Extract Article Content1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Article Content1": {
+      "main": [
+        [
+          {
+            "node": "Process Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Read RSS Feed1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read RSS Feed1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate All Articles1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sorting articles1": {
+      "main": [
+        [
+          {
+            "node": "Parse and Split URLs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate All Articles1": {
+      "main": [
+        [
+          {
+            "node": "sorting articles1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse and Split URLs1": {
+      "main": [
+        [
+          {
+            "node": "Get Article1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Rewrite and Translate Article1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "c0320382499acc1816c05e1130ede806d6731eecdef3b30ac30aabf4236c8764"
   }
 }

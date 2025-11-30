@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
 import { z } from 'zod';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 // Define the schema for the incoming webhook data
 const blogPostSchema = z.object({
@@ -72,6 +73,13 @@ export async function POST(req: NextRequest) {
       )
       RETURNING id, slug
     `;
+
+    // 5. Revalidate cache so new post appears immediately
+    revalidatePath('/blog');
+    revalidateTag('blog-posts');
+    if (result[0]?.slug) {
+      revalidatePath(`/blog/${result[0].slug}`);
+    }
 
     return NextResponse.json({ 
       success: true, 

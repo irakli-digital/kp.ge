@@ -1,11 +1,11 @@
 const axios = require('axios');
-require('dotenv').config({ path: '.env.local' });
+require('dotenv').config({ path: '.env' });
 
 async function testWebhook() {
   const secret = process.env.N8N_WEBHOOK_SECRET;
   if (!secret) {
-    console.error('❌ N8N_WEBHOOK_SECRET is not set in .env.local');
-    console.log('   Please add N8N_WEBHOOK_SECRET=your-secret to .env.local');
+    console.error('❌ N8N_WEBHOOK_SECRET is not set in .env');
+    console.log('   Please add N8N_WEBHOOK_SECRET=your-secret to .env');
     return;
   }
 
