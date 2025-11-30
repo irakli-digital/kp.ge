@@ -119,6 +119,22 @@ async function uploadAndHostImage(imageUrl: string): Promise<string | null> {
   }
 }
 
+function extractFirstImageFromHtml(html: string): string | null {
+  // Extract the first image URL from HTML
+  const imageUrlRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/i;
+  const match = html.match(imageUrlRegex);
+  
+  if (match && match[1]) {
+    const url = match[1];
+    // Return the URL if it's a valid image URL
+    if (url && (url.startsWith('http') || url.startsWith('/'))) {
+      return url;
+    }
+  }
+  
+  return null;
+}
+
 async function replaceImageUrlsInHtml(html: string): Promise<string> {
   // Extract all image URLs from HTML
   const imageUrlRegex = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
@@ -201,14 +217,29 @@ export async function POST(req: NextRequest) {
     }
     
     // Handle featured_image: upload if external URL, convert empty string to null
+    // If no featured_image provided, extract first image from content_ka (or content as fallback)
     let featuredImage = validatedData.featured_image;
+    
+    // If no featured_image provided, try to extract from content
     if (featuredImage === '' || featuredImage === null || featuredImage === undefined) {
-      featuredImage = null;
-    } else if (typeof featuredImage === 'string') {
+      // Try content_ka first, then content as fallback
+      const firstImageUrl = extractFirstImageFromHtml(content_ka || content || '');
+      if (firstImageUrl) {
+        featuredImage = firstImageUrl;
+      } else {
+        featuredImage = null;
+      }
+    }
+    
+    // Process featured_image if we have one
+    if (featuredImage && typeof featuredImage === 'string') {
       // If it's an external URL, upload and host it
       if (featuredImage.startsWith('http') && !featuredImage.includes('mypen.ge')) {
         const hostedUrl = await uploadAndHostImage(featuredImage);
         featuredImage = hostedUrl || null;
+      } else if (featuredImage.startsWith('/')) {
+        // Already a relative path (hosted image), keep it as is
+        // No need to process further
       } else {
         // Validate it's a proper URL or relative path
         try {

@@ -73,18 +73,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </Button>
           </Link>
 
-          {post.featured_image && (
-            <div className="mb-8 aspect-video relative overflow-hidden rounded-lg">
-              <img
-                src={post.featured_image}
-                alt={post.title_ka}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          )}
-
           <header className="mb-8">
-            <h1 className="mb-4 text-4xl font-bold tracking-tight">
+            <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground/95">
               {post.title_ka}
             </h1>
             
@@ -104,10 +94,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           <Separator className="mb-8" />
 
-          <div 
-            className="text-lg leading-relaxed space-y-6 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-5 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-4 [&>h4]:text-lg [&>h4]:font-semibold [&>h4]:mt-6 [&>h4]:mb-3 [&>p]:mb-6 [&>p]:leading-8 [&>ul]:mb-6 [&>ul]:pl-6 [&>li]:mb-3 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:pl-6 [&>blockquote]:py-2 [&>blockquote]:my-8 [&>blockquote]:italic [&>blockquote]:bg-muted/30"
-            dangerouslySetInnerHTML={{ __html: post.content_ka }}
-          />
+          <div className="bg-card/50 dark:bg-card/30 rounded-lg p-8 md:p-12 -mx-4 md:-mx-0">
+            <div 
+              className="text-lg leading-relaxed space-y-6 prose prose-neutral dark:prose-invert max-w-none [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h1]:text-foreground/95 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:text-foreground/95 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:text-foreground/95 [&>h4]:text-lg [&>h4]:font-semibold [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:text-foreground/95 [&>p]:mb-6 [&>p]:leading-8 [&>p]:text-foreground/90 [&>ul]:mb-6 [&>ul]:pl-6 [&>li]:mb-3 [&>li]:text-foreground/90 [&>blockquote]:border-l-4 [&>blockquote]:border-primary/50 [&>blockquote]:pl-6 [&>blockquote]:py-2 [&>blockquote]:my-8 [&>blockquote]:italic [&>blockquote]:bg-muted/20 [&>blockquote]:text-foreground/85 [&>strong]:text-foreground/95 [&>b]:text-foreground/95 [&>a]:text-primary/90 [&>a:hover]:text-primary [&>img]:rounded-lg [&>img]:my-8"
+              dangerouslySetInnerHTML={{ __html: post.content_ka }}
+            />
+          </div>
 
           <Separator className="my-12" />
 
