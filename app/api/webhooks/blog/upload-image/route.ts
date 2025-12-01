@@ -1,13 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
-import { existsSync } from 'fs';
 
 // Route segment config for Next.js App Router
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 30 seconds timeout
+export const maxDuration = 60; // 60 seconds timeout for large images
 export const dynamic = 'force-dynamic'; // Disable caching
+
+// Initialize S3 client
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 // Define the schema for the incoming image upload request
 const imageUploadSchema = {
@@ -136,23 +143,23 @@ export async function POST(req: NextRequest) {
     // Use originalUrl from header, or fallback to filename
     const finalOriginalUrl = originalUrl || filename;
 
-    // 4. Process and host image
-    console.log(`About to process image: ${filename}, size: ${imageBuffer.length} bytes`);
+    // 4. Upload to S3 and optimize
+    console.log(`About to process and upload image: ${filename}, size: ${imageBuffer.length} bytes`);
 
-    const hostedUrl = await processAndHostImage(imageBuffer, finalOriginalUrl, filename);
+    const s3Url = await uploadToS3(imageBuffer, finalOriginalUrl, filename);
 
-    if (!hostedUrl) {
-      console.error('processAndHostImage returned null - check logs above for details');
+    if (!s3Url) {
+      console.error('uploadToS3 returned null - check logs above for details');
       return NextResponse.json({ error: 'Failed to process image' }, { status: 500 });
     }
 
-    console.log('Image processed successfully:', hostedUrl);
+    console.log('Image uploaded successfully to S3:', s3Url);
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       originalUrl: finalOriginalUrl,
-      hostedUrl: hostedUrl,
-      fullUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mypen.ge'}${hostedUrl}`
+      hostedUrl: s3Url,
+      fullUrl: s3Url
     });
 
   } catch (error) {
@@ -166,67 +173,52 @@ export async function POST(req: NextRequest) {
   }
 }
 
-async function processAndHostImage(imageBuffer: Buffer, originalUrl: string, filename: string): Promise<string | null> {
+async function uploadToS3(imageBuffer: Buffer, originalUrl: string, filename: string): Promise<string | null> {
   try {
-    console.log(`processAndHostImage: Processing image, size: ${imageBuffer.length} bytes`);
-
-    // Ensure directories exist
-    const BLOG_IMAGE_DIR = join(process.cwd(), 'public', 'images', 'blog', 'content');
-    const OPTIMIZED_DIR = join(process.cwd(), 'public', 'images', 'blog', 'optimized');
-    
-    if (!existsSync(BLOG_IMAGE_DIR)) {
-      await mkdir(BLOG_IMAGE_DIR, { recursive: true });
-    }
-    if (!existsSync(OPTIMIZED_DIR)) {
-      await mkdir(OPTIMIZED_DIR, { recursive: true });
-    }
+    console.log(`uploadToS3: Processing image, size: ${imageBuffer.length} bytes`);
 
     // Generate filename - preserve original name as much as possible
     const timestamp = Date.now();
     const cleanName = filename.split('?')[0].replace(/[^a-zA-Z0-9.-]/g, '-');
     const ext = cleanName.includes('.') ? cleanName.split('.').pop()?.toLowerCase() : 'jpg';
     const baseName = `${timestamp}-${cleanName.replace(/\.[^/.]+$/, '')}`;
-    const finalFilename = `${baseName}.${ext}`;
 
-    // Save original
-    const originalPath = join(BLOG_IMAGE_DIR, finalFilename);
-    await writeFile(originalPath, imageBuffer);
+    // Optimize image with Sharp
+    const image = sharp(imageBuffer);
+    const metadata = await image.metadata();
 
-    // Optimize with Sharp
-    try {
-      const image = sharp(imageBuffer);
-      const metadata = await image.metadata();
-      const width = metadata.width || 1200;
-      const height = metadata.height || 800;
+    console.log(`Image metadata: ${metadata.width}x${metadata.height}, format: ${metadata.format}`);
 
-      // Create WebP versions
-      const variants = [
-        { suffix: '', width: width, height: height },
-        { suffix: '-thumb', width: 400, height: 225 },
-        { suffix: '-medium', width: 800, height: null },
-        { suffix: '-large', width: 1200, height: null },
-      ];
+    // Create optimized WebP version
+    const optimizedBuffer = await image
+      .resize(1200, 1200, {
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 85 })
+      .toBuffer();
 
-      for (const variant of variants) {
-        let processed = image.clone().resize(variant.width, variant.height || undefined, {
-          fit: 'inside',
-          withoutEnlargement: true,
-        });
-        const webpPath = join(OPTIMIZED_DIR, `${baseName}${variant.suffix}.webp`);
-        await processed.webp({ quality: 85 }).toFile(webpPath);
-      }
+    console.log(`Optimized image size: ${optimizedBuffer.length} bytes (${Math.round((optimizedBuffer.length / imageBuffer.length) * 100)}% of original)`);
 
-      // Create JPEG fallback
-      const jpegPath = join(OPTIMIZED_DIR, `${baseName}.jpg`);
-      await image.clone().jpeg({ quality: 85 }).toFile(jpegPath);
-    } catch (error) {
-      console.error('Error optimizing image:', error);
-      // Continue even if optimization fails
-    }
+    // Upload to S3
+    const s3Key = `images/blog/${baseName}.webp`;
+    const uploadCommand = new PutObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET!,
+      Key: s3Key,
+      Body: optimizedBuffer,
+      ContentType: 'image/webp',
+      CacheControl: 'public, max-age=31536000', // Cache for 1 year
+    });
 
-    return `/images/blog/optimized/${baseName}.webp`;
+    await s3Client.send(uploadCommand);
+    console.log(`Uploaded to S3: ${s3Key}`);
+
+    // Return public S3 URL
+    const s3Url = `${process.env.AWS_S3_BASE_URL}/${s3Key}`;
+    return s3Url;
+
   } catch (error) {
-    console.error(`Error processing image:`, error);
+    console.error(`Error uploading to S3:`, error);
     return null;
   }
 }
