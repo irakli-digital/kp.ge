@@ -64,6 +64,11 @@ export async function POST(req: NextRequest) {
         imageBuffer = Buffer.from(arrayBuffer);
         filename = file.name || originalUrl.split('/').pop()?.split('?')[0] || 'image';
 
+        if (imageBuffer.length === 0) {
+          console.error('Binary data is empty after reading file');
+          return NextResponse.json({ error: 'Empty image data' }, { status: 400 });
+        }
+
         console.log(`Received binary upload: ${filename}, size: ${imageBuffer.length} bytes`);
 
       } catch (binaryError) {

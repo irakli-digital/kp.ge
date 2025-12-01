@@ -5,15 +5,15 @@
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
         "position": [
-          12528,
-          16544
+          14464,
+          16912
         ],
         "id": "923803e6-711d-4035-8737-763544663828",
         "name": "When clicking ‘Execute workflow’"
       },
       {
         "parameters": {
-          "url": "={{ $json.image_url || $json.output?.image_urls?.[0] }}",
+          "url": "={{ $('Get Image').item.json.output.image_urls[0] }}",
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
@@ -36,13 +36,13 @@
             }
           }
         },
-        "id": "9ff59df2-e356-40d0-9087-bfbf639de518",
-        "name": "Download Image from Midjourney",
+        "id": "a19db3eb-5209-411f-8bc4-d926de7cde7b",
+        "name": "Download Image from Midjourney1",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          14976,
-          16352
+          14992,
+          17056
         ],
         "alwaysOutputData": true,
         "continueOnFail": true
@@ -50,7 +50,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "={{ $('Edit Fields2').item.json.Webhook }}/upload-image",
+          "url": "={{ $('Edit Fields3').item.json.Webhook }}/upload-image",
           "authentication": "genericCredentialType",
           "genericAuthType": "httpHeaderAuth",
           "sendHeaders": true,
@@ -58,7 +58,7 @@
             "parameters": [
               {
                 "name": "x-original-url",
-                "value": "={{ $('Get Image1').item.json.image_url || $('Get Image1').item.json.output?.image_url }}"
+                "value": "={{ $('Get Image').item.json.output.image_urls[0] }}"
               }
             ]
           },
@@ -82,22 +82,22 @@
             "timeout": 30000
           }
         },
-        "id": "3d8181b9-e97e-4dc5-9e8b-b6211f91bffa",
-        "name": "Upload Image to Server",
+        "id": "c9891c6a-d14c-4abe-ab8b-6dfd1a341bdd",
+        "name": "Upload Image to Server1",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          15200,
-          16352
+          15216,
+          17056
         ],
+        "alwaysOutputData": true,
         "credentials": {
           "httpHeaderAuth": {
             "id": "e4xkr4s6jVKWYVY0",
             "name": "MPEN - IC"
           }
         },
-        "continueOnFail": true,
-        "alwaysOutputData": true
+        "continueOnFail": true
       },
       {
         "parameters": {
@@ -119,8 +119,8 @@
           "columns": {
             "mappingMode": "defineBelow",
             "value": {
-              "link": "={{ $('Loop Over Items3').item.json.link }}",
-              "featured image": "={{ $json.image_url || $json.output?.image_url }}",
+              "link": "={{ $('Loop Over Items4').item.json.link }}",
+              "featured image": "={{ $json.hostedUrl }}",
               "generate_featured": "Done"
             },
             "matchingColumns": [
@@ -166,11 +166,11 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.7,
         "position": [
-          15376,
-          16656
+          15392,
+          17360
         ],
-        "id": "64314602-8d6c-4125-a4d9-6739a8a407fa",
-        "name": "Update Sheet with Featured Image",
+        "id": "68236cef-2423-473e-b0bb-6e4faa5e2a71",
+        "name": "Update Sheet with Featured Image1",
         "credentials": {
           "googleSheetsOAuth2Api": {
             "id": "KHD2NxVzxY6BFySy",
@@ -189,7 +189,7 @@
           "messages": {
             "values": [
               {
-                "content": "=You are an expert visual concept designer specializing in creating compelling featured images for blog articles. Your task is to generate an image description that will be used with an AI image generator. The inputs might be in Georgian language but you always output in English.\n\n---\n\n## INPUT\n\n**Article Title:**\n{{ $('Get row(s) in sheet2').item.json.title }}\n\n**Article Body (for context):**\n{{ $('Get row(s) in sheet2').item.json['written article'] }}\n\n---\n\n## STYLE GUIDE\n{{ $('Edit Fields2').item.json['Visual Style'] }}\n\n---\n\n## BRAND VOICE\n{{ $('Edit Fields2').item.json['Brand Voice'] }}\n\n---\n\n## IMAGE DESCRIPTION RULES\n\n### Content Guidelines\n1. **Capture the core concept** — The image should visually represent the article's main theme or message\n2. **Single powerful moment** — Describe ONE clear, focused scene (not multiple scenes or sequences)\n3. **Avoid text in images** — Do not include any text, titles, logos, or words in the description\n4. **No faces when possible** — Prefer symbolic, conceptual, or environmental imagery over portraits\n5. **Universal appeal** — The image should make sense without reading the article\n\n### Description Guidelines\n6. **Be specific and visual** — Describe what is literally seen: objects, colors, lighting, composition, mood\n7. **Describe the scene, not the style** — Focus on WHAT is shown, not HOW it's rendered (style is in the Style Guide)\n8. **Keep it concise** — 2-4 sentences maximum\n9. **Use present tense** — Describe the scene as if it exists now\n10. **Avoid abstract concepts** — Translate ideas into concrete visual elements\n\n### Technical Considerations\n11. **Horizontal composition** — Featured images are typically 16:9 or 2:1 ratio\n12. **Leave space for potential text overlay** — Don't overcrowd the entire frame\n13. **Strong focal point** — One clear area of visual interest\n\n---\n\n## EXAMPLES\n\n**Article about AI in healthcare:**\n❌ Bad: \"An image showing AI revolutionizing healthcare with modern technology and innovation\"\n✅ Good: \"A softly lit hospital room at dawn. A translucent holographic display floats above a patient's bedside, showing gentle blue data streams. A doctor's hands reach toward the display. Warm ambient lighting contrasts with cool blue technology.\"\n\n**Article about remote work trends:**\n❌ Bad: \"Remote work concept with people working from home\"\n✅ Good: \"A cozy home office corner bathed in morning sunlight. A laptop sits open on a wooden desk beside a steaming coffee cup. Through the window, a city skyline is visible in soft focus. A small plant adds a touch of green.\"\n\n**Article about AI ethics:**\n❌ Bad: \"Ethical AI and responsible technology\"\n✅ Good: \"A large metallic scale balances in the center of the frame. On one side, glowing circuit patterns; on the other, a small growing seedling. Soft neutral background with dramatic side lighting creating long shadows.\"\n\n---\n\n## OUTPUT FORMAT\n\nRespond with ONLY a valid JSON object. No explanation, no markdown code blocks, no additional text.\n\n{\"image_description\": \"Your detailed scene description here\"}\n\nThe response must start with { and end with }"
+                "content": "=You are an expert visual concept designer specializing in creating compelling featured images for blog articles. Your task is to generate an image description that will be used with an AI image generator. The inputs might be in Georgian language but you always output in English.\n\n---\n\n## INPUT\n\n**Article Title:**\n{{ $('Get row(s) in sheet3').item.json.title }}\n\n**Article Body (for context):**\n{{ $('Get row(s) in sheet3').item.json['written article'] }}\n\n---\n\n## STYLE GUIDE\n{{ $('Edit Fields3').item.json['Visual Style'] }}\n\n---\n\n## BRAND VOICE\n{{ $('Edit Fields3').item.json['Brand Voice'] }}\n\n---\n\n## IMAGE DESCRIPTION RULES\n\n### Content Guidelines\n1. **Capture the core concept** — The image should visually represent the article's main theme or message\n2. **Single powerful moment** — Describe ONE clear, focused scene (not multiple scenes or sequences)\n3. **Avoid text in images** — Do not include any text, titles, logos, or words in the description\n4. **No faces when possible** — Prefer symbolic, conceptual, or environmental imagery over portraits\n5. **Universal appeal** — The image should make sense without reading the article\n\n### Description Guidelines\n6. **Be specific and visual** — Describe what is literally seen: objects, colors, lighting, composition, mood\n7. **Describe the scene, not the style** — Focus on WHAT is shown, not HOW it's rendered (style is in the Style Guide)\n8. **Keep it concise** — 2-4 sentences maximum\n9. **Use present tense** — Describe the scene as if it exists now\n10. **Avoid abstract concepts** — Translate ideas into concrete visual elements\n\n### Technical Considerations\n11. **Horizontal composition** — Featured images are typically 16:9 or 2:1 ratio\n12. **Leave space for potential text overlay** — Don't overcrowd the entire frame\n13. **Strong focal point** — One clear area of visual interest\n\n---\n\n## EXAMPLES\n\n**Article about AI in healthcare:**\n❌ Bad: \"An image showing AI revolutionizing healthcare with modern technology and innovation\"\n✅ Good: \"A softly lit hospital room at dawn. A translucent holographic display floats above a patient's bedside, showing gentle blue data streams. A doctor's hands reach toward the display. Warm ambient lighting contrasts with cool blue technology.\"\n\n**Article about remote work trends:**\n❌ Bad: \"Remote work concept with people working from home\"\n✅ Good: \"A cozy home office corner bathed in morning sunlight. A laptop sits open on a wooden desk beside a steaming coffee cup. Through the window, a city skyline is visible in soft focus. A small plant adds a touch of green.\"\n\n**Article about AI ethics:**\n❌ Bad: \"Ethical AI and responsible technology\"\n✅ Good: \"A large metallic scale balances in the center of the frame. On one side, glowing circuit patterns; on the other, a small growing seedling. Soft neutral background with dramatic side lighting creating long shadows.\"\n\n---\n\n## OUTPUT FORMAT\n\nRespond with ONLY a valid JSON object. No explanation, no markdown code blocks, no additional text.\n\n{\"image_description\": \"Your detailed scene description here\"}\n\nThe response must start with { and end with }"
               }
             ]
           },
@@ -199,11 +199,11 @@
         "type": "@n8n/n8n-nodes-langchain.openAi",
         "typeVersion": 1.8,
         "position": [
-          13728,
-          16624
+          13744,
+          17328
         ],
-        "id": "ea1f9e46-6677-4b40-9b49-fd6ae4ce275d",
-        "name": "Message a model4",
+        "id": "5ddabc8c-dc63-455e-8636-8b1a3a34242a",
+        "name": "Message a model5",
         "credentials": {
           "openAiApi": {
             "id": "eJNHP6n8O3Y9Iv2F",
@@ -225,23 +225,23 @@
           },
           "options": {}
         },
-        "id": "79ecb187-f9ee-4d22-b808-b093c5658cab",
-        "name": "Midjourney Image Generator1",
+        "id": "be952c8c-13c5-4fbb-9b41-1517f62c5e4f",
+        "name": "Midjourney Image Generator",
         "type": "n8n-nodes-base.httpRequest",
         "position": [
-          14304,
-          16480
+          14320,
+          17184
         ],
         "typeVersion": 4.2
       },
       {
         "parameters": {},
-        "id": "665e3b92-aa2e-4bfc-81a0-0e80948f1dc5",
-        "name": "Wait for Image Generation1",
+        "id": "11bd9dad-41eb-4163-b9c9-cd86c3decda7",
+        "name": "Wait for Image Generation",
         "type": "n8n-nodes-base.wait",
         "position": [
-          14752,
-          16576
+          14768,
+          17280
         ],
         "webhookId": "f3bcf634-8c4b-4bf9-a7f2-d4ee369f5349",
         "typeVersion": 1.1
@@ -271,12 +271,12 @@
           },
           "options": {}
         },
-        "id": "d390a4ec-7924-47dd-b333-6f0d317471e8",
-        "name": "Get Data Status1",
+        "id": "f222a280-b9a1-4659-91ee-2c6406bca543",
+        "name": "Get Data Status",
         "type": "n8n-nodes-base.if",
         "position": [
-          14528,
-          16400
+          14544,
+          17104
         ],
         "typeVersion": 2.2
       },
@@ -301,7 +301,7 @@
           },
           "sendBody": true,
           "specifyBody": "json",
-          "jsonBody": "={\n  \"text\": \"{{ $json.message.content.image_description }} --ar 16:9 --v 7\",\n  \"callback\": \"https://webhook.site/82aa21d0-e6c4-4465-8a8d-088c26858b81\"\n}\n\n",
+          "jsonBody": "={\n  \"text\": \"{{ $json.message.content.image_description }} --ar 16:9 --v 7 --draft\",\n  \"callback\": \"https://webhook.site/82aa21d0-e6c4-4465-8a8d-088c26858b81\"\n}\n\n",
           "options": {
             "batching": {
               "batch": {
@@ -310,12 +310,12 @@
             }
           }
         },
-        "id": "5c9fedcc-6094-44f7-ae95-87133ebacdb3",
-        "name": "Basic Prompt1",
+        "id": "a51dc62d-3386-4786-84ed-1cff5d17e316",
+        "name": "Basic Prompt",
         "type": "n8n-nodes-base.httpRequest",
         "position": [
-          14080,
-          16480
+          14096,
+          17184
         ],
         "typeVersion": 4.2,
         "credentials": {
@@ -327,14 +327,14 @@
       },
       {
         "parameters": {
-          "jsCode": "const items = $input.all();\nconst prevNodeData = $(\"Midjourney Image Generator1\").all();\n\nconst updatedItems = items.map((item, index) => {\n  item.json[\"image_url\"] = prevNodeData[index]?.json?.output?.image_url;\n  return item;\n});\n\nreturn updatedItems;\n"
+          "jsCode": "const items = $input.all();\nconst prevNodeData = $(\"Midjourney Image Generator\").all();\n\nconst updatedItems = items.map((item, index) => {\n  item.json[\"image_url\"] = prevNodeData[index]?.json?.output?.image_url;\n  return item;\n});\n\nreturn updatedItems;\n"
         },
-        "id": "d9837bf6-da2c-4c43-8a12-ec0bdd8c946a",
-        "name": "Get Image1",
+        "id": "bb9fca5e-c632-489b-9104-3132662852df",
+        "name": "Get Image",
         "type": "n8n-nodes-base.code",
         "position": [
-          14752,
-          16352
+          14768,
+          17056
         ],
         "typeVersion": 2
       },
@@ -373,11 +373,11 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          12752,
-          16624
+          12768,
+          17328
         ],
-        "id": "501890ee-7d39-46f0-b716-f46083da3129",
-        "name": "Edit Fields2"
+        "id": "c5a35576-d6b7-443c-8bc6-635afca33f08",
+        "name": "Edit Fields3"
       },
       {
         "parameters": {
@@ -400,11 +400,11 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.7,
         "position": [
-          12992,
-          16624
+          13008,
+          17328
         ],
-        "id": "f23a2894-581f-4ec3-a9fc-88bdac500c1b",
-        "name": "Get row(s) in sheet2",
+        "id": "d056914d-1fce-4a4d-aa31-640681dc918c",
+        "name": "Get row(s) in sheet3",
         "credentials": {
           "googleSheetsOAuth2Api": {
             "id": "KHD2NxVzxY6BFySy",
@@ -439,11 +439,11 @@
         "type": "n8n-nodes-base.filter",
         "typeVersion": 2.2,
         "position": [
-          13216,
-          16624
+          13232,
+          17328
         ],
-        "id": "80f07676-5e60-442a-aacc-8436f0d1ba7c",
-        "name": "Filter2"
+        "id": "da6a2a63-8692-45a9-9b74-d97827ab2acb",
+        "name": "Filter3"
       },
       {
         "parameters": {
@@ -452,11 +452,11 @@
         "type": "n8n-nodes-base.splitInBatches",
         "typeVersion": 3,
         "position": [
-          13408,
-          16624
+          13424,
+          17328
         ],
-        "id": "d25ed6f1-5372-4b74-a47e-5f7b43637b61",
-        "name": "Loop Over Items3",
+        "id": "0c28d7c0-a3ae-41e8-9b83-e8dd6616fe87",
+        "name": "Loop Over Items4",
         "executeOnce": true
       }
     ],
@@ -465,136 +465,158 @@
         "main": [
           [
             {
-              "node": "Edit Fields2",
+              "node": "Edit Fields3",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Update Sheet with Featured Image": {
+      "Download Image from Midjourney1": {
         "main": [
           [
             {
-              "node": "Loop Over Items3",
+              "node": "Upload Image to Server1",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Message a model4": {
+      "Upload Image to Server1": {
         "main": [
           [
             {
-              "node": "Basic Prompt1",
+              "node": "Update Sheet with Featured Image1",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Midjourney Image Generator1": {
+      "Update Sheet with Featured Image1": {
         "main": [
           [
             {
-              "node": "Get Data Status1",
+              "node": "Loop Over Items4",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Wait for Image Generation1": {
+      "Message a model5": {
         "main": [
           [
             {
-              "node": "Midjourney Image Generator1",
+              "node": "Basic Prompt",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Get Data Status1": {
+      "Midjourney Image Generator": {
         "main": [
           [
             {
-              "node": "Get Image1",
+              "node": "Get Data Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait for Image Generation": {
+        "main": [
+          [
+            {
+              "node": "Midjourney Image Generator",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Data Status": {
+        "main": [
+          [
+            {
+              "node": "Get Image",
               "type": "main",
               "index": 0
             }
           ],
           [
             {
-              "node": "Wait for Image Generation1",
+              "node": "Wait for Image Generation",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Basic Prompt1": {
+      "Basic Prompt": {
         "main": [
           [
             {
-              "node": "Midjourney Image Generator1",
+              "node": "Midjourney Image Generator",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Get Image1": {
+      "Get Image": {
         "main": [
           [
             {
-              "node": "Update Sheet with Featured Image",
+              "node": "Download Image from Midjourney1",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Edit Fields2": {
+      "Edit Fields3": {
         "main": [
           [
             {
-              "node": "Get row(s) in sheet2",
+              "node": "Get row(s) in sheet3",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Get row(s) in sheet2": {
+      "Get row(s) in sheet3": {
         "main": [
           [
             {
-              "node": "Filter2",
+              "node": "Filter3",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Filter2": {
+      "Filter3": {
         "main": [
           [
             {
-              "node": "Loop Over Items3",
+              "node": "Loop Over Items4",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Loop Over Items3": {
+      "Loop Over Items4": {
         "main": [
           [],
           [
             {
-              "node": "Message a model4",
+              "node": "Message a model5",
               "type": "main",
               "index": 0
             }
@@ -603,9 +625,9 @@
       }
     },
     "pinData": {
-      "Get Image1": [
+      "Download Image from Midjourney1": [
         {
-          "job_id": "055ce490-3304-4af2-8c87-477b104d9712",
+          "job_id": "3212a3d6-9248-4695-bc66-d08ffca855c0",
           "model": "midjourney",
           "task_type": "diffusion",
           "status": "completed",
@@ -618,14 +640,14 @@
           },
           "input": null,
           "output": {
-            "image_url": "https://cdn.legnext.ai/temp/1764594933768.png",
+            "image_url": "https://cdn.legnext.ai/temp/1764597947255.png",
             "image_urls": [
-              "https://cdn.legnext.ai/mj/055ce490-3304-4af2-8c87-477b104d9712_0.png",
-              "https://cdn.legnext.ai/mj/055ce490-3304-4af2-8c87-477b104d9712_1.png",
-              "https://cdn.legnext.ai/mj/055ce490-3304-4af2-8c87-477b104d9712_2.png",
-              "https://cdn.legnext.ai/mj/055ce490-3304-4af2-8c87-477b104d9712_3.png"
+              "https://cdn.legnext.ai/mj/3212a3d6-9248-4695-bc66-d08ffca855c0_0.png",
+              "https://cdn.legnext.ai/mj/3212a3d6-9248-4695-bc66-d08ffca855c0_1.png",
+              "https://cdn.legnext.ai/mj/3212a3d6-9248-4695-bc66-d08ffca855c0_2.png",
+              "https://cdn.legnext.ai/mj/3212a3d6-9248-4695-bc66-d08ffca855c0_3.png"
             ],
-            "seed": "1257789448",
+            "seed": "1414037281",
             "available_actions": {
               "edit": [
                 0,
@@ -673,13 +695,13 @@
             }
           },
           "meta": {
-            "created_at": "2025-12-01T13:14:59Z",
-            "started_at": "2025-12-01T13:15:01Z",
-            "ended_at": "2025-12-01T13:15:40Z",
+            "created_at": "2025-12-01T14:05:19Z",
+            "started_at": "2025-12-01T14:05:20Z",
+            "ended_at": "2025-12-01T14:05:53Z",
             "usage": {
               "type": "point",
-              "frozen": 80,
-              "consume": 80
+              "frozen": 40,
+              "consume": 40
             }
           },
           "detail": null,
@@ -690,12 +712,12 @@
             "message": "",
             "detail": null
           },
-          "image_url": "https://cdn.legnext.ai/temp/1764594933768.png"
+          "image_url": "https://cdn.legnext.ai/temp/1764597947255.png"
         }
       ]
     },
     "meta": {
       "templateCredsSetupCompleted": true,
       "instanceId": "c0320382499acc1816c05e1130ede806d6731eecdef3b30ac30aabf4236c8764"
-    }s
+    }
   }
