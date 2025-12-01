@@ -13,63 +13,16 @@
       },
       {
         "parameters": {
-          "url": "={{ $('Get Image').item.json.output.image_urls[0] }}",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "User-Agent",
-                "value": "Mozilla/5.0 (compatible; MypenBot/1.0)"
-              },
-              {
-                "name": "Accept",
-                "value": "image/*"
-              }
-            ]
-          },
-          "options": {
-            "response": {
-              "response": {
-                "responseFormat": "file",
-                "outputPropertyName": "data"
-              }
-            }
-          }
-        },
-        "id": "a19db3eb-5209-411f-8bc4-d926de7cde7b",
-        "name": "Download Image from Midjourney1",
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          14992,
-          17056
-        ],
-        "alwaysOutputData": true,
-        "continueOnFail": true
-      },
-      {
-        "parameters": {
           "method": "POST",
           "url": "={{ $('Edit Fields3').item.json.Webhook }}/upload-image",
           "authentication": "genericCredentialType",
           "genericAuthType": "httpHeaderAuth",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "x-original-url",
-                "value": "={{ $('Get Image').item.json.output.image_urls[0] }}"
-              }
-            ]
-          },
           "sendBody": true,
-          "contentType": "multipart-form-data",
           "bodyParameters": {
             "parameters": [
               {
-                "parameterType": "formBinaryData",
-                "name": "image",
-                "inputDataFieldName": "data"
+                "name": "imageUrl",
+                "value": "={{ $('Get Image').item.json.output.image_urls[0] }}"
               }
             ]
           },
@@ -79,11 +32,11 @@
                 "responseFormat": "json"
               }
             },
-            "timeout": 30000
+            "timeout": 60000
           }
         },
         "id": "c9891c6a-d14c-4abe-ab8b-6dfd1a341bdd",
-        "name": "Upload Image to Server1",
+        "name": "Send Image URL to Webhook",
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
@@ -97,7 +50,7 @@
             "name": "MPEN - IC"
           }
         },
-        "continueOnFail": true
+        "continueOnFail": false
       },
       {
         "parameters": {
@@ -472,18 +425,7 @@
           ]
         ]
       },
-      "Download Image from Midjourney1": {
-        "main": [
-          [
-            {
-              "node": "Upload Image to Server1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Upload Image to Server1": {
+      "Send Image URL to Webhook": {
         "main": [
           [
             {
@@ -571,7 +513,7 @@
         "main": [
           [
             {
-              "node": "Download Image from Midjourney1",
+              "node": "Send Image URL to Webhook",
               "type": "main",
               "index": 0
             }

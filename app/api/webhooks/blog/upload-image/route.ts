@@ -85,10 +85,16 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { imageUrl } = body;
 
+        console.log('JSON body received:', JSON.stringify(body));
+        console.log('ImageUrl extracted:', imageUrl);
+
         if (!imageUrl || typeof imageUrl !== 'string' || !imageUrl.startsWith('http')) {
+          console.error('Invalid imageUrl:', imageUrl);
           return NextResponse.json({ error: 'Invalid imageUrl' }, { status: 400 });
         }
-        
+
+        console.log(`Starting download from: ${imageUrl}`);
+
         // Download image
         const response = await fetch(imageUrl, {
           headers: {
@@ -97,17 +103,22 @@ export async function POST(req: NextRequest) {
           },
         });
 
+        console.log(`Download response status: ${response.status}`);
+
         if (!response.ok) {
           console.error(`Failed to download image ${imageUrl}: ${response.status} ${response.statusText}`);
-          return NextResponse.json({ 
-            error: 'Failed to download image', 
-            details: `${response.status} ${response.statusText}` 
+          return NextResponse.json({
+            error: 'Failed to download image',
+            details: `${response.status} ${response.statusText}`
           }, { status: 500 });
         }
 
-        imageBuffer = Buffer.from(await response.arrayBuffer());
+        const arrayBuffer = await response.arrayBuffer();
+        console.log(`Downloaded arrayBuffer size: ${arrayBuffer.byteLength} bytes`);
+
+        imageBuffer = Buffer.from(arrayBuffer);
         filename = imageUrl.split('/').pop()?.split('?')[0] || 'image';
-        console.log(`Downloaded image from URL: ${imageUrl}, size: ${imageBuffer.length} bytes`);
+        console.log(`Downloaded image from URL: ${imageUrl}, size: ${imageBuffer.length} bytes, filename: ${filename}`);
       } catch (jsonError) {
         console.error('Error parsing JSON body:', jsonError);
         return NextResponse.json({ 
