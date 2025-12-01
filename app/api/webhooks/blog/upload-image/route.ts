@@ -16,15 +16,20 @@ const imageUploadSchema = {
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('=== Upload Image Request Start ===');
+
     // 1. Security Check
     const authHeader = req.headers.get('x-n8n-webhook-secret');
+    console.log('Auth header present:', !!authHeader);
+
     if (authHeader !== process.env.N8N_WEBHOOK_SECRET) {
+      console.error('Unauthorized: Invalid webhook secret');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const contentType = req.headers.get('content-type') || '';
     const originalUrl = req.headers.get('x-original-url') || '';
-    
+
     console.log('Upload Image - Content-Type:', contentType);
     console.log('Upload Image - Original URL:', originalUrl);
 
@@ -63,7 +68,8 @@ export async function POST(req: NextRequest) {
 
       } catch (binaryError) {
         console.error('Error processing binary data:', binaryError);
-        return NextResponse.json({ 
+        console.error('Binary error stack:', binaryError instanceof Error ? binaryError.stack : 'No stack trace');
+        return NextResponse.json({
           error: 'Failed to process binary data',
           details: binaryError instanceof Error ? binaryError.message : 'Unknown error'
         }, { status: 400 });
@@ -115,11 +121,16 @@ export async function POST(req: NextRequest) {
     const finalOriginalUrl = originalUrl || filename;
 
     // 4. Process and host image
+    console.log(`About to process image: ${filename}, size: ${imageBuffer.length} bytes`);
+
     const hostedUrl = await processAndHostImage(imageBuffer, finalOriginalUrl, filename);
 
     if (!hostedUrl) {
+      console.error('processAndHostImage returned null - check logs above for details');
       return NextResponse.json({ error: 'Failed to process image' }, { status: 500 });
     }
+
+    console.log('Image processed successfully:', hostedUrl);
 
     return NextResponse.json({ 
       success: true, 
@@ -129,8 +140,10 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Image Upload Error:', error);
-    return NextResponse.json({ 
+    console.error('=== Image Upload Error ===');
+    console.error('Error:', error);
+    console.error('Stack:', error instanceof Error ? error.stack : 'No stack trace');
+    return NextResponse.json({
       error: 'Internal Server Error',
       details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
