@@ -73,18 +73,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </Button>
           </Link>
 
-          {post.featured_image && (
-            <div className="mb-8 aspect-video relative overflow-hidden rounded-lg">
-              <img
-                src={post.featured_image}
-                alt={post.title_ka}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          )}
-
           <header className="mb-8">
-            <h1 className="mb-4 text-4xl font-bold tracking-tight">
+            <h1 className="mb-4 text-4xl font-bold tracking-tight text-primary">
               {post.title_ka}
             </h1>
             
@@ -102,14 +92,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </header>
 
-          <Separator className="mb-8" />
+          <Separator className="mb-8 opacity-60" />
 
-          <div 
-            className="text-lg leading-relaxed space-y-6 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-5 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-4 [&>h4]:text-lg [&>h4]:font-semibold [&>h4]:mt-6 [&>h4]:mb-3 [&>p]:mb-6 [&>p]:leading-8 [&>p]:font-light [&>ul]:mb-6 [&>ul]:pl-6 [&>li]:mb-3 [&>li]:font-light [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:pl-6 [&>blockquote]:py-2 [&>blockquote]:my-8 [&>blockquote]:italic [&>blockquote]:bg-muted/30"
-            dangerouslySetInnerHTML={{ __html: post.content_ka }}
-          />
+          <div className="bg-card/40 dark:bg-card/25 rounded-lg p-8 md:p-12 -mx-4 md:-mx-0 border border-border/30">
+            <div 
+              className="text-lg leading-relaxed space-y-6 prose prose-neutral dark:prose-invert max-w-none [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h1]:text-primary [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-5 [&>h2]:text-primary [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:text-primary [&>h4]:text-lg [&>h4]:font-semibold [&>h4]:mt-6 [&>h4]:mb-3 [&>h4]:text-primary [&>p]:mb-6 [&>p]:leading-8 [&>p]:font-light [&>p]:text-foreground [&>ul]:mb-6 [&>ul]:pl-6 [&>li]:mb-3 [&>li]:font-light [&>li]:text-foreground [&>blockquote]:border-l-4 [&>blockquote]:border-primary/40 [&>blockquote]:pl-6 [&>blockquote]:py-2 [&>blockquote]:my-8 [&>blockquote]:italic [&>blockquote]:bg-muted/15 [&>blockquote]:text-foreground/90 [&>strong]:text-primary [&>b]:text-primary [&>a]:text-primary/90 [&>a:hover]:text-primary [&>img]:rounded-lg [&>img]:my-8 [&>img]:opacity-95"
+              dangerouslySetInnerHTML={{ __html: post.content_ka }}
+            />
+          </div>
 
-          <Separator className="my-12" />
+          <Separator className="my-12 opacity-60" />
 
           <div className="flex justify-between items-center">
             <Link href="/blog">

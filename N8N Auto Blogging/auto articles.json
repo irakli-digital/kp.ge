@@ -2,15 +2,174 @@
   "nodes": [
     {
       "parameters": {
+        "method": "GET",
+        "url": "={{ $json.originalUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (compatible; MypenBot/1.0)"
+            },
+            {
+              "name": "Accept",
+              "value": "image/*"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "5023cefb-3fbe-4e50-955b-3261f42336ea",
+      "name": "Download Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5264,
+        7224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse all image URLs from the article HTML and prepare for processing\nconst input = $input.first().json;\nconst article = input.output || input;\nconst body = article.body || '';\n\n// Extract all image URLs from HTML (handle both src and SRC)\nconst imageUrlRegex = /<img[^>]+(?:src|SRC)=[\"']([^\"']+)[\"'][^>]*>/gi;\nconst imageUrls = [];\nlet match;\n\nwhile ((match = imageUrlRegex.exec(body)) !== null) {\n  const url = match[1];\n  // Only process external URLs (not already hosted on our server)\n  if (url && url.startsWith('http') && !url.includes('mypen.ge')) {\n    imageUrls.push({\n      originalUrl: url,\n      // Extract filename for matching\n      filename: url.split('/').pop()?.split('?')[0] || 'image'\n    });\n  }\n}\n\nconsole.log(`Parsed ${imageUrls.length} images from article`);\nimageUrls.forEach((img, idx) => {\n  console.log(`  Image ${idx + 1}: ${img.originalUrl.substring(0, 60)}...`);\n});\n\n// Store article data for later use\nconst articleData = {\n  ...article,\n  imageUrls: imageUrls,\n  imageCount: imageUrls.length\n};\n\n// If no images, just pass through article\nif (imageUrls.length === 0) {\n  return [{\n    json: {\n      output: article,\n      skipImageProcessing: true\n    }\n  }];\n}\n\n// Output ONLY image items (not article data) - article data will be retrieved later\n// Each image item includes articleData for reference\nconst result = imageUrls.map(img => ({\n  json: {\n    originalUrl: img.originalUrl,\n    filename: img.filename,\n    articleData: articleData  // Store article data with each image for later retrieval\n  }\n}));\n\nreturn result;"
+      },
+      "id": "63eee2d0-72a2-4411-9810-f974048a2f5e",
+      "name": "Parse Images from Article1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4816,
+        7224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validate and prepare image URL for download\nconst input = $input.first().json;\nconst originalUrl = input.originalUrl || '';\n\nconsole.log('Validate Image URL - Received data:', JSON.stringify(input));\nconsole.log('Validate Image URL - originalUrl:', originalUrl);\n\nif (!originalUrl || typeof originalUrl !== 'string' || !originalUrl.startsWith('http')) {\n  throw new Error(`Invalid originalUrl. Received: ${JSON.stringify(input)}`);\n}\n\nconst filename = input.filename || originalUrl.split('/').pop()?.split('?')[0] || 'image.jpg';\n\nreturn [{\n  json: {\n    originalUrl: originalUrl,\n    filename: filename,\n    articleData: input.articleData || {}\n  }\n}];"
+      },
+      "id": "695074e7-9e3b-4d91-a330-306fa1ca9d0a",
+      "name": "Validate Image URL1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5040,
+        7224
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.Webhook.replace('/blog', '/blog/upload-image') }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "multipart-form-data",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-original-url",
+              "value": "={{ $('Validate Image URL1').item.json.originalUrl }}"
+            }
+          ]
+        },
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "image",
+              "value": "={{ $binary }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "da934db6-19a3-48f5-b7ba-251702de1f66",
+      "name": "Upload Images to Server1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5488,
+        7224
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "e4xkr4s6jVKWYVY0",
+          "name": "MPEN - IC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Map upload response to include originalUrl and hostedUrl\nconst input = $input.first().json;\nconst uploadResponse = input;\n\n// The upload endpoint returns: { success, originalUrl, hostedUrl, fullUrl }\nconst originalUrl = uploadResponse.originalUrl || '';\nconst hostedUrl = uploadResponse.hostedUrl || '';\n\nif (!hostedUrl) {\n  console.error('No hostedUrl in upload response:', uploadResponse);\n  throw new Error('Failed to upload image - no hostedUrl returned');\n}\n\nconsole.log(`Image uploaded successfully: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);\n\nreturn [{\n  json: {\n    originalUrl: originalUrl,\n    hostedUrl: hostedUrl,\n    fullUrl: uploadResponse.fullUrl || hostedUrl,\n    filename: originalUrl.split('/').pop()?.split('?')[0] || 'image'\n  }\n}];"
+      },
+      "id": "aba297df-cf1c-451d-ac8a-2704f2264680",
+      "name": "Map Upload Response1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5712,
+        7224
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "8417fa49-d380-4230-b11a-2d8467da8cd8",
+      "name": "Aggregate Image Replacements1",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        5936,
+        7224
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Replace all original image URLs with hosted URLs in HTML\n// Get article data from the first aggregated item (stored in articleData)\nconst allItems = $input.all();\n\n// Get article data from any item (they all have articleData)\nconst articleData = allItems[0]?.json.articleData || {};\nlet body = articleData.body || '';\n\nif (!body) {\n  console.error('No article body found in aggregated items');\n  throw new Error('Article body not found');\n}\n\n// Get all image replacements from aggregated upload responses\nconst replacements = [];\nallItems.forEach(item => {\n  const json = item.json;\n  if (json.originalUrl && json.hostedUrl) {\n    replacements.push({\n      originalUrl: json.originalUrl,\n      hostedUrl: json.hostedUrl\n    });\n  }\n});\n\nconsole.log(`Replacing ${replacements.length} image URLs in HTML`);\n\n// If no replacements, pass through original article\nif (replacements.length === 0) {\n  return [{\n    json: {\n      output: articleData\n    }\n  }];\n}\n\n// Replace each URL in the HTML body\nreplacements.forEach(({ originalUrl, hostedUrl }) => {\n  const escapedUrl = originalUrl.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n  \n  // Replace in img tags with src (lowercase)\n  body = body.replace(\n    new RegExp(`(<img[^>]+src=[\"'])${escapedUrl}([\"'][^>]*>)`, 'gi'),\n    `$1${hostedUrl}$2`\n  );\n  \n  // Replace in img tags with SRC (uppercase)\n  body = body.replace(\n    new RegExp(`(<img[^>]+SRC=[\"'])${escapedUrl}([\"'][^>]*>)`, 'gi'),\n    `$1${hostedUrl}$2`\n  );\n  \n  // Also replace standalone URLs\n  body = body.replace(new RegExp(escapedUrl, 'g'), hostedUrl);\n  \n  console.log(`Replaced: ${originalUrl.substring(0, 50)}... -> ${hostedUrl}`);\n});\n\n// Update article with replaced URLs\nconst updatedArticle = {\n  ...articleData,\n  body: body\n};\n\nreturn [{\n  json: {\n    output: updatedArticle\n  }\n}];"
+      },
+      "id": "10d7487a-657b-4e70-a993-d7856c41d374",
+      "name": "Replace Image URLs in HTML1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6160,
+        7224
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "5b3f1ce7-f415-400e-9016-d8a46b73c96d",
+      "name": "Prepare for Webhook",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6384,
+        7224
+      ]
+    },
+    {
+      "parameters": {
         "jsCode": "// Prepare webhook payload with proper data mapping\nconst input = $input.first().json;\n\n// Information Extractor outputs data nested under 'output' object\n// Structure: { output: { title: '...', summary: '...', body: '...', featured_image: '...' } }\nconst article = input.output || input;\n\n// Extract fields from nested output structure\nconst title = article.title || '';\nconst summary = article.summary || '';\nlet body = article.body || '';\nconst featured_image = article.featured_image || null;\n\n// Validate required fields\nif (!title || typeof title !== 'string' || title.trim() === '') {\n  throw new Error('Title is required but was empty or missing');\n}\n\nif (!body || typeof body !== 'string' || body.trim() === '') {\n  throw new Error('Body/content is required but was empty or missing');\n}\n\n// Normalize image tags: convert uppercase SRC to lowercase src for consistency\n// This ensures the webhook regex can properly match all image tags\nbody = body.replace(/<img\\s+([^>]*?)SRC=/gi, '<img $1src=');\nbody = body.replace(/<img\\s+([^>]*?)src=/gi, '<img $1src=');\n\n// Debug: Log images found in body before sending to webhook\nconst imgMatches = body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/gi);\nconsole.log('Images in body before webhook:', imgMatches?.length || 0);\nif (imgMatches && imgMatches.length > 0) {\n  imgMatches.forEach((img, idx) => {\n    const urlMatch = img.match(/src=[\"']([^\"']+)[\"']/i);\n    const url = urlMatch ? urlMatch[1] : 'N/A';\n    console.log(`  Image ${idx + 1}: ${url.substring(0, 80)}...`);\n  });\n}\n\n// Extract first image from body HTML as fallback for featured_image\n// The webhook will handle downloading and hosting all images in the content\nlet firstImageFromBody = null;\nif (body) {\n  const imgMatch = body.match(/<img[^>]+src=[\"']([^\"']+)[\"'][^>]*>/i);\n  if (imgMatch && imgMatch[1]) {\n    firstImageFromBody = imgMatch[1];\n  }\n}\n\n// Use LLM-provided featured_image or fallback to first image from body\n// Handle case where LLM might return 'null' as string\nlet finalFeaturedImage = featured_image;\nif (!finalFeaturedImage || finalFeaturedImage === 'null' || finalFeaturedImage === 'None' || finalFeaturedImage === '') {\n  finalFeaturedImage = firstImageFromBody;\n}\n\n// Validate featured_image URL format if provided\n// Note: Webhook will handle uploading external images\nif (finalFeaturedImage && typeof finalFeaturedImage === 'string') {\n  try {\n    new URL(finalFeaturedImage);\n  } catch (e) {\n    // Invalid URL, set to null\n    finalFeaturedImage = null;\n  }\n}\n\n// Prepare payload matching webhook schema\n// Note: Webhook will automatically download and replace external image URLs in content\nconst payload = {\n  title: title.trim(),\n  title_ka: title.trim(),\n  content: body.trim(),\n  content_ka: body.trim(),\n  excerpt: (summary || '').trim(),\n  excerpt_ka: (summary || '').trim(),\n  featured_image: finalFeaturedImage || null,\n  author: 'Mypen Team',\n  published: true\n};\n\n// Final validation\nif (payload.title.length === 0) {\n  throw new Error('Title cannot be empty after trimming');\n}\n\nif (payload.content.length === 0) {\n  throw new Error('Content cannot be empty after trimming');\n}\n\nconsole.log('Payload prepared - content length:', payload.content.length);\nconsole.log('Payload prepared - images will be processed by webhook');\n\nreturn [{ json: payload }];"
       },
-      "id": "c048a7f8-67c1-447e-ad18-df1ecdea8df4",
+      "id": "01d53d66-0142-4b53-97ae-4361e9743160",
       "name": "Prepare Webhook Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        15248,
-        12960
+        6608,
+        7224
       ]
     },
     {
@@ -24,13 +183,13 @@
         "jsonBody": "={{ $json }}",
         "options": {}
       },
-      "id": "a7063158-867e-464b-959a-0d3267cf35ad",
+      "id": "f39d5cd7-b0ab-4ba6-9ebc-5854d3535e11",
       "name": "Send to Webhook",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        15472,
-        13072
+        6832,
+        7348
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -41,7 +200,7 @@
     },
     {
       "parameters": {
-        "text": "=Article Title\n{{ $('Merge Content Sources').item.json.title }}\n\nArticle HTML\n{{ $('Merge Content Sources').item.json.content }}\n\nContent Source: {{ $('Merge Content Sources').item.json.contentSource }}\n\n## IMPORTANT: You MUST include ALL images from the article above in your output HTML body using <img> tags with the EXACT URLs provided. Do not modify or skip any image URLs.",
+        "text": "=Article Title\n{{ $('Loop Over Items').item.json.title }}\n\nArticle HTML\n{{ $('Loop Over Items').item.json.content }}\n\n## IMPORTANT: You MUST include ALL images from the article above in your output HTML body using <img> tags with the EXACT URLs provided. Do not modify or skip any image URLs.",
         "attributes": {
           "attributes": [
             {
@@ -69,12 +228,12 @@
           "systemPromptTemplate": "=You are a professional blog content writer specializing in rewriting and translating articles to Georgian. You follow strict brand voice guidelines and SEO best practices.\n\n## PRIMARY TASK\nRewrite the provided article in Georgian, creating original content that preserves the core message, information, and approximate length of the source material.\n\n## CRITICAL RULES\n\n### Content Rules\n1. **TRANSLATE TO GEORGIAN** - The entire output (title, summary, body) must be in Georgian\n2. **REWRITE COMPLETELY** - Create original Georgian content; do not translate word-for-word or copy phrases\n3. **MAINTAIN LENGTH** - Keep the rewritten article roughly the same length as the original\n4. **PRESERVE KEY INFORMATION** - All important facts, insights, and takeaways must be retained\n\n### Removal Rules (STRICT)\n5. **NO DATES** - Remove all publication dates; the publishing date is not yet determined\n6. **NO SOURCE ATTRIBUTION** - Do not mention the original website name, company name, or source\n7. **NO AUTHOR CREDIT** - Do not include author names or bylines\n8. **NO EXTERNAL HYPERLINKS** - Remove all URLs and hyperlinks from the original article; do not link to external websites\n\n### Image Rules (CRITICAL)\n9. **MUST INCLUDE ALL IMAGES** - You MUST include EVERY image URL from the \"Images from Original Article\" section in your HTML body\n10. **PRESERVE IMAGE URLs EXACTLY** - Use the EXACT original image URLs provided; do NOT modify, shorten, or change them in any way\n11. **USE PROPER HTML IMG TAGS** - Format images as: <img src=\"EXACT_URL_HERE\" alt=\"აღწერა ქართულად\" />\n12. **TRANSLATE ALT TEXT** - Write descriptive alt text in Georgian for each image\n13. **EMBED NATURALLY** - Place images contextually within the content where they make sense\n14. **DO NOT SKIP IMAGES** - If 3 images are provided, you must include all 3 in your output\n\n### Format Rules\n12. **OUTPUT HTML ONLY** - Body must be clean, semantic HTML (NOT Markdown)\n13. **FOLLOW BRAND VOICE** - Strictly adhere to the brand voice guide provided below\n\n## SEO & HTML REQUIREMENTS\n{{ $('Edit Fields').item.json['SEO Writing rules'] }}\n## HTML STRUCTURE EXAMPLE\n<h2>სათაური</h2>\n<p>პარაგრაფი ტექსტით...</p>\n<img src=\"original-image-url.jpg\" alt=\"აღწერა ქართულად\" />\n<h3>ქვესათაური</h3>\n<p>მეტი ტექსტი...</p>\n<ul>\n  <li>სიის ელემენტი 1</li>\n  <li>სიის ელემენტი 2</li>\n</ul>\n\n## BRAND VOICE GUIDE\n{{ $('Edit Fields').item.json['Brand Voice'] }}\n## SELF-CHECK BEFORE OUTPUT\nBefore finalizing, verify:\n- [ ] All text is in Georgian (no English words except proper nouns if necessary)\n- [ ] All HTML tags are properly opened and closed\n- [ ] No hyperlinks or URLs appear in the text content\n- [ ] No mention of original source, website, or author\n- [ ] No publication dates included\n- [ ] All images use original URLs with Georgian alt text\n- [ ] Content length is approximately equal to the original\n\n\nNow rewrite this article in Georgian following all rules above. Output only the final HTML content with no additional commentary."
         }
       },
-      "id": "218ed787-9275-47bd-8018-6235d529ff04",
+      "id": "be2ed4c6-575a-4b2f-b70d-56800f9c478a",
       "name": "Rewrite and Translate Article",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        13104,
-        12960
+        4464,
+        7224
       ],
       "typeVersion": 1
     },
@@ -113,10 +272,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        11856,
-        12880
+        3216,
+        7152
       ],
-      "id": "e52ec5cf-1e7c-4675-8064-29adacdc2be4",
+      "id": "6b804e1a-2371-436d-aac6-43f0602e95ca",
       "name": "Edit Fields"
     },
     {
@@ -140,10 +299,10 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        12528,
-        12656
+        3888,
+        6928
       ],
-      "id": "4add0ff0-5dd1-477d-9bc0-c0dc23c2ff7b",
+      "id": "bf75f274-3f82-4f94-ba5c-9d5b033460a4",
       "name": "sorting articles",
       "credentials": {
         "openAiApi": {
@@ -159,10 +318,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        13184,
-        13184
+        4536,
+        7448
       ],
-      "id": "8d0e7889-9786-4034-9242-45d7f129d3bb",
+      "id": "5bd6d7b6-f012-4a0b-8bd5-d8df8711fa30",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -178,10 +337,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        12304,
-        12880
+        3664,
+        7152
       ],
-      "id": "f5d16049-dd63-4b41-b144-af5bcec724f6",
+      "id": "f0017d76-8a36-4736-9dd9-34c86b57e57d",
       "name": "Loop Over Items"
     },
     {
@@ -211,11 +370,30 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        12880,
-        12656
+        4240,
+        6928
       ],
-      "id": "2d5817d7-1352-4e4b-9cf1-61e100c13878",
+      "id": "e9c246d3-0bb2-4c4d-b43c-769e7ba5aa92",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        2992,
+        7152
+      ],
+      "id": "af889dcf-3162-4d89-aedb-570591e271d5",
+      "name": "Schedule Trigger3"
     },
     {
       "parameters": {
@@ -238,10 +416,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        12080,
-        12880
+        3440,
+        7152
       ],
-      "id": "d7143c9f-4a10-4692-888c-9fcd3a679ddb",
+      "id": "e4d204a9-da09-4756-9fa8-34f67fb6e81f",
       "name": "Get row(s) in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -416,10 +594,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        13168,
-        12656
+        4528,
+        6928
       ],
-      "id": "d913c2c8-bacc-4fb7-9d4e-ae29e1b5cbf6",
+      "id": "d4489e15-2874-4ba9-8760-c35474774f8e",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -427,75 +605,97 @@
           "name": "Irakli C"
         }
       }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        11632,
-        12880
-      ],
-      "id": "923803e6-711d-4035-8737-763544663828",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "url": "={{ $('Loop Over Items').item.json.link }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "User-Agent",
-              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      "name": "Fetch Article HTML",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        12880,
-        13080
-      ],
-      "continueOnFail": true,
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "url": "={{ $('Loop Over Items').item.json.link }}",
-        "mode": "scrape",
-        "options": {}
-      },
-      "id": "b2c3d4e5-f6g7-8901-bcde-f12345678901",
-      "name": "Firecrawl Fallback",
-      "type": "@n8n/n8n-nodes-langchain.firecrawl",
-      "typeVersion": 1,
-      "position": [
-        13104,
-        13280
-      ],
-      "continueOnFail": true,
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "jsCode": "// Combine content from multiple sources with fallback logic\n// Priority: HTTP Get > Firecrawl > Google Sheet\n\nconst allItems = $input.all();\nconst loopItem = $('Loop Over Items').item.json;\n\n// Try to get content from HTTP Get (first item if successful)\nlet content = '';\nlet contentSource = 'unknown';\n\n// Check HTTP Get response (should be first item)\nconst httpItem = allItems.find(item => item.json.data || item.json.body);\nif (httpItem && httpItem.json.data) {\n  content = httpItem.json.data;\n  contentSource = 'http_get';\n  console.log('Using content from HTTP Get');\n} else if (httpItem && httpItem.json.body) {\n  content = httpItem.json.body;\n  contentSource = 'http_get';\n  console.log('Using content from HTTP Get (body)');\n}\n\n// Fallback to Firecrawl if HTTP Get failed\nif (!content || content.trim().length < 100) {\n  const firecrawlItem = allItems.find(item => item.json.markdown || item.json.html);\n  if (firecrawlItem) {\n    content = firecrawlItem.json.html || firecrawlItem.json.markdown || '';\n    contentSource = 'firecrawl';\n    console.log('Falling back to Firecrawl content');\n  }\n}\n\n// Final fallback to Google Sheet content\nif (!content || content.trim().length < 100) {\n  content = loopItem.content || loopItem.contentencoded || loopItem.contentSnippet || '';\n  contentSource = 'google_sheet';\n  console.log('Falling back to Google Sheet content');\n}\n\n// Validate we have content\nif (!content || content.trim().length === 0) {\n  throw new Error('No content available from any source');\n}\n\nconsole.log(`Content source: ${contentSource}, length: ${content.length} chars`);\n\nreturn [{\n  json: {\n    title: loopItem.title || '',\n    link: loopItem.link || '',\n    content: content,\n    contentSource: contentSource,\n    originalSheetData: loopItem\n  }\n}];"
-      },
-      "id": "c3d4e5f6-g7h8-9012-cdef-123456789012",
-      "name": "Merge Content Sources",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        13328,
-        13080
-      ]
     }
   ],
   "connections": {
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Upload Images to Server1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Images from Article1": {
+      "main": [
+        [
+          {
+            "node": "Validate Image URL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Image URL1": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Images to Server1": {
+      "main": [
+        [
+          {
+            "node": "Map Upload Response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Upload Response1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Image Replacements1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Image Replacements1": {
+      "main": [
+        [
+          {
+            "node": "Replace Image URLs in HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Image URLs in HTML1": {
+      "main": [
+        [
+          {
+            "node": "Prepare for Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare for Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Webhook Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Prepare Webhook Payload": {
       "main": [
         [
@@ -522,7 +722,7 @@
       "main": [
         [
           {
-            "node": "Prepare Webhook Payload",
+            "node": "Parse Images from Article1",
             "type": "main",
             "index": 0
           }
@@ -578,12 +778,7 @@
       "main": [
         [
           {
-            "node": "Fetch Article HTML",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Firecrawl Fallback",
+            "node": "Rewrite and Translate Article",
             "type": "main",
             "index": 0
           }
@@ -597,33 +792,11 @@
         ]
       ]
     },
-    "Fetch Article HTML": {
+    "Schedule Trigger3": {
       "main": [
         [
           {
-            "node": "Merge Content Sources",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Firecrawl Fallback": {
-      "main": [
-        [
-          {
-            "node": "Merge Content Sources",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge Content Sources": {
-      "main": [
-        [
-          {
-            "node": "Rewrite and Translate Article",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -651,27 +824,15 @@
           }
         ]
       ]
-    },
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "pinData": {
     "Rewrite and Translate Article": [
       {
         "output": {
-          "title": "დაკვირვებადი AI: SRE-ის ფუნდამენტური ფენა LLM სანდოობისთვის საწარმოში",
-          "summary": "ხელოვნური ინტელექტის სისტემების წარმოებაში დანერგვა მოითხოვს სანდოობასა და მართვას. დაკვირვებადი AI საშუალებას აძლევს საწარმოებს, LLM-ები გადააქციონ გამჭვირვალე და სანდო სისტემებად. ეს არის კრიტიკული კომპონენტი.",
-          "body": "<h1>დაკვირვებადი AI: SRE-ის ფუნდამენტური ფენა LLM სანდოობისთვის საწარმოში</h1>\n<p>როდესაც ხელოვნური ინტელექტის (AI) სისტემები საწარმოო გარემოში ინერგება, მათი სანდოობა და მართვა უმნიშვნელოვანესია. დაკვირვებადი AI გვაძლევს საშუალებას, რომ <strong>მსხვილი ენობრივი მოდელები (LLM)</strong> გადავაქციოთ გამჭვირვალე და სანდო საწარმოო სისტემებად. ეს არის კრიტიკული კომპონენტი, რომელიც უზრუნველყოფს, რომ AI გადაწყვეტილებები არ იყოს მხოლოდ ინოვაციური, არამედ სანდო და ანგარიშვალდებული.</p>\n\n<p><strong>მთავარი დასკვნები:</strong></p>\n<ul>\n  <li><strong>საწარმოო LLM სანდოობა:</strong> წარმოებაში AI სისტემების დანერგვისას, სანდოობა და მართვა უმნიშვნელოვანესია, რადგან დაუკვირვებელი AI შეიძლება ჩუმად ჩავარდეს.</li>\n  <li><strong>შედეგზე ორიენტირებული მიდგომა:</strong> წარმატება უნდა განისაზღვროს გაზომვადი ბიზნეს მიზნებით (KPIs) და არა მხოლოდ მოდელის სიზუსტით.</li>\n  <li><strong>3-ფენიანი ტელემეტრია:</strong> საჭიროა სტრუქტურირებული დაკვირვებადობის სტეკი, რომელიც მოიცავს პრომპტებს/კონტექსტს, პოლიტიკას/კონტროლს და შედეგებს/უკუკავშირს.</li>\n  <li><strong>SRE პრინციპების გამოყენება:</strong> SLO-ები (Service Level Objectives) და შეცდომის ბიუჯეტები AI-სთვის ხელს უწყობს ფაქტობრივი სიზუსტის, უსაფრთხოებისა და სარგებლიანობის უზრუნველყოფას.</li>\n  <li><strong>უწყვეტი შეფასებები:</strong> შეფასებები უნდა იყოს რუტინული, CI/CD პროცესის ნაწილი, რათა მუდმივად შემოწმდეს ცვლილებები და შესრულება.</li>\n  <li><strong>ადამიანური ზედამხედველობა:</strong> მაღალი რისკის შემთხვევებში აუცილებელია ადამიანის ჩართულობა (HITL - Human-in-the-loop) სწავლისა და უსაფრთხოებისთვის.</li>\n  <li><strong>ხარჯების კონტროლი:</strong> არქიტექტურული გადაწყვეტილებებით შესაძლებელია ტოკენებისა და შეყოვნების ხარჯების მართვა.</li>\n</ul>\n\n<h3>სარჩევი</h3>\n<ul>\n  <li><a href=\"#ratom-aris-dakvirvebadi-ai-momavlis-garanti\">რატომ არის დაკვირვებადი AI საწარმოო ხელოვნური ინტელექტის მომავლის გარანტი</a></li>\n  <li><a href=\"#daiwyet-shedegebit-da-ara-modelebit\">დაიწყეთ შედეგებით და არა მოდელებით</a></li>\n  <li><a href=\"#llm-dakvirvebadobis-3-feniani-telemetriis-modeli\">LLM დაკვირვებადობის 3-ფენიანი ტელემეტრიის მოდელი</a>\n    <ul>\n      <li><a href=\"#promptebi-da-konteqsti\">ა) პრომპტები და კონტექსტი: რა შევიდა სისტემაში</a></li>\n      <li><a href=\"#politika-da-kontroli\">ბ) პოლიტიკა და კონტროლი: უსაფრთხოების ზომები</a></li>\n      <li><a href=\"#shedegebi-da-ukukavshiri\">გ) შედეგები და უკუკავშირი: იმუშავა თუ არა?</a></li>\n    </ul>\n  </li>\n  <li><a href=\"#gamoiyenet-sre-disciplina\">გამოიყენეთ SRE დისციპლინა: SLO-ები და შეცდომის ბიუჯეტები AI-სთვის</a></li>\n  <li><a href=\"#shekmenit-dakvirvebadobis-tkheli-fena\">შექმენით დაკვირვებადობის თხელი ფენა ორ აგილურ სპრინტში</a>\n    <ul>\n      <li><a href=\"#sprinti-1\">სპრინტი 1 (კვირა 1-3): საფუძვლები</a></li>\n      <li><a href=\"#sprinti-2\">სპრინტი 2 (კვირა 4-6): უსაფრთხოების ზომები და KPI-ები</a></li>\n    </ul>\n  </li>\n  <li><a href=\"#shefasebebi-gakhadet-ucqveti\">შეფასებები გახადეთ უწყვეტი (და ჩვეულებრივი)</a></li>\n  <li><a href=\"#gamoiyenet-adamianuri-zedamkvedveloba\">გამოიყენეთ ადამიანური ზედამხედველობა იქ, სადაც ეს მნიშვნელოვანია</a></li>\n  <li><a href=\"#kharjebis-kontroli\">ხარჯების კონტროლი დიზაინით და არა იმედით</a></li>\n  <li><a href=\"#90-dgiani-samoqmedo-gegma\">90-დღიანი სამოქმედო გეგმა</a></li>\n  <li><a href=\"#ndobis-gazrda-dakvirvebadobis-sashualebit\">ნდობის გაზრდა დაკვირვებადობის საშუალებით</a></li>\n</ul>\n\n<h2 id=\"ratom-aris-dakvirvebadi-ai-momavlis-garanti\">რატომ არის დაკვირვებადი AI საწარმოო ხელოვნური ინტელექტის მომავლის გარანტი</h2>\n<p>საწარმოების სწრაფვა LLM სისტემების დანერგვისკენ ჰგავს ღრუბლოვანი ტექნოლოგიების ადრეულ ეტაპებს. ხელმძღვანელებს უყვართ დაპირებები; შესაბამისობის გუნდები მოითხოვენ ანგარიშვალდებულებას; ინჟინრებს კი უბრალოდ სურთ გამართული სამუშაო პროცესი.</p>\n<p>თუმცა, ამ მღელვარების მიღმა, ლიდერების უმეტესობა აღიარებს, რომ მათ არ შეუძლიათ ზუსტად მიაკვლიონ, როგორ მიიღება AI გადაწყვეტილებები, ეხმარება თუ არა ისინი ბიზნესს, ან ხომ არ არღვევს რომელიმე წესს.</p>\n<img src=\"https://assets-global.website-files.com/651f49cf94420e6e7683907a/66205cf9f1165e6488a0346c_sre-llm-observability.webp\" alt=\"გრაფიკული წარმოდგენა, რომელიც აჩვენებს, თუ როგორ მოქმედებს დაკვირვებადობა ხელოვნური ინტელექტის სისტემების საიმედოობასა და მართვაზე საწარმოო გარემოში.\" />\n<p>მაგალითად ავიღოთ Fortune 100-ის სიაში შემავალი ბანკი, რომელმაც LLM დანერგა სესხის განაცხადების კლასიფიკაციისთვის. საწყის ეტაპზე, სიზუსტე ფანტასტიური ჩანდა. მაგრამ ექვსი თვის შემდეგ, აუდიტორებმა აღმოაჩინეს, რომ კრიტიკული შემთხვევების 18% არასწორად იყო მარშრუტიზებული, ყოველგვარი გაფრთხილების ან კვალის გარეშე. ძირეული მიზეზი არც მიკერძოება იყო და არც ცუდი მონაცემები. ის უხილავი იყო. <strong>დაკვირვებადობის გარეშე არ არსებობს ანგარიშვალდებულება.</strong></p>\n<p>თუ არ შეგიძლია დაკვირვება, ვერ ენდობი. ხოლო დაუკვირვებელი AI ჩუმად ჩავარდება.</p>\n<p>ხილვადობა ფუფუნება არ არის; ის ნდობის საფუძველია. მის გარეშე AI უკონტროლო ხდება.</p>\n\n<h2 id=\"daiwyet-shedegebit-da-ara-modelebit\">დაიწყეთ შედეგებით და არა მოდელებით</h2>\n<p>კორპორაციული AI პროექტების უმეტესობა იწყება იმით, რომ ტექნოლოგიური ლიდერები ირჩევენ მოდელს, შემდეგ კი განსაზღვრავენ წარმატების მეტრიკას. ეს არასწორი მიდგომაა.</p>\n<p><strong>მოდით, შევცვალოთ თანმიმდევრობა:</strong></p>\n<ul>\n  <li><strong>პირველ რიგში განსაზღვრეთ შედეგი.</strong> რა არის გაზომვადი ბიზნეს მიზანი?\n    <ul>\n      <li>დაბლოკეთ ზარების 15% ბილინგის შესახებ.</li>\n      <li>შეამცირეთ დოკუმენტების განხილვის დრო 60%-ით.</li>\n      <li>შეამცირეთ საქმის დამუშავების დრო ორი წუთით.</li>\n    </ul>\n  </li>\n  <li><strong>შექმენით ტელემეტრია ამ შედეგის გარშემო,</strong> და არა \"სიზუსტის\" ან \"BLEU ქულის\" გარშემო.</li>\n  <li><strong>შეარჩიეთ პრომპტები, მონაცემთა მოპოვების მეთოდები და მოდელები,</strong> რომლებიც აშკარად გააუმჯობესებენ ამ ძირითად შესრულების ინდიკატორებს (KPIs).</li>\n</ul>\n<p>მაგალითად, ერთ-ერთ გლობალურ სადაზღვევო კომპანიაში, წარმატების ხელახალი განსაზღვრა, როგორც \"დროის დაზოგვა ყოველ საჩივარზე\" ნაცვლად \"მოდელის სიზუსტისა\", იზოლირებული საპილოტე პროექტი მთელი კომპანიის მასშტაბის საგზაო რუკად აქცია.</p>\n\n<h2 id=\"llm-dakvirvebadobis-3-feniani-telemetriis-modeli\">LLM დაკვირვებადობის 3-ფენიანი ტელემეტრიის მოდელი</h2>\n<p>ისევე როგორც მიკროსერვისები ეყრდნობა ჟურნალებს, მეტრიკას და კვალს, AI სისტემებსაც სჭირდებათ სტრუქტურირებული დაკვირვებადობის სტეკი:</p>\n<img src=\"https://assets-global.website-files.com/651f49cf94420e6e7683907a/66206017b3c20c02cfb6f120_observability_3_layer_telemetry_model.webp\" alt=\"LLM დაკვირვებადობის 3-ფენიანი ტელემეტრიის მოდელი, რომელიც მოიცავს პრომპტებს, პოლიტიკასა და შედეგებს.\" />\n\n<h3 id=\"promptebi-da-konteqsti\">ა) პრომპტები და კონტექსტი: რა შევიდა სისტემაში</h3>\n<ul>\n  <li>ჩაწერეთ ყველა პრომპტის შაბლონი, ცვლადი და მოძიებული დოკუმენტი.</li>\n  <li>აღრიცხეთ მოდელის ID, ვერსია, შეყოვნება და ტოკენების რაოდენობა (თქვენი ძირითადი ხარჯების ინდიკატორები).</li>\n  <li>შეინარჩუნეთ აუდიტირებადი რედაქტირების ჟურნალი, რომელიც აჩვენებს, თუ რომელი მონაცემები იქნა ნიღბიანი, როდის და რა წესით.</li>\n</ul>\n\n<h3 id=\"politika-da-kontroli\">ბ) პოლიტიკა და კონტროლი: უსაფრთხოების ზომები</h3>\n<ul>\n  <li>დააფიქსირეთ უსაფრთხოების ფილტრის შედეგები (ტოქსიკურობა, პერსონალური მონაცემები), ციტირების არსებობა და წესების გააქტიურება.</li>\n  <li>შეინახეთ პოლიტიკის მიზეზები და რისკის დონე ყოველი დანერგვისთვის.</li>\n  <li>დააკავშირეთ გამოსავალი მმართველი მოდელის ბარათთან გამჭვირვალობისთვის.</li>\n</ul>\n\n<h3 id=\"shedegebi-da-ukukavshiri\">გ) შედეგები და უკუკავშირი: იმუშავა თუ არა?</h3>\n<ul>\n  <li>შეაგროვეთ ადამიანის შეფასებები და რედაქტირების მანძილი მიღებული პასუხებიდან.</li>\n  <li>მიაკვლიეთ შემდგომ ბიზნეს მოვლენებს: დახურული საქმე, დამტკიცებული დოკუმენტი, მოგვარებული პრობლემა.</li>\n  <li>გაზომეთ KPI ცვლილებები: ზარის დრო, დაგროვილი სამუშაო, ხელახალი გახსნის სიხშირე.</li>\n</ul>\n<p>სამივე ფენა დაკავშირებულია საერთო მიკვლევადობის ID-ით, რაც საშუალებას იძლევა ნებისმიერი გადაწყვეტილების განმეორებითი გაშვება, აუდიტი ან გაუმჯობესება.</p>\n\n<h2 id=\"gamoiyenet-sre-disciplina\">გამოიყენეთ SRE დისციპლინა: SLO-ები და შეცდომის ბიუჯეტები AI-სთვის</h2>\n<p>სერვისის სანდოობის ინჟინერიამ (SRE) შეცვალა პროგრამული უზრუნველყოფის ოპერაციები; <strong>ახლა AI-ის ჯერია</strong>.</p>\n<p>განსაზღვრეთ სამი \"ოქროს სიგნალი\" ყოველი კრიტიკული workflow-სთვის:</p>\n<img src=\"https://assets-global.website-files.com/651f49cf94420e6e7683907a/6620608eb198886314f36c53_ai-sre-disciplines-llm-observability.webp\" alt=\"დიაგრამა, რომელიც ასახავს SRE დისციპლინებს, როგორიცაა SLO-ები და შეცდომის ბიუჯეტები, ხელოვნური ინტელექტის დაკვირვებადობისთვის.\" />\n\n<table>\n  <thead>\n    <tr>\n      <th>სიგნალი</th>\n      <th>სამიზნე SLO</th>\n      <th>დარღვევის შემთხვევაში</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><strong>ფაქტობრივი სიზუსტე</strong></td>\n      <td>≥ 95% დადასტურებული წყაროს მიხედვით</td>\n      <td>გადადით დამოწმებულ შაბლონზე</td>\n    </tr>\n    <tr>\n      <td><strong>უსაფრთხოება</strong></td>\n      <td>≥ 99.9% გაივლის ტოქსიკურობის/PII ფილტრებს</td>\n      <td>იზოლაცია და ადამიანის შეფასება</td>\n    </tr>\n    <tr>\n      <td><strong>სარგებლიანობა</strong></td>\n      <td>≥ 80% მიღებულია პირველივე ცდაზე</td>\n      <td>ხელახალი წვრთნა ან პრომპტის/მოდელის უკან დაბრუნება</td>\n    </tr>\n  </tbody>\n</table>\n<p>თუ ჰალუცინაციები ან უარყოფები გადააჭარბებს ბიუჯეტს, სისტემა ავტომატურად გადამისამართდება უფრო უსაფრთხო პრომპტებზე ან ადამიანის შეფასებაზე, ისევე როგორც ტრაფიკის გადამისამართება სერვისის გათიშვის დროს.</p>\n<p>ეს არ არის ბიუროკრატია; ეს არის სანდოობა, რომელიც გამოიყენება აზროვნებისთვის.</p>\n\n<h2 id=\"shekmenit-dakvirvebadobis-tkheli-fena\">შექმენით დაკვირვებადობის თხელი ფენა ორ აგილურ სპრინტში</h2>\n<p>არ გჭირდებათ ექვსთვიანი გეგმა, უბრალოდ ფოკუსი და ორი მოკლე სპრინტი.</p>\n\n<h3 id=\"sprinti-1\">სპრინტი 1 (კვირა 1-3): საფუძვლები</h3>\n<ul>\n  <li>ვერსიების კონტროლირებადი პრომპტების რეესტრი</li>\n  <li>რედაქტირების შუალედური პროგრამა, დაკავშირებული პოლიტიკასთან</li>\n  <li>მოთხოვნის/პასუხის ჟურნალი მიკვლევადობის ID-ებით</li>\n  <li>ძირითადი შეფასებები (PII შემოწმებები, ციტირების არსებობა)</li>\n  <li>მარტივი \"ადამიანი მარყუჟში\" (HITL) ინტერფეისი</li>\n</ul>\n\n<h3 id=\"sprinti-2\">სპრინტი 2 (კვირა 4-6): უსაფრთხოების ზომები და KPI-ები</h3>\n<ul>\n  <li>ოფლაინ სატესტო ნაკრებები (100–300 რეალური მაგალითი)</li>\n  <li>ფაქტობრივი სიზუსტისა და უსაფრთხოების პოლიტიკის კარიბჭეები</li>\n  <li>მსუბუქი დაფა SLO-ებისა და ხარჯების თვალყურის დევნებისთვის</li>\n  <li>ავტომატური ტოკენებისა და შეყოვნების ტრეკერი</li>\n</ul>\n<p>ექვს კვირაში გექნებათ თხელი ფენა, რომელიც პასუხობს მართვისა და პროდუქტის კითხვების 90%-ს.</p>\n\n<h2 id=\"shefasebebi-gakhadet-ucqveti\">შეფასებები გახადეთ უწყვეტი (და ჩვეულებრივი)</h2>\n<p>შეფასებები არ უნდა იყოს გმირული ერთჯერადი ქმედებები; ისინი რუტინა უნდა იყოს.</p>\n<ul>\n  <li>შეაგროვეთ სატესტო ნაკრებები რეალური შემთხვევებიდან; განაახლეთ 10–20% ყოველთვიურად.</li>\n  <li>განსაზღვრეთ მკაფიო მიღების კრიტერიუმები, რომლებიც გაზიარებულია პროდუქტისა და რისკის გუნდების მიერ.</li>\n  <li>გაუშვით ნაკრები ყოველი პრომპტის/მოდელის/პოლიტიკის ცვლილებისას და ყოველკვირეულად ცვლილებების შესამოწმებლად.</li>\n  <li>გამოაქვეყნეთ ერთიანი შეფასების ფურცელი ყოველ კვირას, რომელიც მოიცავს ფაქტობრივ სიზუსტეს, უსაფრთხოებას, სარგებლიანობას და ხარჯებს.</li>\n</ul>\n<p>როდესაც შეფასებები CI/CD-ის ნაწილია, ისინი წყვეტენ შესაბამისობის თეატრს და ხდებიან ოპერაციული პულსის შემოწმებები.</p>\n\n<h2 id=\"gamoiyenet-adamianuri-zedamkvedveloba\">გამოიყენეთ ადამიანური ზედამხედველობა იქ, სადაც ეს მნიშვნელოვანია</h2>\n<p>სრული ავტომატიზაცია არც რეალისტურია და არც პასუხისმგებლობითი. მაღალი რისკის ან ორაზროვანი შემთხვევები ადამიანის შეფასებაზე უნდა გადავიდეს.</p>\n<ul>\n  <li>დაბალი ნდობის ან პოლიტიკის მიერ მონიშნული პასუხები მიმართეთ ექსპერტებს.</li>\n  <li>ჩაწერეთ ყოველი რედაქტირება და მიზეზი, როგორც სასწავლო მონაცემები და აუდიტის მტკიცებულება.</li>\n  <li>გადაეცით შემფასებლის უკუკავშირი პრომპტებსა და პოლიტიკას უწყვეტი გაუმჯობესებისთვის.</li>\n</ul>\n<p>ერთ-ერთ ჯანდაცვის ტექნოლოგიურ ფირმაში, ამ მიდგომამ 22%-ით შეამცირა ცრუ დადებითი შედეგები და კვირების განმავლობაში შექმნა ხელახლა გაწვრთნადი, შესაბამისობისთვის მზა მონაცემთა ნაკრები.</p>\n\n<h2 id=\"kharjebis-kontroli\">ხარჯების კონტროლი დიზაინით და არა იმედით</h2>\n<p>LLM-ის ხარჯები არაწრფივად იზრდება. ბიუჯეტები არ გიშველით — <strong>არქიტექტურა გიშველით</strong>.</p>\n<ul>\n  <li>დააწყვეთ პრომპტები ისე, რომ დეტერმინისტული სექციები გენერაციულ სექციებამდე გაეშვას.</li>\n  <li>შეკუმშეთ და ხელახლა დაალაგეთ კონტექსტი მთლიანი დოკუმენტების დაყრის ნაცვლად.</li>\n  <li>კეშირეთ ხშირი მოთხოვნები და დაიმახსოვრეთ ხელსაწყოების შედეგები TTL-ით.</li>\n  <li>აკონტროლეთ შეყოვნება, გამტარუნარიანობა და ტოკენების გამოყენება ყოველი ფუნქციონალისთვის.</li>\n</ul>\n<p>როდესაც დაკვირვებადობა მოიცავს ტოკენებსა და შეყოვნებას, ხარჯები ხდება კონტროლირებადი ცვლადი და არა მოულოდნელი.</p>\n\n<h2 id=\"90-dgiani-samoqmedo-gegma\">90-დღიანი სამოქმედო გეგმა</h2>\n<p>დაკვირვებადი AI პრინციპების მიღებიდან 3 თვის განმავლობაში, საწარმოებმა უნდა დაინახონ:</p>\n<ul>\n  <li>1–2 საწარმოო AI ასისტენტი HITL-ით რთული შემთხვევებისთვის.</li>\n  <li>ავტომატიზირებული შეფასების ნაკრები დანერგვამდე და ყოველდღიური გაშვებისთვის.</li>\n  <li>ყოველკვირეული შეფასების ფურცელი SRE, პროდუქტისა და რისკის გუნდებს შორის.</li>\n  <li>აუდიტისთვის მზა კვალები, რომლებიც აკავშირებს პრომპტებს, პოლიტიკასა და შედეგებს.</li>\n</ul>\n<p>Fortune 100-ის კლიენტთან, ამ სტრუქტურამ 40%-ით შეამცირა ინციდენტის დრო და შეუსაბამა პროდუქტისა და შესაბამისობის გეგმები.</p>\n\n<h2 id=\"ndobis-gazrda-dakvirvebadobis-sashualebit\">ნდობის გაზრდა დაკვირვებადობის საშუალებით</h2>\n<p>დაკვირვებადი AI არის ის, თუ როგორ აქცევთ ხელოვნურ ინტელექტს ექსპერიმენტიდან ინფრასტრუქტურად.</p>\n<p>მკაფიო ტელემეტრიის, SLO-ებისა და ადამიანის უკუკავშირის მარყუჟების საშუალებით:</p>\n<ul>\n  <li>ხელმძღვანელები იძენენ მტკიცებულებებით გამყარებულ ნდობას.</li>\n  <li>შესაბამისობის გუნდები იღებენ განმეორებად აუდიტის ჯაჭვებს.</li>\n  <li>ინჟინრები უფრო სწრაფად მუშაობენ და უსაფრთხოდ ანთავსებენ პროდუქტს.</li>\n  <li>მომხმარებლები იღებენ სანდო, ახსნად AI-ს.</li>\n</ul>\n<p>დაკვირვებადობა არ არის დამატებითი ფენა, ის არის ნდობის საფუძველი ფართო მასშტაბით.</p>",
-          "featured_image": "https://assets-global.website-files.com/651f49cf94420e6e7683907a/66205cf9f1165e6488a0346c_sre-llm-observability.webp"
+          "title": "ხილვადი ხელოვნური ინტელექტი: აუცილებელი SRE ფენა საიმედო LLM-ებისთვის საწარმოებში",
+          "summary": "LLM-ების საწარმოებში წარმატებით დანერგვისთვის კრიტიკულია ხილვადი ხელოვნური ინტელექტი, რომელიც უზრუნველყოფს სისტემების სანდოობასა და მართვადობას.",
+          "body": "<h1>ხილვადი ხელოვნური ინტელექტი: აუცილებელი SRE ფენა საიმედო LLM-ებისთვის საწარმოებში</h1>\n<p>ხელოვნური ინტელექტის (AI) სისტემების წარმოებაში ინტეგრირებისას, მათი საიმედოობა და მართვადობა არ შეიძლება მხოლოდ სურვილებზე იყოს დამოკიდებული. მოდით განვიხილოთ, თუ როგორ აქცევს <b>ხილვადობა</b> დიდ ენობრივ მოდელებს (LLM) აუდიტირებად და სანდო საწარმოო სისტემებად.</p>\n\n<h2>რატომ უზრუნველყოფს ხილვადობა საწარმოო AI-ის მომავალს?</h2>\n<p>საწარმოების LLM სისტემების დანერგვის სურვილი ღრუბლოვანი ტექნოლოგიების ადრეულ დღეებს ჰგავს. ხელმძღვანელებს უყვართ დაპირება; კომპლაინსი ითხოვს ანგარიშვალდებულებას; ინჟინრებს კი უბრალოდ გამარტივებული გზა უნდათ.</p>\n<p>თუმცა, ამ აღფრთოვანების მიღმა, ლიდერების უმეტესობა აღიარებს, რომ მათ არ შეუძლიათ გაარკვიონ, როგორ მიიღება AI გადაწყვეტილებები, ეხმარება თუ არა ისინი ბიზნესს, ან ხომ არ დაირღვა რომელიმე წესი.</p>\n<p>ავიღოთ, მაგალითად, ერთ-ერთი მსხვილი ბანკი, რომელმაც LLM გამოიყენა სესხის განაცხადების კლასიფიკაციისთვის. საწყისი შეფასებები შესანიშნავი იყო. თუმცა, 6 თვის შემდეგ, აუდიტორებმა აღმოაჩინეს, რომ კრიტიკული შემთხვევების 18% არასწორად იყო გადამისამართებული, ყოველგვარი გაფრთხილების ან კვალის გარეშე. ძირეული მიზეზი არც მიკერძოება იყო და არც ცუდი მონაცემები. ის უხილავი იყო. <b>ხილვადობის გარეშე, არ არსებობს ანგარიშვალდებულება.</b></p>\n<p>თუ ვერ აკვირდები, ვერ ენდობი. და უხილავი AI ჩუმად მარცხდება.</p>\n<p>ხილვადობა ფუფუნება არ არის; ის ნდობის საფუძველია. მის გარეშე AI უმართავი ხდება.</p>\n\n<h2>დაიწყეთ შედეგებით და არა მოდელებით</h2>\n<p>კორპორაციული AI პროექტების უმეტესობა იწყება იმით, რომ ტექნიკური ლიდერები ირჩევენ მოდელს, შემდეგ კი განსაზღვრავენ წარმატების მეტრიკას. ეს არასწორი მიდგომაა.</p>\n<p><b>შეცვალეთ თანმიმდევრობა:</b></p>\n<ul>\n  <li><b>პირველ რიგში, განსაზღვრეთ შედეგი.</b> რა არის გაზომვადი ბიზნეს მიზანი?\n    <ul>\n      <li>სატელეფონო ზარების 15%-ის გადამისამართება.</li>\n      <li>დოკუმენტების განხილვის დროის 60%-ით შემცირება.</li>\n      <li>საქმის დამუშავების დროის ორი წუთით შემცირება.</li>\n    </ul>\n  </li>\n  <li><b>შექმენით ტელემეტრია ამ შედეგის გარშემო,</b> და არა „სიზუსტის“ ან „BLEU ქულის“ გარშემო.</li>\n  <li><b>შეარჩიეთ პრომპტები, მონაცემთა მოძიების მეთოდები და მოდელები,</b> რომლებიც თვალსაჩინოდ აუმჯობესებენ ამ KPI-ებს.</li>\n</ul>\n<p>მაგალითად, ერთ გლობალურ მზღვეველში, წარმატების გადააზრება, როგორც „ერთ განაცხადზე დაზოგილი წუთები“ „მოდელის სიზუსტის“ ნაცვლად, იზოლირებული საპილოტე პროექტი მთელი კომპანიის საგზაო რუკად აქცია.</p>\n\n<h2>LLM ხილვადობის 3-ფენიანი ტელემეტრიული მოდელი</h2>\n<p>ისევე, როგორც მიკროსერვისები ეყრდნობა ლოგებს, მეტრიკას და კვალს, AI სისტემებსაც სჭირდებათ სტრუქტურირებული დაკვირვების სტეკი:</p>\n\n<h3>ა) პრომპტები და კონტექსტი: რა შევიდა სისტემაში</h3>\n<ul>\n  <li>დაარეგისტრირეთ ყველა პრომპტის შაბლონი, ცვლადი და მიღებული დოკუმენტი.</li>\n  <li>ჩაიწერეთ მოდელის ID, ვერსია, შეყოვნება და ტოკენების რაოდენობა (თქვენი ძირითადი ხარჯების მაჩვენებლები).</li>\n  <li>შეინახეთ აუდიტირებადი რედაქტირების ჟურნალი, სადაც ნაჩვენებია, თუ რა მონაცემები იქნა დაფარული, როდის და რა წესით.</li>\n</ul>\n\n<h3>ბ) პოლიტიკა და კონტროლი: დამცავი ზომები</h3>\n<ul>\n  <li>აღბეჭდეთ უსაფრთხოების ფილტრის შედეგები (ტოქსიკურობა, პერსონალური მონაცემები), ციტატების არსებობა და წესების გააქტიურება.</li>\n  <li>შეინახეთ პოლიტიკის მიზეზები და რისკის დონე თითოეული დანერგვისთვის.</li>\n  <li>შედეგები დაუკავშირეთ მმართველ მოდელის ბარათს გამჭვირვალობისთვის.</li>\n</ul>\n\n<h3><img SRC=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png\"></img>გ) შედეგები და უკუკავშირი: იმუშავა თუ არა?</h3>\n<ul>\n  <li>შეაგროვეთ ადამიანის შეფასებები და რედაქტირების მანძილი მიღებული პასუხებიდან.</li>\n  <li>აკონტროლეთ შემდგომი ბიზნეს მოვლენები: შემთხვევა დახურულია, დოკუმენტი დამტკიცებულია, პრობლემა მოგვარებულია.</li>\n  <li>გაზომეთ KPI ცვლილებები: ზარის დრო, ჩამორჩენა, ხელახლა გახსნის სიხშირე.</li>\n</ul>\n<p>სამივე ფენა დაკავშირებულია საერთო საიდენტიფიკაციო ნომრით, რაც საშუალებას იძლევა ნებისმიერი გადაწყვეტილება ხელახლა იქნას გაშვებული, აუდიტირებული ან გაუმჯობესებული.</p>\n\n<h2>SRE პრინციპების გამოყენება: SLO-ები და შეცდომის ბიუჯეტები AI-ისთვის</h2>\n<p>სერვისის საიმედოობის ინჟინერიამ (SRE) შეცვალა პროგრამული უზრუნველყოფის ოპერაციები; ახლა AI-ის ჯერია.</p>\n<p>განსაზღვრეთ სამი „ოქროს სიგნალი“ ყოველი კრიტიკული workflow-ისთვის:</p>\n<table>\n  <thead>\n    <tr>\n      <td><b>სიგნალი</b></td>\n      <td><b>სამიზნე SLO</b></td>\n      <td><b>დარღვევის შემთხვევაში</b></td>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><b>ფაქტობრიობა</b></td>\n      <td>≥ 95% წყაროსთან შემოწმებული</td>\n      <td>წყაროსთან შემოწმებულ შაბლონზე გადართვა</td>\n    </tr>\n    <tr>\n      <td><b>უსაფრთხოება</b></td>\n      <td>≥ 99.9% გაივლის ტოქსიკურობის/პერსონალური მონაცემების ფილტრებს</td>\n      <td>კარანტინი და ადამიანის მიერ განხილვა</td>\n    </tr>\n    <tr>\n      <td><b>სარგებლიანობა</b></td>\n      <td>≥ 80% მიღებული პირველივე მცდელობაზე</td>\n      <td>პრომპტის/მოდელის გადამზადება ან უკან დაბრუნება</td>\n    </tr>\n  </tbody>\n</table>\n<p>თუ ჰალუცინაციები ან უარყოფები გადააჭარბებს ბიუჯეტს, სისტემა ავტომატურად გადადის უფრო უსაფრთხო პრომპტებზე ან ადამიანის განხილვაზე, ისევე როგორც ტრაფიკის გადამისამართება სერვისის შეფერხების დროს.</p>\n<p>ეს არ არის ბიუროკრატია; ეს არის საიმედოობა, გამოყენებული მსჯელობისთვის.</p>\n\n<h2>შექმენით ხილვადობის თხელი ფენა ორ აგილურ სპრინტში</h2>\n<p>არ გჭირდებათ ექვსთვიანი სამოქმედო გეგმა, მხოლოდ ფოკუსი და ორი მოკლე სპრინტი.</p>\n\n<h3>პირველი სპრინტი (1-3 კვირა): საფუძვლები</h3>\n<ul>\n  <li>ვერსიის კონტროლირებადი პრომპტების რეესტრი.</li>\n  <li>პოლიტიკასთან დაკავშირებული რედაქტირების შუალედური პროგრამა.</li>\n  <li>მოთხოვნის/პასუხის ლოგირება საერთო ID-ებით.</li>\n  <li>ძირითადი შეფასებები (პერსონალური მონაცემების შემოწმება, ციტატის არსებობა).</li>\n  <li>მარტივი ადამიანის ჩართულობის (HITL) ინტერფეისი.</li>\n</ul>\n\n<h3>მეორე სპრინტი (4-6 კვირა): დამცავი ზომები და KPI-ები</h3>\n<ul>\n  <li>ოფლაინ ტესტების ნაკრებები (100–300 რეალური მაგალითი).</li>\n  <li>ფაქტობრიობისა და უსაფრთხოების პოლიტიკის კარიბჭეები.</li>\n  <li>მარტივი დაფა SLO-ების და ხარჯების მონიტორინგისთვის.</li>\n  <li>ავტომატური ტოკენისა და შეყოვნების ტრეკერი.</li>\n</ul>\n<p>6 კვირაში გექნებათ თხელი ფენა, რომელიც პასუხობს მართვისა და პროდუქტის კითხვების 90%-ს.</p>\n\n<h2>გახადეთ შეფასებები უწყვეტი (და რუტინული)</h2>\n<p>შეფასებები არ უნდა იყოს ერთჯერადი, გმირული ქმედებები; ისინი რუტინული უნდა იყოს.</p>\n<ul>\n  <li>შექმენით ტესტების ნაკრებები რეალური შემთხვევებიდან; განაახლეთ 10–20% ყოველთვიურად.</li>\n  <li>განსაზღვრეთ მკაფიო მიღების კრიტერიუმები, რომლებსაც იზიარებენ პროდუქტისა და რისკის გუნდები.</li>\n  <li>გაუშვით ტესტები ყოველ პრომპტის/მოდელის/პოლიტიკის ცვლილებაზე და ყოველკვირეულად ცდომილებების შესამოწმებლად.</li>\n  <li>გამოაქვეყნეთ ერთიანი ქულების ბარათი ყოველ კვირას, რომელიც მოიცავს ფაქტობრიობას, უსაფრთხოებას, სარგებლიანობას და ხარჯებს.</li>\n</ul>\n<p>როდესაც შეფასებები CI/CD-ის ნაწილია, ისინი აღარ არის შესაბამისობის თეატრი და იქცევა ოპერაციულ შემოწმებად.</p>\n\n<h2>ადამიანის ზედამხედველობა იქ, სადაც ეს მნიშვნელოვანია</h2>\n<p>სრული ავტომატიზაცია არც რეალისტურია და არც პასუხისმგებლიანი. მაღალი რისკის ან გაურკვეველი შემთხვევები ადამიანის განხილვას უნდა დაექვემდებაროს.</p>\n<ul>\n  <li>დაბალი ნდობის ან პოლიტიკით მონიშნული პასუხები ექსპერტებს გადაუგზავნეთ.</li>\n  <li>ჩაიწერეთ ყოველი რედაქტირება და მიზეზი, როგორც სასწავლო მონაცემები და აუდიტის მტკიცებულება.</li>\n  <li>მიმოხილველის უკუკავშირი გამოიყენეთ პრომპტებისა და პოლიტიკის გასაუმჯობესებლად.</li>\n</ul>\n<p>ერთ ჯანდაცვის ტექნოლოგიურ კომპანიაში ამ მიდგომამ 22%-ით შეამცირა ცრუ დადებითი შედეგები და კვირების განმავლობაში შექმნა გადამზადებადი, შესაბამისობისთვის მზა მონაცემთა ნაკრები.</p>\n\n<h2>ხარჯების კონტროლი დიზაინის მეშვეობით, არა იმედით</h2>\n<p>LLM ხარჯები არაწრფივად იზრდება. ბიუჯეტები არ გიშველით – არქიტექტურა კი.</p>\n<ul>\n  <li>დააწყვეთ პრომპტები ისე, რომ დეტერმინისტული სექციები გენერაციულებამდე იმუშაოს.</li>\n  <li>კონტექსტი შეკუმშეთ და გადაანაწილეთ, ნაცვლად მთელი დოკუმენტების დაყრისა.</li>\n  <li>დააფიქსირეთ ხშირი მოთხოვნები და ხელსაწყოების გამომავალი შედეგები გარკვეული ვადით.</li>\n  <li>აკონტროლეთ შეყოვნება, გამტარუნარიანობა და ტოკენების გამოყენება თითოეული ფუნქციისთვის.</li>\n</ul>\n<p>როდესაც ხილვადობა მოიცავს ტოკენებსა და შეყოვნებას, ხარჯი კონტროლირებად ცვლადად იქცევა და არა მოულოდნელობად.</p>\n\n<h2>90-დღიანი სამოქმედო გეგმა</h2>\n<p>ხილვადი AI პრინციპების მიღებიდან 3 თვის განმავლობაში, საწარმოებმა უნდა დაინახონ:</p>\n<ul>\n  <li>1-2 წარმოების AI ასისტენტი ადამიანის ჩართულობით რთული შემთხვევებისთვის.</li>\n  <li>ავტომატიზირებული შეფასების ნაკრები გაშვებამდე და ყოველდღიური შემოწმებისთვის.</li>\n  <li>ყოველკვირეული ქულების ბარათი, რომელსაც იზიარებენ SRE, პროდუქტისა და რისკის გუნდები.</li>\n  <li>აუდიტისთვის მზა კვალი, რომელიც აკავშირებს პრომპტებს, პოლიტიკასა და შედეგებს.</li>\n</ul>\n<p>ერთ-ერთ მსხვილ კლიენტთან, ამ სტრუქტურამ 40%-ით შეამცირა ინციდენტების დრო და შეათანხმა პროდუქტისა და შესაბამისობის სამოქმედო გეგმები.</p>\n\n<h2>ნდობის გაზრდა ხილვადობის მეშვეობით</h2>\n<p>ხილვადი AI არის გზა, რომლითაც AI ექსპერიმენტიდან ინფრასტრუქტურად იქცევა.</p>\n<p>გამჭვირვალე ტელემეტრიით, სერვისის დონის მიზნებით (SLO) და ადამიანის უკუკავშირის მარყუჟებით:</p>\n<ul>\n  <li>ხელმძღვანელები იძენენ მტკიცებულებებზე დაფუძნებულ ნდობას.</li>\n  <li>კომპლაინსის გუნდები იღებენ აუდიტირებად ჯაჭვებს.</li>\n  <li>ინჟინრები უფრო სწრაფად მუშაობენ და უსაფრთხოდ ანთავსებენ პროდუქტებს.</li>\n  <li>მომხმარებლები იღებენ საიმედო, ახსნად AI-ს.</li>\n</ul>\n<p><b>ხილვადობა არ არის დამატებითი ფენა; ის არის მასშტაბური ნდობის საფუძველი.</b></p>"
         }
       }
     ],
@@ -679,7 +840,7 @@
       {
         "output": [
           {
-            "id": "msg_0c4db6b44099e48400692c6ab4cf74819c856b03b9bd347c05",
+            "id": "msg_0f947cc1cc9056b100692c5b6e1554819f9b1a991caaac3d48",
             "type": "message",
             "status": "completed",
             "content": [
