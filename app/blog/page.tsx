@@ -15,8 +15,9 @@ export const metadata: Metadata = {
   description: "AI-ს სამყაროს სიახლეები და რჩევები",
 };
 
-// Revalidate every 60 seconds - fresh content without full rebuild
-export const revalidate = 60;
+// Force dynamic rendering to avoid conflict with dynamic route /blog/[slug]
+// This prevents Next.js from trying to statically export this page
+export const dynamic = 'force-dynamic';
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
