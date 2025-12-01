@@ -19,10 +19,17 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPostSlugs();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts = await getAllPostSlugs();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for blog posts:', error);
+    // Return empty array if database query fails during build
+    // Pages will be generated on-demand with dynamicParams = true
+    return [];
+  }
 }
 
 // Revalidate every 60 seconds - fresh content without full rebuild  
