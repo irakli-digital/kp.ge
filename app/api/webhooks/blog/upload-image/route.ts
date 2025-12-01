@@ -4,6 +4,19 @@ import { join } from 'path';
 import sharp from 'sharp';
 import { existsSync } from 'fs';
 
+// Increase body size limit to 10MB for image uploads
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
+// Configure runtime and max duration
+export const runtime = 'nodejs';
+export const maxDuration = 30; // 30 seconds
+
 // Define the schema for the incoming image upload request
 const imageUploadSchema = {
   imageUrl: (val: any) => typeof val === 'string' && val.startsWith('http'),

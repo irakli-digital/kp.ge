@@ -120,7 +120,7 @@
             "mappingMode": "defineBelow",
             "value": {
               "link": "={{ $('Loop Over Items3').item.json.link }}",
-              "featured image": "={{ $json.hostedUrl }}",
+              "featured image": "={{ $json.image_url || $json.output?.image_url }}",
               "generate_featured": "Done"
             },
             "matchingColumns": [
@@ -472,28 +472,6 @@
           ]
         ]
       },
-      "Download Image from Midjourney": {
-        "main": [
-          [
-            {
-              "node": "Upload Image to Server",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Upload Image to Server": {
-        "main": [
-          [
-            {
-              "node": "Update Sheet with Featured Image",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Update Sheet with Featured Image": {
         "main": [
           [
@@ -571,7 +549,7 @@
         "main": [
           [
             {
-              "node": "Download Image from Midjourney",
+              "node": "Update Sheet with Featured Image",
               "type": "main",
               "index": 0
             }
