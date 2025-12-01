@@ -4,18 +4,10 @@ import { join } from 'path';
 import sharp from 'sharp';
 import { existsSync } from 'fs';
 
-// Increase body size limit to 10MB for image uploads
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-};
-
-// Configure runtime and max duration
+// Route segment config for Next.js App Router
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 30 seconds
+export const maxDuration = 30; // 30 seconds timeout
+export const dynamic = 'force-dynamic'; // Disable caching
 
 // Define the schema for the incoming image upload request
 const imageUploadSchema = {
