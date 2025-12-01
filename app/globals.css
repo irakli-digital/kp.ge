@@ -37,8 +37,9 @@
 }
 
 .article-content p {
-  @apply mb-6 text-foreground;
+  @apply mb-6 text-foreground font-light;
   line-height: 1.8;
+  font-weight: 300;
 }
 
 .article-content ul,
@@ -47,8 +48,9 @@
 }
 
 .article-content li {
-  @apply mb-3 text-foreground;
+  @apply mb-3 text-foreground font-light;
   line-height: 1.7;
+  font-weight: 300;
 }
 
 .article-content blockquote {
