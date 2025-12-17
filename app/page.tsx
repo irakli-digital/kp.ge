@@ -50,7 +50,7 @@ export default function LandingPage() {
     },
     {
       title: "მრავალმოდელა არჩევანი",
-      description: "GPT-5, Claude, Gemini და სხვა — ერთ სივრცეში.",
+      description: "GPT-5, Claude, Gemini და სხვა - ერთ სივრცეში.",
       icon: <Layers className="size-6 stroke-[1.5] text-emerald-500" />,
       iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
     },
@@ -114,13 +114,13 @@ export default function LandingPage() {
               </div>
 
               <p className="text-base md:text-lg text-muted-foreground mb-5 max-w-[70ch] mx-auto leading-relaxed">
-                მიიღე პასუხები ნებისმიერ თემაზე, წერე გამართული ქართულით, ატვირთე და გააანალიზე ფაილები — ერთ სივრცეში.
+                მიიღე პასუხები ნებისმიერ თემაზე, წერე გამართული ქართულით, ატვირთე და გააანალიზე ფაილები - ერთ სივრცეში.
               </p>
 
               {/* Trust chips */}
               <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
                 <Badge className="rounded-full px-4 py-1.5 text-xs font-medium bg-gradient-to-r from-emerald-500/10 via-amber-500/10 to-blue-500/10 border-primary/30" variant="outline">
-                  GPT • Claude • Gemini — ერთ სივრცეში
+                  GPT • Claude • Gemini - ერთ სივრცეში
                 </Badge>
                 <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
                   ქართული ენა - 100%
@@ -224,11 +224,11 @@ export default function LandingPage() {
               className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
             >
               <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                ერთი პლატფორმა — ყველა წამყვანი AI
+                ერთი პლატფორმა - ყველა წამყვანი AI
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">წვდომა საუკეთესო AI მოდელებზე</h2>
               <p className="max-w-[65ch] text-muted-foreground md:text-lg mx-auto">
-                აირჩიეთ საუკეთესო მოდელი თქვენი ამოცანისთვის — ყველა ერთ სივრცეში.
+                აირჩიეთ საუკეთესო მოდელი თქვენი ამოცანისთვის - ყველა ერთ სივრცეში.
               </p>
             </motion.div>
 
@@ -544,7 +544,7 @@ export default function LandingPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
               {[
                 {
-                  quote: "სამი მოდელი ერთ პლატფორმაზე — მოქნილი და მარტივი გამოყენება.",
+                  quote: "სამი მოდელი ერთ პლატფორმაზე - მოქნილი და მარტივი გამოყენება.",
                   author: "გიორგი ვ.",
                   role: "პროგრამული უზრუნველყოფის ინჟინერი",
                   rating: 5,
@@ -556,7 +556,7 @@ export default function LandingPage() {
                   rating: 5,
                 },
                 {
-                  quote: "ULTRA მოდელი — ჩემი საიდუმლო იარაღი კვლევისთვის.",
+                  quote: "ULTRA მოდელი - ჩემი საიდუმლო იარაღი კვლევისთვის.",
                   author: "დავით ჩ.",
                   role: "მარკეტერი და ბლოგერი",
                   rating: 5,
@@ -568,7 +568,7 @@ export default function LandingPage() {
                   rating: 5,
                 },
                 {
-                  quote: "Pro ძლიერი და სწრაფია — ფასი სამართლიანია.",
+                  quote: "Pro ძლიერი და სწრაფია - ფასი სამართლიანია.",
                   author: "ლევან ს.",
                   role: "ფრილანსერი",
                   rating: 5,
@@ -585,7 +585,7 @@ export default function LandingPage() {
                     <CardContent className="p-6 flex flex-col h-full">
                       <div className="flex mb-4">
                         {Array(t.rating).fill(0).map((_, j) => (
-                          <Star key={j} className="size-4 text-yellow-500" />
+                          <Star key={j} className="size-4 text-yellow-500 fill-yellow-500" />
                         ))}
                       </div>
                       <p className="mb-6 flex-grow text-sm">{t.quote}</p>
@@ -639,7 +639,7 @@ export default function LandingPage() {
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">თქვენს საჭიროებებზე მორგებული AI პაკეტები</h2>
               <p className="max-w-[70ჩ] text-muted-foreground md:text-lg mx-auto">
-                მიუხედავად იმისა, ახლა იწყებთ თუ გჭირდებათ პროფესიონალური დონის AI ინსტრუმენტები — გვაქვს პაკეტი, რომელიც შეესაბამება თქვენს მოთხოვნებს.
+                მიუხედავად იმისა, ახლა იწყებთ თუ გჭირდებათ პროფესიონალური დონის AI ინსტრუმენტები - გვაქვს პაკეტი, რომელიც შეესაბამება თქვენს მოთხოვნებს.
               </p>
             </motion.div>
 
@@ -834,7 +834,7 @@ export default function LandingPage() {
                   {
                     question: "MyPen უბრალოდ \"მომწერინე\" ხომ არაა?",
                     answer:
-                      "არა. ეს არის სრულფასოვანი ქართული AI ასისტენტი: სამუშაო, ფაილები, კვლევა და ყოველდღიური კითხვები — ერთ სივრცეში.",
+                      "არა. ეს არის სრულფასოვანი ქართული AI ასისტენტი: სამუშაო, ფაილები, კვლევა და ყოველდღიური კითხვები - ერთ სივრცეში.",
                   },
                   {
                     question: "ბარათი მჭირდება დასაწყებად?",
@@ -849,7 +849,7 @@ export default function LandingPage() {
                   {
                     question: "რა არის Mypen.ge?",
                     answer:
-                      "Mypen.ge არის მოწინავე ჩათ-პლატფორმა მრავალ მოდელზე მუშაობისთვის — ფაილები, კოდი, სტატიები, ყველაფერი ერთ ინტერფეისში.",
+                      "Mypen.ge არის მოწინავე ჩათ-პლატფორმა მრავალ მოდელზე მუშაობისთვის - ფაილები, კოდი, სტატიები, ყველაფერი ერთ ინტერფეისში.",
                   },
                   {
                     question: "რომელ AI მოდელებზე მაქვს წვდომა?",
