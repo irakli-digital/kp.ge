@@ -50,7 +50,7 @@ export default function LandingPage() {
     },
     {
       title: "მრავალმოდელა არჩევანი",
-      description: "Light/Pro/Ultra სიჩქარისა და სიღრმისთვის.",
+      description: "GPT-5, Claude, Gemini და სხვა — ერთ სივრცეში.",
       icon: <Layers className="size-6 stroke-[1.5] text-emerald-500" />,
       iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
     },
@@ -119,6 +119,9 @@ export default function LandingPage() {
 
               {/* Trust chips */}
               <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+                <Badge className="rounded-full px-4 py-1.5 text-xs font-medium bg-gradient-to-r from-emerald-500/10 via-amber-500/10 to-blue-500/10 border-primary/30" variant="outline">
+                  GPT • Claude • Gemini — ერთ სივრცეში
+                </Badge>
                 <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
                   ქართული ენა - 100%
                 </Badge>
@@ -208,8 +211,134 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* AI Models Showcase Section */}
+        <section id="ai-models" className="w-full py-20 md:py-24 bg-muted/30 relative overflow-hidden">
+          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
+
+          <div className="container px-4 md:px-6 relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+            >
+              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
+                ერთი პლატფორმა — ყველა წამყვანი AI
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">წვდომა საუკეთესო AI მოდელებზე</h2>
+              <p className="max-w-[65ch] text-muted-foreground md:text-lg mx-auto">
+                აირჩიეთ საუკეთესო მოდელი თქვენი ამოცანისთვის — ყველა ერთ სივრცეში.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+              {/* OpenAI Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0 }}
+              >
+                <Card className="h-full border-emerald-500/30 bg-gradient-to-b from-emerald-500/5 to-transparent hover:border-emerald-500/50 transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="size-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                        <span className="text-emerald-500 font-bold text-lg">O</span>
+                      </div>
+                      <h3 className="text-xl font-bold text-emerald-400">OpenAI</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">კრეატიულობა და მრავალფეროვნება</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["GPT-5", "GPT-5.1", "GPT-5.2", "GPT-4o"].map((model) => (
+                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                          {model}
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Anthropic Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <Card className="h-full border-amber-500/30 bg-gradient-to-b from-amber-500/5 to-transparent hover:border-amber-500/50 transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="size-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                        <span className="text-amber-500 font-bold text-lg">A</span>
+                      </div>
+                      <h3 className="text-xl font-bold text-amber-400">Anthropic</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">ლოგიკა და ანალიტიკა</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["Claude Opus 4.1", "Claude Sonnet 4.5"].map((model) => (
+                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                          {model}
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Google Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Card className="h-full border-blue-500/30 bg-gradient-to-b from-blue-500/5 to-transparent hover:border-blue-500/50 transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="size-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                        <span className="text-blue-500 font-bold text-lg">G</span>
+                      </div>
+                      <h3 className="text-xl font-bold text-blue-400">Google</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">მულტიმოდალურობა და სიჩქარე</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {["Gemini 3.0 Pro", "Gemini 2.5 Pro", "Gemini 2.5 Flash"].map((model) => (
+                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/30">
+                          {model}
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex justify-center pt-10"
+            >
+              <Button
+                size="lg"
+                className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
+                asChild
+              >
+                <SmartCtaLink aria-label="სცადე ყველა მოდელი" data-cta-id="cta_ai_models">
+                  სცადე ყველა მოდელი
+                  <ArrowRight className="ml-2 size-4" />
+                </SmartCtaLink>
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Use Cases Section - რას აკეთებს */}
-        <section id="use-cases" className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
+        <section id="use-cases" className="w-full py-20 md:py-32 relative overflow-hidden">
           <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
 
           <div className="container px-4 md:px-6 relative">
@@ -537,6 +666,7 @@ export default function LandingPage() {
                           "იდეალურია ყოველდღიური ამოცანებისთვის",
                           "AI წერა და თარგმნა ქართულად",
                         ],
+                        models: ["Mypen Lite"],
                         cta: "დაიწყე უფასოდ",
                         ctaId: "cta_pricing_starter",
                         colorScheme: "default",
@@ -553,6 +683,7 @@ export default function LandingPage() {
                           "სიღრმისეული ანალიზი და კოდის წერა",
                           "სრული წვდომა ყველა ინსტრუმენტზე (ძიება, ფაილები, თარგმანი)",
                         ],
+                        models: ["Mypen Ultra", "GPT-5", "GPT-5.1", "GPT-5.2", "Gemini 2.5 Pro", "Gemini 3.0 Pro", "Claude Sonnet 4.5", "Claude Opus 4.1"],
                         cta: "აირჩიე Ultra",
                         ctaId: "cta_pricing_ultra",
                         popular: true,
@@ -572,6 +703,7 @@ export default function LandingPage() {
                           "ფაილების ანალიზი (PDF, DOC, იმიჯები)",
                           "ინტერნეტში ძიება",
                         ],
+                        models: ["Mypen Pro", "GPT-4o", "Gemini 2.5 Flash"],
                         cta: "აირჩიე Pro",
                         ctaId: "cta_pricing_pro",
                         colorScheme: "blue",
@@ -587,11 +719,14 @@ export default function LandingPage() {
                         ? "border-blue-500/50 text-blue-400 hover:bg-blue-500/10"
                         : ""
 
+                      const popularShadow = isBlue ? "shadow-xl shadow-blue-500/20" : isPurple ? "shadow-xl shadow-purple-500/20" : "shadow-xl"
+                      const popularBadgeBg = isBlue ? "bg-blue-600" : isPurple ? "bg-purple-600" : "bg-primary"
+
                       return (
                       <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                        <Card className={`relative overflow-hidden h-full ${borderColor} ${plan.popular ? "shadow-xl shadow-purple-500/20" : "shadow-md"} bg-gradient-to-b from-background to-muted/10 backdrop-blur`}>
+                        <Card className={`relative overflow-hidden h-full ${borderColor} ${plan.popular ? popularShadow : "shadow-md"} bg-gradient-to-b from-background to-muted/10 backdrop-blur`}>
                           {plan.popular && (
-                            <div className="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 text-xs font-medium rounded-bl-lg">
+                            <div className={`absolute top-0 right-0 ${popularBadgeBg} text-white px-3 py-1 text-xs font-medium rounded-bl-lg`}>
                               ყველაზე პოპულარული
                             </div>
                           )}
@@ -602,6 +737,26 @@ export default function LandingPage() {
                               {plan.price !== "უფასო" && <span className="text-muted-foreground ml-1">/თვე</span>}
                             </div>
                             <p className="text-muted-foreground mt-2 max-w-[40ჩ]">{plan.description}</p>
+                            {/* Models Section - Elevated */}
+                            <div className="pt-4 pb-4 mt-4 border-t border-b border-border/40">
+                              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                                ხელმისაწვდომი მოდელები
+                              </h4>
+                              <div className="flex flex-wrap gap-1.5">
+                                {plan.models.map((model) => (
+                                  <span
+                                    key={model}
+                                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
+                                      isPurple ? "bg-purple-500/10 text-purple-300 border-purple-500/30" :
+                                      isBlue ? "bg-blue-500/10 text-blue-300 border-blue-500/30" :
+                                      "bg-muted text-muted-foreground border-border/40"
+                                    }`}
+                                  >
+                                    {model}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                             <ul className="space-y-3 my-6 flex-grow">
                               {plan.features.map((feature, j) => (
                                 <li key={j} className="flex items-center">
