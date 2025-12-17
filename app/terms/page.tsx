@@ -1,5 +1,18 @@
+import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "მომსახურების პირობები | Mypen.ge",
+  description: "Mypen.ge-ის მომსახურების პირობები და წესები. გაეცანით ჩვენს პლატფორმის გამოყენების პირობებს.",
+  alternates: {
+    canonical: "https://mypen.ge/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function TermsOfServicePage() {
   return (

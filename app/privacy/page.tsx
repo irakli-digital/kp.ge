@@ -1,5 +1,18 @@
+import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "კონფიდენციალურობის პოლიტიკა | Mypen.ge",
+  description: "გაიგეთ, როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს პერსონალურ მონაცემებს Mypen.ge-ზე.",
+  alternates: {
+    canonical: "https://mypen.ge/privacy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function PrivacyPolicyPage() {
   return (

@@ -12,6 +12,7 @@ export interface BlogPost {
   updated_at: string | Date;
   published: boolean;
   featured_image: string | null;
+  schema_keywords: string[] | null; // Latin keywords for invisible SEO
 }
 
 export type BlogPostPreview = Pick<

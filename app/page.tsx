@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { SmartCtaLink } from "@/components/smart-cta-link"
+import JsonLd from "@/components/JsonLd"
+import { generateOrganizationSchema, generateSoftwareApplicationSchema } from "@/lib/schema"
 
 export default function LandingPage() {
   const container = {
@@ -69,8 +71,13 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <Header />
+    <>
+      {/* JSON-LD Structured Data for SEO */}
+      <JsonLd data={generateOrganizationSchema()} />
+      <JsonLd data={generateSoftwareApplicationSchema()} />
+
+      <div className="flex min-h-[100dvh] flex-col">
+        <Header />
 
       {/* Sticky mobile CTA */}
       <div className="sm:hidden fixed bottom-3 inset-x-3 z-50">
@@ -890,7 +897,8 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   )
 }

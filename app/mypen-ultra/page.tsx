@@ -12,7 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { SmartCtaLink } from "@/components/smart-cta-link"
-// import AnnouncementBanner from "@/components/announcement-banner"
+import JsonLd from "@/components/JsonLd"
+import { generateSoftwareApplicationSchema, generateWebPageSchema } from "@/lib/schema"
 
 export default function LandingPage() {
   const container = {
@@ -65,10 +66,29 @@ export default function LandingPage() {
     },
   ]
 
+  // Ultra-specific keywords for schema
+  const ultraKeywords = [
+    'mypen ultra',
+    'ai ultra georgia',
+    'gpt 5 georgia',
+    'claude opus kartulad',
+    'gemini pro georgia',
+    'premium ai assistant',
+  ]
+
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      {/* <AnnouncementBanner hide={true} /> */}
-      <Header hideLoginButton={true} hideNavigation={true} notSticky={true} />
+    <>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={generateSoftwareApplicationSchema({ keywords: ultraKeywords })} />
+      <JsonLd data={generateWebPageSchema({
+        title: 'Mypen ULTRA - პრემიუმ AI ასისტენტი',
+        description: 'GPT-5, Claude Opus, Gemini Pro - ყველა პრემიუმ AI მოდელზე შეუზღუდავი წვდომა ერთ პლატფორმაზე',
+        url: 'https://mypen.ge/mypen-ultra',
+      })} />
+
+      <div className="flex min-h-[100dvh] flex-col">
+        {/* <AnnouncementBanner hide={true} /> */}
+        <Header hideLoginButton={true} hideNavigation={true} notSticky={true} />
       <main className="flex-1 relative">
         <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-[#171717] bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
         {/* Hero Section */}
@@ -830,9 +850,10 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-      </main>
-      <Footer />
-    </div>
+          {/* CTA Section */}
+        </main>
+        <Footer />
+      </div>
+    </>
   )
 }

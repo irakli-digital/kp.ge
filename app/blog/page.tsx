@@ -2,17 +2,28 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { getPublishedPosts } from "@/lib/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Calendar, ArrowRight } from "lucide-react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-// import AnnouncementBanner from "@/components/announcement-banner";
+import JsonLd from "@/components/JsonLd";
+import { generateBreadcrumbSchema } from "@/lib/schema";
 import { format } from "date-fns";
 import { ka } from "date-fns/locale";
 
 export const metadata: Metadata = {
   title: "ბლოგი | Mypen.ge",
-  description: "AI-ს სამყაროს სიახლეები და რჩევები",
+  description: "AI-ს სამყაროს სიახლეები, რჩევები და საუკეთესო პრაქტიკები. გაიგეთ მეტი ChatGPT, Claude, Gemini და AI ტექნოლოგიების შესახებ.",
+  alternates: {
+    canonical: "https://mypen.ge/blog",
+  },
+  openGraph: {
+    title: "ბლოგი | Mypen.ge",
+    description: "AI-ს სამყაროს სიახლეები, რჩევები და საუკეთესო პრაქტიკები",
+    url: "https://mypen.ge/blog",
+    siteName: "Mypen.ge",
+    locale: "ka_GE",
+    type: "website",
+  },
 };
 
 // Force dynamic rendering to avoid conflict with dynamic route /blog/[slug]
@@ -22,10 +33,19 @@ export const dynamic = 'force-dynamic';
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
 
+  // Breadcrumb schema data
+  const breadcrumbs = [
+    { name: 'მთავარი', url: 'https://mypen.ge' },
+    { name: 'ბლოგი', url: 'https://mypen.ge/blog' },
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* <AnnouncementBanner /> */}
-      <Header />
+    <>
+      {/* JSON-LD Structured Data */}
+      <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
+
+      <div className="min-h-screen bg-background">
+        <Header />
       <main className="container mx-auto px-4 py-16">
         <div className="mx-auto max-w-4xl">
           <div className="mb-12 text-center">
@@ -82,9 +102,10 @@ export default async function BlogPage() {
               ))}
             </div>
           )}
-        </div>
-      </main>
-      <Footer />
-    </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

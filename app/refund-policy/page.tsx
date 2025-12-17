@@ -1,5 +1,18 @@
+import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "თანხის დაბრუნების პოლიტიკა | Mypen.ge",
+  description: "Mypen.ge-ის თანხის დაბრუნების პოლიტიკა. 7-დღიანი თანხის დაბრუნების გარანტია პირველადი შენაძენისთვის.",
+  alternates: {
+    canonical: "https://mypen.ge/refund-policy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function ReturnPolicyPage() {
   return (
