@@ -170,3 +170,36 @@ export function generateWebPageSchema(options: {
     },
   }
 }
+
+// Product/Service Schema - Use on hub pages (models, tools, templates)
+export function generateProductSchema(options: {
+  name: string
+  description: string
+  url: string
+  category: 'AI Model' | 'AI Tool' | 'Template'
+  keywords: string[]
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: options.name,
+    description: options.description,
+    url: options.url,
+    applicationCategory: 'BusinessApplication',
+    applicationSubCategory: options.category,
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'GEL',
+      availability: 'https://schema.org/InStock',
+    },
+    provider: {
+      '@type': 'Organization',
+      name: 'Mypen.ge',
+      url: BASE_URL,
+    },
+    // Latin keywords for invisible SEO layer
+    keywords: options.keywords,
+  }
+}

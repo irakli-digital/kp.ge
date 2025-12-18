@@ -11,14 +11,14 @@ import { format } from "date-fns";
 import { ka } from "date-fns/locale";
 
 export const metadata: Metadata = {
-  title: "ბლოგი | Mypen.ge",
-  description: "AI-ს სამყაროს სიახლეები, რჩევები და საუკეთესო პრაქტიკები. გაიგეთ მეტი ChatGPT, Claude, Gemini და AI ტექნოლოგიების შესახებ.",
+  title: "AI გზამკვლევი | ChatGPT, Claude & Gemini ტუტორიალები - Mypen.ge",
+  description: "უფასო AI ტუტორიალები ქართულად: როგორ დავწეროთ CV, პრომპტები, მოდელების შედარება. 2025 წლის საუკეთესო რჩევები ChatGPT, Claude და Gemini-სთვის.",
   alternates: {
     canonical: "https://mypen.ge/blog",
   },
   openGraph: {
-    title: "ბლოგი | Mypen.ge",
-    description: "AI-ს სამყაროს სიახლეები, რჩევები და საუკეთესო პრაქტიკები",
+    title: "AI გზამკვლევი | ChatGPT, Claude & Gemini ტუტორიალები",
+    description: "უფასო AI ტუტორიალები ქართულად: როგორ დავწეროთ CV, პრომპტები, მოდელების შედარება",
     url: "https://mypen.ge/blog",
     siteName: "Mypen.ge",
     locale: "ka_GE",

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     canonical: "https://mypen.ge/privacy",
   },
   robots: {
-    index: true,
+    index: false,
     follow: true,
   },
 }

@@ -47,7 +47,7 @@
   /* Body text - Muted for less contrast, bigger gaps */
   .article-content p {
     @apply mb-8 text-muted-foreground;
-    line-height: 1.8;
+    line-height: 2;
     font-weight: 400;
   }
 
@@ -62,7 +62,7 @@
   }
 
   .article-content ul li {
-    @apply mb-4 text-muted-foreground relative;
+    @apply mb-5 text-muted-foreground relative;
     line-height: 1.7;
     font-weight: 400;
     padding-left: 1.5rem;
@@ -78,7 +78,7 @@
   }
 
   .article-content ol li {
-    @apply mb-4 text-muted-foreground;
+    @apply mb-5 text-muted-foreground;
     line-height: 1.7;
     font-weight: 400;
     padding-left: 0.5rem;
@@ -189,6 +189,184 @@
 
   .article-content tr:last-child td:last-child {
     border-bottom-right-radius: 0.5rem;
+  }
+
+  /* =====================================================
+     Feature Cards Grid - Mobile-first AI model comparison
+     ===================================================== */
+  .article-content .model-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .article-content .model-comparison-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .article-content .feature-card {
+    background: hsl(var(--card));
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid hsl(var(--border));
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .article-content .feature-card:hover {
+    border-color: hsl(var(--border) / 0.8);
+    transform: translateY(-2px);
+  }
+
+  .article-content .feature-card.highlighted {
+    box-shadow: 0 0 0 2px hsl(var(--brand) / 0.5);
+  }
+
+  .article-content .feature-card .card-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-content .feature-card h4 {
+    @apply text-lg font-bold text-foreground;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .article-content .feature-card .card-description {
+    @apply text-sm text-muted-foreground;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .article-content .feature-card .badge {
+    background: hsl(var(--brand) / 0.2);
+    color: hsl(var(--brand));
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .article-content .feature-card .stars {
+    color: hsl(45 93% 47%);
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  /* =====================================================
+     Key Takeaway Box - Highlighted conclusions
+     ===================================================== */
+  .article-content .key-takeaway {
+    background: hsl(142 71% 20% / 0.15);
+    border-left: 4px solid hsl(var(--brand));
+    padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+    border-radius: 0 0.75rem 0.75rem 0;
+    margin: 2.5rem 0;
+    position: relative;
+  }
+
+  .article-content .key-takeaway::before {
+    content: "💡";
+    position: absolute;
+    left: 0.75rem;
+    top: 1.25rem;
+    font-size: 1.25rem;
+  }
+
+  .article-content .key-takeaway p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-content .key-takeaway p:last-child {
+    margin-bottom: 0;
+  }
+
+  .article-content .key-takeaway strong {
+    color: hsl(var(--brand));
+  }
+
+  .article-content .key-takeaway .takeaway-title {
+    @apply font-bold text-foreground;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* =====================================================
+     Visual Pricing Comparison - Show the math
+     ===================================================== */
+  .article-content .pricing-comparison {
+    background: hsl(var(--card));
+    border-radius: 1rem;
+    padding: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+    border: 1px solid hsl(var(--border));
+  }
+
+  .article-content .pricing-comparison .competitors {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-content .pricing-comparison .price-tag {
+    background: hsl(var(--muted));
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: hsl(var(--foreground));
+  }
+
+  .article-content .pricing-comparison .operator {
+    @apply text-muted-foreground;
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .article-content .pricing-comparison .total-old {
+    font-size: 1.5rem;
+    color: hsl(0 70% 50%);
+    text-decoration: line-through;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .article-content .pricing-comparison .total-new {
+    font-size: 2rem;
+    font-weight: 700;
+    color: hsl(var(--brand));
+    margin-bottom: 0.5rem;
+  }
+
+  .article-content .pricing-comparison .savings-badge {
+    background: hsl(var(--brand) / 0.2);
+    color: hsl(var(--brand));
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 1rem;
+  }
+
+  /* Nested list spacing improvement */
+  .article-content ul ul,
+  .article-content ol ol,
+  .article-content ul ol,
+  .article-content ol ul {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
   }
 }
 
