@@ -7,7 +7,9 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "optimize-images": "node scripts/optimize-images.js"
+    "optimize-images": "node scripts/optimize-images.js",
+    "import-article": "npx tsx scripts/import-article.ts",
+    "import-articles": "npx tsx scripts/import-article.ts --all"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.940.0",
@@ -48,15 +50,17 @@
     "clsx": "^2.1.1",
     "cmdk": "latest",
     "date-fns": "^4.1.0",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.3",
     "embla-carousel-react": "latest",
     "framer-motion": "latest",
+    "gray-matter": "^4.0.3",
     "imagemin": "^9.0.1",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
     "imagemin-webp": "^8.0.0",
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
+    "marked": "^17.0.1",
     "next": "^14.2.35",
     "next-themes": "latest",
     "react": "^18",
@@ -78,6 +82,7 @@
     "@types/react-dom": "^18",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }
