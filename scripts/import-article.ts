@@ -187,7 +187,7 @@ async function importArticle(filename: string): Promise<boolean> {
     excerpt: frontmatter.excerpt_en || frontmatter.excerpt_ka || '',
     excerpt_ka: frontmatter.excerpt_ka || '',
     author: frontmatter.author || 'Mypen.ge',
-    published: frontmatter.published !== false,
+    published: frontmatter.published === true,
     featured_image: featuredImageUrl,
     schema_keywords: frontmatter.schema_keywords || null,
   };
@@ -238,7 +238,7 @@ async function importArticle(filename: string): Promise<boolean> {
           ${postData.excerpt}, ${postData.excerpt_ka},
           ${postData.author}, ${postData.published},
           ${postData.featured_image}, ${postData.schema_keywords},
-          NOW()
+          ${postData.published ? new Date() : null}
         )
         RETURNING id, slug
       `;

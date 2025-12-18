@@ -10,7 +10,9 @@ interface WysiwygEditorProps {
 
 export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorProps) {
   const [mode, setMode] = useState<'code' | 'preview'>('code');
+  const [uploadingImage, setUploadingImage] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   // Update contentEditable div when switching to preview mode or when value changes externally
   useEffect(() => {
@@ -31,6 +33,48 @@ export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorP
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
     handleInput();
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', files[0]);
+
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.url) {
+        // Insert image at cursor position
+        const imgHtml = '<img src="' + data.url + '" alt="" style="max-width: 100%;" />';
+
+        if (mode === 'preview' && editorRef.current) {
+          document.execCommand('insertHTML', false, imgHtml);
+          handleInput();
+        } else {
+          // In code mode, append to end
+          onChange(value + '\n' + imgHtml);
+        }
+      } else {
+        alert(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      alert('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+      // Reset input
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
+    }
   };
 
   return (
@@ -162,6 +206,23 @@ export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorP
             title="Remove Link"
           >
             Unlink
+          </button>
+          <span className="w-px bg-zinc-600 mx-1" />
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => imageInputRef.current?.click()}
+            disabled={uploadingImage}
+            className="px-2 py-1 text-sm text-zinc-300 hover:bg-zinc-700 rounded disabled:opacity-50"
+            title="Insert Image"
+          >
+            {uploadingImage ? 'Uploading...' : 'Image'}
           </button>
         </div>
       )}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import WysiwygEditor from '@/components/admin/WysiwygEditor';
+import AssetUploader from '@/components/admin/AssetUploader';
 
 interface Article {
   id: number;
@@ -25,6 +26,7 @@ export default function EditArticle() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [assetsOpen, setAssetsOpen] = useState(true);
 
   useEffect(() => {
     fetchArticle();
@@ -197,6 +199,28 @@ export default function EditArticle() {
                 Published
               </label>
             </div>
+          </div>
+
+          {/* Assets */}
+          <div className="bg-zinc-900 rounded-lg border border-zinc-800 overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setAssetsOpen(!assetsOpen)}
+              className="w-full p-6 flex items-center justify-between text-left"
+            >
+              <h2 className="text-lg font-semibold text-white">Assets</h2>
+              <span className="text-zinc-400">
+                {assetsOpen ? '−' : '+'}
+              </span>
+            </button>
+            {assetsOpen && (
+              <div className="px-6 pb-6">
+                <p className="text-zinc-500 text-sm mb-4">
+                  Upload images here and click to copy their URLs. Use in content via the Image button or paste URLs directly.
+                </p>
+                <AssetUploader />
+              </div>
+            )}
           </div>
 
           {/* Content */}
