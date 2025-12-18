@@ -31,7 +31,12 @@ export async function GET() {
     });
 
     const response = await s3Client.send(command);
-    const baseUrl = process.env.AWS_S3_BASE_URL;
+    const bucket = process.env.AWS_S3_BUCKET;
+    const region = process.env.AWS_REGION;
+    const baseUrl = (process.env.AWS_S3_BASE_URL || `https://${bucket}.s3.${region}.amazonaws.com`).replace(/\/$/, '');
+
+    console.log('S3 Base URL:', baseUrl);
+    console.log('Found objects:', response.Contents?.length || 0);
 
     const images = (response.Contents || [])
       .filter((obj) => obj.Key && !obj.Key.endsWith('/')) // Filter out folders

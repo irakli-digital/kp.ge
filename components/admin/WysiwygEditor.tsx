@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import MediaPicker from './MediaPicker';
 
 interface WysiwygEditorProps {
   value: string;
@@ -11,6 +12,7 @@ interface WysiwygEditorProps {
 export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorProps) {
   const [mode, setMode] = useState<'code' | 'preview'>('code');
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -74,6 +76,19 @@ export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorP
       if (imageInputRef.current) {
         imageInputRef.current.value = '';
       }
+    }
+  };
+
+  const handleMediaSelect = (url: string) => {
+    const imgHtml = '<img src="' + url + '" alt="" style="max-width: 100%;" />';
+
+    if (mode === 'preview' && editorRef.current) {
+      editorRef.current.focus();
+      document.execCommand('insertHTML', false, imgHtml);
+      handleInput();
+    } else {
+      // In code mode, append to end
+      onChange(value + '\n' + imgHtml);
     }
   };
 
@@ -220,12 +235,26 @@ export default function WysiwygEditor({ value, onChange, label }: WysiwygEditorP
             onClick={() => imageInputRef.current?.click()}
             disabled={uploadingImage}
             className="px-2 py-1 text-sm text-zinc-300 hover:bg-zinc-700 rounded disabled:opacity-50"
-            title="Insert Image"
+            title="Upload Image"
           >
-            {uploadingImage ? 'Uploading...' : 'Image'}
+            {uploadingImage ? 'Uploading...' : 'Upload'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowMediaPicker(true)}
+            className="px-2 py-1 text-sm text-zinc-300 hover:bg-zinc-700 rounded"
+            title="Choose from Gallery"
+          >
+            Gallery
           </button>
         </div>
       )}
+
+      <MediaPicker
+        isOpen={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={handleMediaSelect}
+      />
 
       {mode === 'code' ? (
         <textarea

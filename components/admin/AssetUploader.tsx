@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import MediaPicker from './MediaPicker';
 
 interface UploadedImage {
   url: string;
@@ -17,6 +18,7 @@ export default function AssetUploader({ onImageUploaded }: AssetUploaderProps) {
   const [error, setError] = useState('');
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadFile = async (file: File) => {
@@ -94,6 +96,21 @@ export default function AssetUploader({ onImageUploaded }: AssetUploaderProps) {
     }
   };
 
+  const handleMediaSelect = (url: string) => {
+    // Add selected image to local list and copy URL
+    const filename = url.split('/').pop() || 'image';
+    const newImage = { url, filename };
+
+    // Only add if not already in list
+    if (!images.some(img => img.url === url)) {
+      setImages((prev) => [newImage, ...prev]);
+    }
+
+    // Copy URL to clipboard
+    copyToClipboard(url);
+    onImageUploaded?.(url);
+  };
+
   return (
     <div className="space-y-4">
       {/* Upload Zone */}
@@ -126,13 +143,22 @@ export default function AssetUploader({ onImageUploaded }: AssetUploaderProps) {
             <p className="text-zinc-400 mb-2">
               Drag & drop an image here, or
             </p>
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white text-sm rounded-md transition-colors"
-            >
-              Choose File
-            </button>
+            <div className="flex gap-2 justify-center">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white text-sm rounded-md transition-colors"
+              >
+                Upload New
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(true)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-md transition-colors"
+              >
+                Browse Gallery
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -170,6 +196,12 @@ export default function AssetUploader({ onImageUploaded }: AssetUploaderProps) {
           Click any image to copy its URL to clipboard
         </p>
       )}
+
+      <MediaPicker
+        isOpen={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={handleMediaSelect}
+      />
     </div>
   );
 }
