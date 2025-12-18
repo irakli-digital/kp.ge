@@ -47,7 +47,7 @@ published: true
 </div>
 </div>
 
-**საუკეთესო არჩევანი:** გამოიყენეთ ორივე - ან Mypen Ultra, რომელიც აერთიანებს ორივეს ძლიერ მხარეებს.
+**საუკეთესო არჩევანი:** გამოიყენეთ ორივე - ან Mypen Ultra, რომელიც აერთიანებს ორივეს ძლიერ მხარეებს. [სცადეთ ChatGPT →](/models/chatgpt) ან [სცადეთ Claude →](/models/claude)
 
 ---
 
@@ -238,4 +238,4 @@ published: true
 
 - [როგორ გამოვიყენოთ ChatGPT საქართველოში](/blog/chatgpt-saqartveloshi)
 - [Claude AI ქართულად: რატომ არის უკეთესი წერისთვის](/blog/claude-ai-kartulad)
-- [საუკეთესო AI მოდელი 2025: სრული შედარება](/blog/sauketheso-ai-modeli-2025)
+- [ტექსტის გადაფრასირება AI-ით](/blog/textis-gadafrasireba-ai)
