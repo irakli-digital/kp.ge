@@ -1,42 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const ADMIN_EMAIL = 'irakli.digital@gmail.com';
-const ADMIN_PASSWORD = 'Digitalhub!986';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '12345';
+const SESSION_COOKIE_NAME = 'admin_session';
 
-export async function POST(req: NextRequest) {
+// Simple session token - in production, use a proper JWT or session library
+function generateSessionToken(): string {
+  return Buffer.from(Date.now().toString() + '-' + Math.random().toString(36)).toString('base64');
+}
+
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json();
-    const { email, password } = body;
+    const body = await request.json();
+    const { username, password } = body;
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      // Create session token (simple approach - in production use JWT or proper session)
-      const sessionToken = Buffer.from(`${email}:${Date.now()}`).toString('base64');
-      
-      // Set cookie using Response
-      const response = NextResponse.json({ success: true });
-      response.cookies.set('admin_session', sessionToken, {
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      const sessionToken = generateSessionToken();
+
+      const cookieStore = await cookies();
+      cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24, // 24 hours
         path: '/',
       });
 
-      return response;
-    } else {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      return NextResponse.json({ success: true });
     }
+
+    return NextResponse.json(
+      { success: false, error: 'Invalid credentials' },
+      { status: 401 }
+    );
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('Login error:', error);
+    return NextResponse.json(
+      { success: false, error: 'Server error' },
+      { status: 500 }
+    );
   }
 }
 
 export async function DELETE() {
-  // Logout - clear session
-  const response = NextResponse.json({ success: true });
-  response.cookies.delete('admin_session');
-  
-  return response;
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
+  return NextResponse.json({ success: true });
 }
-
