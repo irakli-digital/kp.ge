@@ -10,6 +10,18 @@ function generateSessionToken(): string {
   return Buffer.from(Date.now().toString() + '-' + Math.random().toString(36)).toString('base64');
 }
 
+// Check if user is authenticated
+export async function GET() {
+  const cookieStore = await cookies();
+  const session = cookieStore.get(SESSION_COOKIE_NAME);
+
+  if (session?.value) {
+    return NextResponse.json({ authenticated: true });
+  }
+
+  return NextResponse.json({ authenticated: false }, { status: 401 });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -22,8 +34,8 @@ export async function POST(request: NextRequest) {
       cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24, // 24 hours
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       });
 

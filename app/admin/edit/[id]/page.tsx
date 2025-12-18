@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import WysiwygEditor from '@/components/admin/WysiwygEditor';
 
 interface Article {
@@ -16,12 +16,9 @@ interface Article {
   published: boolean;
 }
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default function EditArticle({ params }: PageProps) {
-  const { id } = use(params);
+export default function EditArticle() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
