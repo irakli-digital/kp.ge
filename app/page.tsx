@@ -159,7 +159,7 @@ export default function LandingPage() {
           {/* Hero Background Image */}
           <div className="absolute inset-0 -z-10">
             <Image
-              src={getImageUrl("/images/hero-background.png")}
+              src="/images/hero-background.png"
               alt="Podcast studio background"
               fill
               className="object-cover"
