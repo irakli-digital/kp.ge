@@ -1,45 +1,29 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
-import { useTheme } from "next-themes"
 
 export default function Footer() {
-  const { theme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  // Determine if we should show the dark logo
-  const isDarkTheme = !mounted ? true : theme === "dark" || resolvedTheme === "dark"
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   return (
     <footer className="w-full border-t bg-background/95 backdrop-blur-sm">
       <div className="container flex flex-col gap-8 px-4 py-10 md:px-6 lg:py-16">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Logo & Description */}
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 font-bold">
               <Link href="/">
-                <Image
-                  src={isDarkTheme ? "/images/saasify-logo-dark.svg" : "/images/saasify-logo-light.svg"}
-                  alt="SaaSify Logo"
-                  width={150}
-                  height={35}
-                  className="h-auto max-w-[150px]"
-                  priority
-                />
+                <span className="text-xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+                  ცოდნისმოყვარე
+                </span>
               </Link>
             </div>
             <p className="text-sm text-muted-foreground">
-              AI ტექნოლოგიაზე დაფუძნებული ტექსტის გაუმჯობესების ხელსაწყოები.
+              პოდკასტი, სადაც ცნობისმოყვარეობა ხვდება აღმოჩენას.
             </p>
             <div className="flex gap-4">
               <Link
-                href="https://www.facebook.com/mypen.ge.aiwriter"
+                href="https://www.youtube.com/@KPODCAST_GE"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <svg
@@ -54,87 +38,51 @@ export default function Footer() {
                   strokeLinejoin="round"
                   className="size-5"
                 >
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path>
+                  <path d="m10 15 5-3-5-3z"></path>
                 </svg>
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link
-                href="https://www.instagram.com/mypen.ge/"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="size-5"
-                >
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                  <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                </svg>
-                <span className="sr-only">Instagram</span>
+                <span className="sr-only">YouTube</span>
               </Link>
             </div>
           </div>
 
-          {/* AI მოდელები */}
+          {/* პოდკასტი */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold">AI მოდელები</h4>
+            <h4 className="text-sm font-bold">პოდკასტი</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/models/chatgpt" className="text-muted-foreground hover:text-foreground transition-colors">
-                  ChatGPT
+                <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
+                  მთავარი
                 </Link>
               </li>
               <li>
-                <Link href="/models/claude" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Claude
+                <Link href="https://www.youtube.com/@KPODCAST_GE" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
+                  ეპიზოდები
                 </Link>
               </li>
               <li>
-                <Link href="/models/gemini" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Gemini
+                <Link href="/donations" className="text-muted-foreground hover:text-foreground transition-colors">
+                  დონაცია
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* ინსტრუმენტები */}
+          {/* ვორქშოპები */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold">ინსტრუმენტები</h4>
+            <h4 className="text-sm font-bold">ვორქშოპები</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/tools/paraphraser" className="text-muted-foreground hover:text-foreground transition-colors">
-                  პარაფრეიზერი
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools/spellchecker" className="text-muted-foreground hover:text-foreground transition-colors">
-                  სპელჩეკერი
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools/pdf-analyzer" className="text-muted-foreground hover:text-foreground transition-colors">
-                  PDF ანალიზი
-                </Link>
-              </li>
-              <li>
-                <Link href="/tools/translator" className="text-muted-foreground hover:text-foreground transition-colors">
-                  მთარგმნელი
+                <Link href="/seminars/consciousness" className="text-muted-foreground hover:text-foreground transition-colors">
+                  ცნობიერების სემინარი
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* რესურსები */}
+          {/* ინფორმაცია */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold">რესურსები</h4>
+            <h4 className="text-sm font-bold">ინფორმაცია</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -142,35 +90,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link href="/templates/cv-maker" className="text-muted-foreground hover:text-foreground transition-colors">
-                  CV მეიკერი
-                </Link>
-              </li>
-              <li>
-                <Link href="/templates/cover-letter" className="text-muted-foreground hover:text-foreground transition-colors">
-                  სამოტივაციო წერილი
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* კომპანია */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-bold">კომპანია</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/#features" className="text-muted-foreground hover:text-foreground transition-colors">
-                  მახასიათებლები
-                </Link>
-              </li>
-              <li>
-                <Link href="/#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-                  ფასი
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+                  კონტაქტი
                 </Link>
               </li>
               <li>
@@ -183,17 +104,12 @@ export default function Footer() {
                   წესები და პირობები
                 </Link>
               </li>
-              <li>
-                <Link href="/refund-policy" className="text-muted-foreground hover:text-foreground transition-colors">
-                  დაბრუნების პოლიტიკა
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row justify-between items-center border-t border-border/40 pt-8">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Mypen.ge. ყველა უფლება დაცულია.
+            &copy; {new Date().getFullYear()} ცოდნისმოყვარე პოდკასტი. ყველა უფლება დაცულია.
           </p>
         </div>
       </div>

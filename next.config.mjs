@@ -8,79 +8,106 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // Legacy route
+      // Old Mypen routes → Home
       {
         source: '/chat',
         destination: '/',
         permanent: true,
       },
-
-      // ===========================================
-      // 404 FIXES - Google Search Console Report
-      // ===========================================
-
-      // Deleted blog posts → Blog index
       {
-        source: '/blog/save-tokens-on-mypen',
-        destination: '/blog',
+        source: '/tools',
+        destination: '/',
         permanent: true,
       },
       {
-        source: '/blog/unique-mypenge-prompts',
-        destination: '/blog',
+        source: '/tools/:path*',
+        destination: '/',
         permanent: true,
       },
-
-      // Auth pages → chat.mypen.ge
+      {
+        source: '/models',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/models/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/mypen-ultra',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/faq',
+        destination: '/',
+        permanent: true,
+      },
       {
         source: '/register',
-        destination: 'https://chat.mypen.ge/register',
+        destination: '/',
         permanent: true,
-        basePath: false,
       },
       {
         source: '/login',
-        destination: 'https://chat.mypen.ge/login',
+        destination: '/',
         permanent: true,
-        basePath: false,
       },
-
-      // Pricing pages → chat.mypen.ge
       {
         source: '/pricing',
-        destination: 'https://chat.mypen.ge/#pricing',
+        destination: '/',
         permanent: true,
-        basePath: false,
       },
       {
         source: '/pricing-plan',
-        destination: 'https://chat.mypen.ge/#pricing',
+        destination: '/',
         permanent: true,
-        basePath: false,
       },
-
-      // Checkout pages → chat.mypen.ge
       {
         source: '/checkout/:path*',
-        destination: 'https://chat.mypen.ge/checkout/:path*',
+        destination: '/',
         permanent: true,
-        basePath: false,
       },
-
-      // Legacy tool pages → New tool pages
       {
         source: '/check',
-        destination: '/tools/spellchecker',
+        destination: '/',
         permanent: true,
       },
       {
         source: '/translate',
-        destination: '/tools/translator',
+        destination: '/',
         permanent: true,
       },
       {
         source: '/write',
-        destination: '/models',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/templates/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      // Old seminar URLs → New seminar pages
+      {
+        source: '/system-constellation-reatreat',
+        destination: '/seminars/system-constellation-retreat',
+        permanent: true,
+      },
+      {
+        source: '/system-constellation-retreat',
+        destination: '/seminars/system-constellation-retreat',
+        permanent: true,
+      },
+      {
+        source: '/nugzar-dzidziguri-workshop',
+        destination: '/seminars/nugzar-dzidziguri-workshop',
+        permanent: true,
+      },
+      {
+        source: '/consciousness',
+        destination: '/seminars/consciousness',
         permanent: true,
       },
     ]
@@ -93,6 +120,13 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        pathname: '/vi/**',
+      },
+    ],
   },
 }
 

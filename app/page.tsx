@@ -1,21 +1,61 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Check, ArrowRight, Star, Languages, LifeBuoy, Users, FileText, Search, Briefcase, GraduationCap, MessageSquare, Code, Plane, Wallet, Shield, Layers } from "lucide-react"
+import { ArrowRight, Play, Clock, Heart, Brain, Atom, Users, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { SmartCtaLink } from "@/components/smart-cta-link"
-import JsonLd from "@/components/JsonLd"
-import { generateOrganizationSchema, generateSoftwareApplicationSchema } from "@/lib/schema"
+
+interface LatestVideo {
+  id: string
+  title: string
+  thumbnail: string
+  duration: string
+}
+
+interface YouTubeStats {
+  subscriberCount: string
+  videoCount: string
+  viewCount: string
+  latestVideo: LatestVideo | null
+}
 
 export default function LandingPage() {
+  const [stats, setStats] = useState<YouTubeStats>({
+    subscriberCount: "...",
+    videoCount: "...",
+    viewCount: "...",
+    latestVideo: null,
+  })
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await fetch('/api/youtube-stats')
+        const data = await response.json()
+        setStats({
+          subscriberCount: data.subscriberCount || "10K+",
+          videoCount: data.videoCount || "50+",
+          viewCount: data.viewCount || "100K+",
+          latestVideo: data.latestVideo || null,
+        })
+      } catch (error) {
+        console.error('Failed to fetch YouTube stats:', error)
+        setStats({
+          subscriberCount: "10K+",
+          videoCount: "50+",
+          viewCount: "100K+",
+          latestVideo: null,
+        })
+      }
+    }
+    fetchStats()
+  }, [])
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -31,171 +71,348 @@ export default function LandingPage() {
     show: { opacity: 1, y: 0 },
   }
 
-  const features = [
+  // Featured episode - the latest/best one
+  const featuredEpisode = {
+    id: "eoHyQ7T0fQ8",
+    title: "ცნობიერების პრინციპები - როგორ მივიღოთ გადაწყვეტილებები",
+    category: "ცნობიერება",
+    duration: "1:45:00",
+    description: "ჩაღრმავება გადაწყვეტილების მიღების მექანიზმებში და ცნობიერების პრინციპებში.",
+  }
+
+  const latestEpisodes = [
     {
-      title: "ქართული, როგორც მშობლიური",
-      description: "ბუნებრივი სტილი, სწორი ტერმინოლოგია.",
-      icon: <Languages className="size-6 stroke-[1.5] text-blue-500" />,
-      iconBg: "bg-blue-500/10 dark:bg-blue-500/20",
+      id: "eoHyQ7T0fQ8",
+      title: "ცნობიერების პრინციპები",
+      category: "ცნობიერება",
+      duration: "1:45:00",
+      thumbnail: `https://img.youtube.com/vi/eoHyQ7T0fQ8/maxresdefault.jpg`,
     },
     {
-      title: "ვებ-ძიება რეალურ დროში",
-      description: "პასუხები წყაროებითა და სწრაფი fact-check-ით.",
-      icon: <Search className="size-6 stroke-[1.5] text-purple-500" />,
-      iconBg: "bg-purple-500/10 dark:bg-purple-500/20",
+      id: "v6g1Ou8y0a8",
+      title: "მენტალური ჯანმრთელობა",
+      category: "ჯანმრთელობა",
+      duration: "1:32:00",
+      thumbnail: `https://img.youtube.com/vi/v6g1Ou8y0a8/maxresdefault.jpg`,
     },
     {
-      title: "ფაილების ღრმა ანალიზი",
-      description: "დიდი PDFs/დოკები → შეჯამება, ცხრილები, ინსაითები.",
-      icon: <FileText className="size-6 stroke-[1.5] text-amber-500" />,
-      iconBg: "bg-amber-500/10 dark:bg-amber-500/20",
+      id: "I4hIocEA3t4",
+      title: "პიროვნული განვითარება",
+      category: "განვითარება",
+      duration: "1:28:00",
+      thumbnail: `https://img.youtube.com/vi/I4hIocEA3t4/maxresdefault.jpg`,
+    },
+  ]
+
+  const topics = [
+    {
+      title: "საკუთარი თავის ფსიქოლოგია",
+      description: "თვითშეფასება, ემოციები და შინაგანი ბალანსი.",
+      icon: <Brain className="size-6" />,
+      gradient: "from-rose-500/20 to-pink-500/20",
+      borderColor: "border-rose-500/30",
+      iconColor: "text-rose-500",
     },
     {
-      title: "მრავალმოდელა არჩევანი",
-      description: "GPT-5, Claude, Gemini და სხვა - ერთ სივრცეში.",
-      icon: <Layers className="size-6 stroke-[1.5] text-emerald-500" />,
-      iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
+      title: "სხეული და დღეგრძელობა",
+      description: "ჯანსაღი ცხოვრების წესი და პრევენცია.",
+      icon: <Heart className="size-6" />,
+      gradient: "from-emerald-500/20 to-teal-500/20",
+      borderColor: "border-emerald-500/30",
+      iconColor: "text-emerald-500",
     },
     {
-      title: "კონფიდენციალურობა",
-      description: "ფაილების/ჩათების წაშლა და კონტროლი შენს ხელშია.",
-      icon: <Shield className="size-6 stroke-[1.5] text-rose-500" />,
-      iconBg: "bg-rose-500/10 dark:bg-rose-500/20",
+      title: "მეცნიერება და აღმოჩენები",
+      description: "საოცარი ფაქტები და თანამედროვე კვლევები.",
+      icon: <Atom className="size-6" />,
+      gradient: "from-blue-500/20 to-cyan-500/20",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-500",
     },
     {
-      title: "24/7 მხარდაჭერა",
-      description: "მზად ვართ, როცა დაგჭირდება.",
-      icon: <LifeBuoy className="size-6 stroke-[1.5] text-cyan-500" />,
-      iconBg: "bg-cyan-500/10 dark:bg-cyan-500/20",
+      title: "ზრდა და ტრანსფორმაცია",
+      description: "პრაქტიკული რჩევები თვითგანვითარებისთვის.",
+      icon: <Sparkles className="size-6" />,
+      gradient: "from-amber-500/20 to-orange-500/20",
+      borderColor: "border-amber-500/30",
+      iconColor: "text-amber-500",
     },
   ]
 
   return (
-    <>
-      {/* JSON-LD Structured Data for SEO */}
-      <JsonLd data={generateOrganizationSchema()} />
-      <JsonLd data={generateSoftwareApplicationSchema()} />
+    <div className="flex min-h-[100dvh] flex-col bg-[#0a0a0a]">
+      <Header />
 
-      <div className="flex min-h-[100dvh] flex-col">
-        <Header />
+      <main className="flex-1 relative">
+        {/* Subtle grain texture */}
+        <div className="fixed inset-0 -z-10 opacity-20 pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }} />
 
-      {/* Sticky mobile CTA */}
-      <div className="sm:hidden fixed bottom-3 inset-x-3 z-50">
-        <Button
-          size="lg"
-          className="w-full rounded-full h-12 px-6 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
-          asChild
-        >
-          <SmartCtaLink
-            aria-label="დაიწყე უფასოდ"
-            data-cta-id="cta_mobile_sticky"
-          >
-            დაიწყე უფასოდ
-            <ArrowRight className="ml-2 size-4" />
-          </SmartCtaLink>
-        </Button>
-      </div>
+        {/* Hero Section - Split Screen */}
+        <section className="w-full min-h-[85vh] flex items-center relative overflow-hidden">
+          {/* YouTube Video Background */}
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            <div className="absolute inset-0 scale-150">
+              <iframe
+                src="https://www.youtube.com/embed/qfRwK6O_EhM?autoplay=1&mute=1&loop=1&playlist=qfRwK6O_EhM&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&disablekb=1&iv_load_policy=3"
+                title="Background Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] pointer-events-none"
+                style={{ border: 'none' }}
+              />
+            </div>
+            {/* Dark overlay for readability */}
+            <div className="absolute inset-0 bg-black/70" />
+          </div>
 
-      <main className="flex-1 relative pb-20 sm:pb-0">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-[#171717] bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+          {/* Background gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-950/30 via-transparent to-orange-950/20" />
 
-        {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 overflow-hidden">
-          <div className="container px-4 md:px-6 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-center max-w-3xl mx-auto mb-8 md:mb-12"
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 leading-tight">
-                შენი ქართული წერის AI ასისტენტი
-              </h1>
-
-              {/* Social Proof Chip */}
-              <div className="flex items-center justify-center gap-2 mb-5">
-                <Badge className="rounded-full px-4 py-1.5 text-sm font-medium flex items-center gap-2" variant="secondary">
-                  <Users className="size-4" />
-                  10,000+ კმაყოფილი მომხმარებელი
-                </Badge>
-              </div>
-
-              <p className="text-base md:text-lg text-muted-foreground mb-5 max-w-[70ch] mx-auto leading-relaxed">
-                მიიღე პასუხები ნებისმიერ თემაზე, წერე გამართული ქართულით, ატვირთე და გააანალიზე ფაილები - ერთ სივრცეში.
-              </p>
-
-              {/* Trust chips */}
-              <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-                <Badge className="rounded-full px-4 py-1.5 text-xs font-medium bg-gradient-to-r from-emerald-500/10 via-amber-500/10 to-blue-500/10 border-primary/30" variant="outline">
-                  GPT • Claude • Gemini - ერთ სივრცეში
-                </Badge>
-                <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
-                  ქართული ენა - 100%
-                </Badge>
-                <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
-                  ვებ-ძიება
-                </Badge>
-                <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
-                  ფაილების ანალიზი
-                </Badge>
-                <Badge className="rounded-full px-3 py-1 text-xs font-medium" variant="outline">
-                  სწრაფი პასუხები
-                </Badge>
-              </div>
-
-              {/* CTAs with analytics ids */}
-              <div className="flex flex-col items-center gap-2 pt-4">
-                <Button
-                  size="lg"
-                  className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                  asChild
-                >
-                  <SmartCtaLink
-                    aria-label="დაიწყე უფასოდ"
-                    data-cta-id="cta_hero_start_free"
-                  >
-                    დაიწყე უფასოდ
-                    <ArrowRight className="ml-2 size-4" />
-                  </SmartCtaLink>
-                </Button>
-                <span className="text-xs text-muted-foreground">საკრედიტო ბარათი არ არის საჭირო</span>
-              </div>
-            </motion.div>
-
+          <div className="container px-4 md:px-6 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-              className="relative mx-auto max-w-4xl mt-8"
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-3xl mx-auto text-center"
             >
-              <div className="rounded-xl overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20">
-                <Image
-                  src="/images/mypen-hero-dashboard.webp"
-                  width={1280}
-                  height={720}
-                  alt="MyPen dashboard interface with AI assistant"
-                  className="w-full h-auto"
-                  priority
-                />
-                <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-black/10 dark:ring-white/10" />
+              {/* Schedule pill */}
+              <div className="mb-6">
+                <Badge className="rounded-full px-4 py-2 text-xs font-semibold tracking-wide bg-amber-500/10 border border-amber-500/30 text-amber-400 backdrop-blur-sm">
+                  ახალი ეპიზოდი ყოველ ოთხშაბათს
+                </Badge>
               </div>
-              <div className="absolute -bottom-6 -right-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 blur-3xl opacity-70" />
-              <div className="absolute -top-6 -left-6 -z-10 h-[250px] w-[250px] rounded-full bg-gradient-to-br from-secondary/30 to-primary/30 blur-3xl opacity-70" />
+
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
+                ცოდნისმოყვარე
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
+                  პოდკასტი
+                </span>
+              </h1>
+
+              <p className="text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+                ჩაღრმავდი მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის თემებში
+                <span className="text-white font-medium"> გვანცა ველთაურთან ერთად.</span>
+              </p>
+
+              {/* Platform buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+                <Button
+                  size="lg"
+                  className="h-14 px-8 rounded-none bg-red-600 hover:bg-red-700 text-white font-semibold text-base transition-all group"
+                  asChild
+                >
+                  <Link href="https://www.youtube.com/@KPODCAST_GE" target="_blank" rel="noopener noreferrer">
+                    <svg className="mr-2 size-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    უყურე YouTube-ზე
+                    <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-14 px-8 rounded-none border-neutral-500/50 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white font-semibold text-base"
+                  asChild
+                >
+                  <Link href="https://open.spotify.com/show/your-show-id" target="_blank" rel="noopener noreferrer">
+                    <svg className="mr-2 size-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                    Spotify
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="flex gap-8 justify-center text-sm text-neutral-400">
+                <div>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.videoCount}</span>
+                  ეპიზოდი
+                </div>
+                <div>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.subscriberCount}</span>
+                  გამომწერი
+                </div>
+                <div>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.viewCount}</span>
+                  მოსმენა
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Features Section - რატომ MyPen */}
-        <section id="features" className="w-full py-20 md:py-24">
+        {/* Featured Episode - Big Player */}
+        <section className="w-full py-16 md:py-20 border-t border-neutral-800/50">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl mx-auto"
             >
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">რატომ MyPen</h2>
+              <div className="text-center mb-10">
+                <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">უახლესი ეპიზოდი</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white">
+                  {stats.latestVideo?.title || featuredEpisode.title}
+                </h2>
+              </div>
+
+              {/* Video embed with custom overlay */}
+              <div className="relative group">
+                <div className="aspect-video bg-neutral-900 rounded-lg overflow-hidden border border-neutral-800">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${stats.latestVideo?.id || featuredEpisode.id}`}
+                    title={stats.latestVideo?.title || featuredEpisode.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="border-0"
+                  />
+                </div>
+
+                {/* Meta info below */}
+                <div className="flex items-center justify-between mt-4 text-sm text-neutral-500">
+                  <div className="flex items-center gap-4">
+                    <Badge variant="outline" className="rounded-none border-amber-500/30 text-amber-500 bg-amber-500/5 text-xs uppercase tracking-wider">
+                      პოდკასტი
+                    </Badge>
+                    {(stats.latestVideo?.duration || featuredEpisode.duration) && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="size-4" />
+                        {stats.latestVideo?.duration || featuredEpisode.duration}
+                      </span>
+                    )}
+                  </div>
+                  <Link
+                    href={`https://www.youtube.com/watch?v=${stats.latestVideo?.id || featuredEpisode.id}`}
+                    target="_blank"
+                    className="text-amber-500 hover:text-amber-400 transition-colors flex items-center gap-1"
+                  >
+                    უყურე YouTube-ზე
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Latest Episodes Grid */}
+        <section className="w-full py-16 md:py-20 border-t border-neutral-800/50 bg-neutral-950/50">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ეპიზოდები</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">მოისმინე პოდკასტი</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {latestEpisodes.map((episode, i) => (
+                <motion.div
+                  key={episode.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  <Link
+                    href={`https://www.youtube.com/watch?v=${episode.id}`}
+                    target="_blank"
+                    className="group block"
+                  >
+                    <Card className="h-full overflow-hidden bg-neutral-900/30 border-neutral-800 hover:border-amber-500/30 transition-all duration-300">
+                      <CardContent className="p-0">
+                        {/* Thumbnail with play overlay */}
+                        <div className="relative aspect-video overflow-hidden">
+                          <Image
+                            src={episode.thumbnail}
+                            alt={episode.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:from-black/50 group-hover:via-black/20 transition-colors" />
+                          {/* Play button */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="size-16 rounded-full bg-white/90 group-hover:bg-white flex items-center justify-center transition-all group-hover:scale-110 shadow-xl shadow-black/30">
+                              <Play className="size-7 text-black ml-1 drop-shadow-md" fill="black" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-5">
+                          <Badge variant="outline" className="mb-3 rounded-none text-[10px] uppercase tracking-wider border-amber-500/30 text-amber-500 bg-amber-500/5">
+                            {episode.category}
+                          </Badge>
+                          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">
+                            {episode.title}
+                          </h3>
+                          <div className="flex items-center justify-between border-t border-neutral-800 pt-4">
+                            <span className="text-neutral-500 text-sm flex items-center gap-2">
+                              <Clock className="size-4" />
+                              {episode.duration}
+                            </span>
+                            <span className="text-white bg-neutral-800 hover:bg-amber-500 px-4 py-2 text-sm font-semibold flex items-center gap-2 transition-colors">
+                              <Play className="size-4" fill="currentColor" />
+                              მოსმენა
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex justify-center pt-12"
+            >
+              <Button
+                size="lg"
+                className="h-14 px-10 rounded-none bg-white hover:bg-neutral-100 text-black font-semibold text-base transition-all group"
+                asChild
+              >
+                <Link href="https://www.youtube.com/@KPODCAST_GE" target="_blank" rel="noopener noreferrer">
+                  ნახე ყველა ეპიზოდი
+                  <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Topics - Editorial Style */}
+        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16"
+            >
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">თემატიკა</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-balance">რაზე ვსაუბრობთ</h2>
+              <p className="text-neutral-400 max-w-2xl mx-auto">
+                მოისმინე საინტერესო ინტერვიუები, ისტორიები და მიიღე პრაქტიკული რჩევები.
+              </p>
             </motion.div>
 
             <motion.div
@@ -203,702 +420,148 @@ export default function LandingPage() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto mb-4"
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto"
             >
-              {features.map((feature, i) => (
-                <motion.div key={i} variants={item} className="flex flex-col items-center text-center">
-                  <div className={`size-14 rounded-full ${feature.iconBg} flex items-center justify-center mb-4`}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed max-w-[30ch]">{feature.description}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* AI Models Showcase Section */}
-        <section id="ai-models" className="w-full py-20 md:py-24 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
-
-          <div className="container px-4 md:px-6 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-            >
-              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                ერთი პლატფორმა - ყველა წამყვანი AI
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">წვდომა საუკეთესო AI მოდელებზე</h2>
-              <p className="max-w-[65ch] text-muted-foreground md:text-lg mx-auto">
-                აირჩიეთ საუკეთესო მოდელი თქვენი ამოცანისთვის - ყველა ერთ სივრცეში.
-              </p>
-            </motion.div>
-
-            <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-              {/* OpenAI Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0 }}
-              >
-                <Card className="h-full border-emerald-500/30 bg-gradient-to-b from-emerald-500/5 to-transparent hover:border-emerald-500/50 transition-all">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="size-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                        <span className="text-emerald-500 font-bold text-lg">O</span>
+              {topics.map((topic, i) => (
+                <motion.div key={i} variants={item}>
+                  <Card className={`h-full bg-gradient-to-br ${topic.gradient} border ${topic.borderColor} hover:border-opacity-60 transition-all duration-300 group`}>
+                    <CardContent className="p-6">
+                      <div className={`size-12 rounded-lg bg-neutral-900/50 flex items-center justify-center mb-4 ${topic.iconColor}`}>
+                        {topic.icon}
                       </div>
-                      <h3 className="text-xl font-bold text-emerald-400">OpenAI</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">კრეატიულობა და მრავალფეროვნება</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {["GPT-5", "GPT-5.1", "GPT-5.2", "GPT-4o"].map((model) => (
-                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
-                          {model}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Anthropic Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                <Card className="h-full border-amber-500/30 bg-gradient-to-b from-amber-500/5 to-transparent hover:border-amber-500/50 transition-all">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="size-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                        <span className="text-amber-500 font-bold text-lg">A</span>
-                      </div>
-                      <h3 className="text-xl font-bold text-amber-400">Anthropic</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">ლოგიკა და ანალიტიკა</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {["Claude Opus 4.1", "Claude Sonnet 4.5"].map((model) => (
-                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                          {model}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Google Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <Card className="h-full border-blue-500/30 bg-gradient-to-b from-blue-500/5 to-transparent hover:border-blue-500/50 transition-all">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="size-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                        <span className="text-blue-500 font-bold text-lg">G</span>
-                      </div>
-                      <h3 className="text-xl font-bold text-blue-400">Google</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">მულტიმოდალურობა და სიჩქარე</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {["Gemini 3.0 Pro", "Gemini 2.5 Pro", "Gemini 2.5 Flash"].map((model) => (
-                        <span key={model} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-300 border border-blue-500/30">
-                          {model}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-10"
-            >
-              <Button
-                size="lg"
-                className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                asChild
-              >
-                <SmartCtaLink aria-label="სცადე ყველა მოდელი" data-cta-id="cta_ai_models">
-                  სცადე ყველა მოდელი
-                  <ArrowRight className="ml-2 size-4" />
-                </SmartCtaLink>
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Use Cases Section - რას აკეთებს */}
-        <section id="use-cases" className="w-full py-20 md:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
-
-          <div className="container px-4 md:px-6 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-            >
-              <h2 className="text-3ლ md:text-4xl font-bold tracking-tight">რას აკეთებს</h2>
-            </motion.div>
-
-            <div className="grid gap-4 grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto mb-8">
-              {[
-                {
-                  title: "სამუშაოს მოძებნა",
-                  description: "CV/cover letter, ვაკანსიები, გასაუბრებისთვის მზადება.",
-                  icon: <Briefcase className="size-5 stroke-[1.5] text-indigo-500" />,
-                  iconBg: "bg-indigo-500/10 dark:bg-indigo-500/20",
-                },
-                {
-                  title: "ფაილების ანალიზი",
-                  description: "დიდი PDFs/დოკები → შეჯამება და მთავარი ინსაითები.",
-                  icon: <FileText className="size-5 stroke-[1.5] text-amber-500" />,
-                  iconBg: "bg-amber-500/10 dark:bg-amber-500/20",
-                },
-                {
-                  title: "სწავლა & კვლევა",
-                  description: "რთული თემების ახსნა + წყაროები.",
-                  icon: <GraduationCap className="size-5 stroke-[1.5] text-emerald-500" />,
-                  iconBg: "bg-emerald-500/10 dark:bg-emerald-500/20",
-                },
-                {
-                  title: "ყოველდღიური კითხვები",
-                  description: "რეცეპტები, რჩევები, \"როგორ გავაკეთო?\".",
-                  icon: <MessageSquare className="size-5 stroke-[1.5] text-purple-500" />,
-                  iconBg: "bg-purple-500/10 dark:bg-purple-500/20",
-                },
-                {
-                  title: "ბიზნეს დოკუმენტები",
-                  description: "ბრეიფები, შეთავაზებები, მონახაზები (იურ. კონსულტაცია არაა).",
-                  icon: <Briefcase className="size-5 stroke-[1.5] text-blue-500" />,
-                  iconBg: "bg-blue-500/10 dark:bg-blue-500/20",
-                },
-                {
-                  title: "კოდირება",
-                  description: "ახსნა, დებაგი, მოკლე სკრიპტები.",
-                  icon: <Code className="size-5 stroke-[1.5] text-slate-500" />,
-                  iconBg: "bg-slate-500/10 dark:bg-slate-500/20",
-                },
-                {
-                  title: "მოგზაურობა",
-                  description: "მარშრუტი, ბიუჯეტი, ლოკალური გაიდები.",
-                  icon: <Plane className="size-5 stroke-[1.5] text-sky-500" />,
-                  iconBg: "bg-sky-500/10 dark:bg-sky-500/20",
-                },
-                {
-                  title: "ფინანსები",
-                  description: "გეგმები, ჩექლისტები, ხარჯების ორგანიზება.",
-                  icon: <Wallet className="size-5 stroke-[1.5] text-green-500" />,
-                  iconBg: "bg-green-500/10 dark:bg-green-500/20",
-                },
-              ].map((useCase, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.05, ease: "easeOut" }}
-                >
-                  <SmartCtaLink
-                    className="block h-full"
-                    aria-label={`${useCase.title} – დაიწყე უფასოდ`}
-                    data-cta-id="cta_usecase_card"
-                    data-usecase={useCase.title}
-                  >
-                    <Card className="h-full overflow-hidden border-border/40 bg-background/50 backdrop-blur transition-all hover:shadow-md hover:border-primary/50 group cursor-pointer">
-                      <CardContent className="p-5">
-                        <div className={`size-10 rounded-full ${useCase.iconBg} flex items-center justify-center mb-3`}>
-                          {useCase.icon}
-                        </div>
-                        <h3 className="text-base font-bold mb-2 group-hover:text-primary transition-colors">{useCase.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed max-w-[35ch]">{useCase.description}</p>
-                      </CardContent>
-                    </Card>
-                  </SmartCtaLink>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Inline CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-2"
-            >
-              <Button
-                size="lg"
-                className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                asChild
-              >
-                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_usecases_section">
-                  დაიწყე უფასოდ
-                  <ArrowRight className="ml-2 size-4" />
-                </SmartCtaLink>
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* How It Works Section */}
-        <section id="how-it-works" className="w-full py-20 md:py-32">
-          <div className="container px-4 md:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">როგორ მუშაობს</h2>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8 md:gap-12 relative mb-10">
-              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-border to-transparent -translate-y-1/2 z-0" />
-
-              {[
-                {
-                  step: "01",
-                  title: "დარეგისტრირდი 60 წამში",
-                  description: "ბარათი არ გჭირდება.",
-                },
-                {
-                  step: "02",
-                  title: "დაუსვი შეკითხვა ან ატვირთე ფაილი",
-                  description: "ქართულად ან ნებისმიერ ენაზე.",
-                },
-                {
-                  step: "03",
-                  title: "მიიღე ზუსტი, მოკლე პასუხები",
-                  description: "საჭიროებისას ვებ-წყაროებითა და ციტირებით.",
-                },
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="relative z-10 flex flex-col items-center text-center space-y-4"
-                >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground text-xl font-bold shadow-lg">
-                    {step.step}
-                  </div>
-                  <h3 className="text-xl font-bold">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.description}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-2"
-            >
-              <Button
-                size="lg"
-                className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg"
-                asChild
-              >
-                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_how_it_works">
-                  დაიწყე უფასოდ
-                  <ArrowRight className="ml-2 size-4" />
-                </SmartCtaLink>
-              </Button>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section id="testimonials" className="w-full py-20 md:py-32">
-          <div className="container px-4 md:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-            >
-              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium flex items-center gap-2" variant="secondary">
-                <Users className="size-4" />
-                10,000+ კმაყოფილი მომხმარებელი
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">გამოხმაურებები</h2>
-            </motion.div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-              {[
-                {
-                  quote: "სამი მოდელი ერთ პლატფორმაზე - მოქნილი და მარტივი გამოყენება.",
-                  author: "გიორგი ვ.",
-                  role: "პროგრამული უზრუნველყოფის ინჟინერი",
-                  rating: 5,
-                },
-                {
-                  quote: "PRO პაკეტი ჩვენს გუნდს პირდაპირ დროს უზოგავს.",
-                  author: "ნინო ე.",
-                  role: "მცირე ბიზნესის მფლობელი",
-                  rating: 5,
-                },
-                {
-                  quote: "ULTRA მოდელი - ჩემი საიდუმლო იარაღი კვლევისთვის.",
-                  author: "დავით ჩ.",
-                  role: "მარკეტერი და ბლოგერი",
-                  rating: 5,
-                },
-                {
-                  quote: "უფასო ვერსია მყოფნის ყოველდღიური დავალებებისთვის.",
-                  author: "ანა გ.",
-                  role: "უნივერსიტეტის სტუდენტი",
-                  rating: 5,
-                },
-                {
-                  quote: "Pro ძლიერი და სწრაფია - ფასი სამართლიანია.",
-                  author: "ლევან ს.",
-                  role: "ფრილანსერი",
-                  rating: 5,
-                },
-                {
-                  quote: "პასუხები ბუნებრივია და ზუსტი ქართულად.",
-                  author: "მარიამ რ.",
-                  role: "პროექტის მენეჯერი",
-                  rating: 5,
-                },
-              ].map((t, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.05 }}>
-                  <Card className="h-full overflow-hidden border-border/40 bg-gradient-to-b from-background to-muted/10 backdrop-blur transition-all hover:shadow-md">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <div className="flex mb-4">
-                        {Array(t.rating).fill(0).map((_, j) => (
-                          <Star key={j} className="size-4 text-yellow-500 fill-yellow-500" />
-                        ))}
-                      </div>
-                      <p className="mb-6 flex-grow text-sm">{t.quote}</p>
-                      <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border/40">
-                        <div className="size-10 rounded-full bg-muted flex items-center justify-center text-foreground font-medium">
-                          {t.author.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-medium">{t.author}</p>
-                          <p className="text-sm text-muted-foreground">{t.role}</p>
-                        </div>
-                      </div>
+                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+                        {topic.title}
+                      </h3>
+                      <p className="text-neutral-400 text-sm leading-relaxed">
+                        {topic.description}
+                      </p>
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
-            </div>
-
-            {/* Testimonials CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex justify-center pt-8"
-            >
-              <Button size="lg" className="rounded-full h-12 px-8 text-base transition-all hover:scale-105 hover:shadow-lg" asChild>
-                <SmartCtaLink aria-label="დაიწყე უფასოდ" data-cta-id="cta_testimonials">
-                  დაიწყე უფასოდ
-                  <ArrowRight className="ml-2 size-4" />
-                </SmartCtaLink>
-              </Button>
             </motion.div>
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section id="pricing" className="w-full py-20 md:py-32 bg-muted/30 relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_40%,transparent_100%)]" />
-
-          <div className="container px-4 md:px-6 relative">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-            >
-              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                მარტივი, გამჭვირვალე ფასები
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">თქვენს საჭიროებებზე მორგებული AI პაკეტები</h2>
-              <p className="max-w-[70ჩ] text-muted-foreground md:text-lg mx-auto">
-                მიუხედავად იმისა, ახლა იწყებთ თუ გჭირდებათ პროფესიონალური დონის AI ინსტრუმენტები - გვაქვს პაკეტი, რომელიც შეესაბამება თქვენს მოთხოვნებს.
-              </p>
-            </motion.div>
-
-            <div className="mx-auto max-w-5xl">
-              <Tabs defaultValue="monthly" className="w-full">
-                <div className="flex justify-center mb-8">
-                  <TabsList className="rounded-full p-1">
-                    <TabsTrigger value="monthly" className="rounded-full px-6">თვიურად</TabsTrigger>
-                    <TabsTrigger value="business" className="rounded-full px-6">ბიზნესისთვის</TabsTrigger>
-                  </TabsList>
+        {/* About Host */}
+        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-neutral-950/50">
+          <div className="container px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+              {/* Image */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                <div className="aspect-square max-w-sm mx-auto relative overflow-hidden rounded-2xl">
+                  <Image
+                    src="/images/guest photos/გვანვა ველთაური.jpg"
+                    alt="გვანცა ველთაური"
+                    fill
+                    className="object-cover"
+                  />
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
+              </motion.div>
 
-                <TabsContent value="monthly">
-                  <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
-                    {[
-                      {
-                        name: "Mypen LIGHT",
-                        price: "უფასო",
-                        description: "ყველა საბაზისო ინსტრუმენტი AI-სთან მუშაობის დასაწყებად.",
-                        features: [
-                          "წვდომა Mypen Light მოდელზე",
-                          "მოხმარების დღიური ლიმიტი",
-                          "სტანდარტული სიჩქარე",
-                          "იდეალურია ყოველდღიური ამოცანებისთვის",
-                          "AI წერა და თარგმნა ქართულად",
-                        ],
-                        models: ["Mypen Lite"],
-                        cta: "დაიწყე უფასოდ",
-                        ctaId: "cta_pricing_starter",
-                        colorScheme: "default",
-                      },
-                      {
-                        name: "Mypen ULTRA",
-                        price: "₾69",
-                        description: "შეუზღუდავი შემოქმედებისა და რთული ამოცანებისთვის.",
-                        features: [
-                          "ყველაფერი რაც Mypen Pro-შია",
-                          "Mypen Ultra მოდელზე წვდომა",
-                          "∞ შეუზღუდავი წვდომა",
-                          "20x მეტი კონტექსტის დამუშავება",
-                          "სიღრმისეული ანალიზი და კოდის წერა",
-                          "სრული წვდომა ყველა ინსტრუმენტზე (ძიება, ფაილები, თარგმანი)",
-                        ],
-                        models: ["Mypen Ultra", "GPT-5", "GPT-5.1", "GPT-5.2", "Gemini 2.5 Pro", "Gemini 3.0 Pro", "Claude Sonnet 4.5", "Claude Opus 4.1"],
-                        cta: "აირჩიე Ultra",
-                        ctaId: "cta_pricing_ultra",
-                        popular: true,
-                        colorScheme: "purple",
-                      },
-                      {
-                        name: "Mypen PRO",
-                        price: "₾29",
-                        description: "მაღალი ხარისხის კონტენტის სწრაფად შესაქმნელად.",
-                        features: [
-                          "ყველაფერი რაც Mypen Light-შია",
-                          "Mypen Pro მოდელზე წვდომა",
-                          "10x მეტი წვდომის ლიმიტი",
-                          "5x მეტი კონტექსტის დამუშავება",
-                          "მაღალი სიჩქარე",
-                          "კრეატიული კონტენტის შექმნა",
-                          "ფაილების ანალიზი (PDF, DOC, იმიჯები)",
-                          "ინტერნეტში ძიება",
-                        ],
-                        models: ["Mypen Pro", "GPT-4o", "Gemini 2.5 Flash"],
-                        cta: "აირჩიე Pro",
-                        ctaId: "cta_pricing_pro",
-                        colorScheme: "blue",
-                      },
-                    ].map((plan, i) => {
-                      const isBlue = plan.colorScheme === "blue"
-                      const isPurple = plan.colorScheme === "purple"
-                      const borderColor = isPurple ? "border-purple-500/50" : isBlue ? "border-blue-500/50" : "border-border/40"
-                      const titleColor = isPurple ? "text-purple-400" : isBlue ? "text-blue-400" : ""
-                      const buttonClass = isPurple
-                        ? "bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white border-0"
-                        : isBlue
-                        ? "border-blue-500/50 text-blue-400 hover:bg-blue-500/10"
-                        : ""
-
-                      const popularShadow = isBlue ? "shadow-xl shadow-blue-500/20" : isPurple ? "shadow-xl shadow-purple-500/20" : "shadow-xl"
-                      const popularBadgeBg = isBlue ? "bg-blue-600" : isPurple ? "bg-purple-600" : "bg-primary"
-
-                      return (
-                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                        <Card className={`relative overflow-hidden h-full ${borderColor} ${plan.popular ? popularShadow : "shadow-md"} bg-gradient-to-b from-background to-muted/10 backdrop-blur`}>
-                          {plan.popular && (
-                            <div className={`absolute top-0 right-0 ${popularBadgeBg} text-white px-3 py-1 text-xs font-medium rounded-bl-lg`}>
-                              ყველაზე პოპულარული
-                            </div>
-                          )}
-                          <CardContent className="p-6 flex flex-col h-full">
-                            <h3 className={`text-2xl font-bold ${titleColor}`}>{plan.name}</h3>
-                            <div className="flex items-baseline mt-4">
-                              <span className={`text-4xl font-bold ${titleColor}`}>{plan.price}</span>
-                              {plan.price !== "უფასო" && <span className="text-muted-foreground ml-1">/თვე</span>}
-                            </div>
-                            <p className="text-muted-foreground mt-2 max-w-[40ჩ]">{plan.description}</p>
-                            {/* Models Section - Elevated */}
-                            <div className="pt-4 pb-4 mt-4 border-t border-b border-border/40">
-                              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-                                ხელმისაწვდომი მოდელები
-                              </h4>
-                              <div className="flex flex-wrap gap-1.5">
-                                {plan.models.map((model) => (
-                                  <span
-                                    key={model}
-                                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${
-                                      isPurple ? "bg-purple-500/10 text-purple-300 border-purple-500/30" :
-                                      isBlue ? "bg-blue-500/10 text-blue-300 border-blue-500/30" :
-                                      "bg-muted text-muted-foreground border-border/40"
-                                    }`}
-                                  >
-                                    {model}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                            <ul className="space-y-3 my-6 flex-grow">
-                              {plan.features.map((feature, j) => (
-                                <li key={j} className="flex items-center">
-                                  <Check className={`size-4 mr-2 flex-shrink-0 ${isPurple ? "text-purple-500" : isBlue ? "text-blue-500" : "text-primary"}`} />
-                                  <span className="text-sm">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <Button className={`w-full mt-auto rounded-full transition-all hover:scale-105 ${buttonClass}`} variant={plan.popular ? "default" : "outline"} asChild>
-                              <SmartCtaLink 
-                                aria-label={plan.cta} 
-                                data-cta-id={plan.ctaId}
-                                data-tier={plan.name.toLowerCase().replace('mypen ', '')}
-                                data-value={plan.price !== "უფასო" ? plan.price.replace('₾', '').trim() : undefined}
-                              >
-                                {plan.cta}
-                              </SmartCtaLink>
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    )}
-                    )}
-                  </div>
-
-                  {/* Cancellation and payment security note */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-center mt-8 text-sm text-muted-foreground"
-                  >
-                                        გაუქმება და თანხის დაბრუნება 7 დღის განმავლობაში.
-                  </motion.div>
-                </TabsContent>
-
-                <TabsContent value="business">
-                  <div className="flex flex-col items-center justify-center text-center py-12 px-4 space-y-4">
-                    <h3 className="text-3xl md:text-4xl font-bold tracking-tight">ბიზნეს გადაწყვეტები</h3>
-                    <p className="max-w-[600px] text-muted-foreground md:text-lg">
-                      მიიღეთ მორგებული ფასები და ფუნქციები თქვენი ორგანიზაციის საჭიროებების შესაბამისად. ბიზნეს გეგმები მოიცავს გაძლიერებულ უსაფრთხოებას, გუნდის მართვას და პრიორიტეტულ მხარდაჭერას.
-                    </p>
-                    დაგვიკავშირდით:{" "}
-                    <Link href="mailto:support@mypen.ge" className="text-primary hover:underline text-lg font-medium">
-                      support@mypen.ge
-                    </Link>
-                  </div>
-                </TabsContent>
-              </Tabs>
+              {/* Content */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">წამყვანი</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">გვანცა ველთაური</h2>
+                <div className="space-y-4 text-neutral-400">
+                  <p>
+                    ვისაუბრებთ მნიშვნელოვან და საინტერესო თემებზე საინტერესო სტუმრებთან, სხვადასხვა დარგის
+                    სპეციალისტებთან თუ უბრალოდ გამორჩეულ ადამიანებთან ერთად.
+                  </p>
+                  <p>
+                    დიდი იმედი მაქვს, რომ თითოეული პოდკასტიდან მინიმუმ ერთი ადამიანი მაინც გაიგებს ახალ რამეს
+                    ან სხვა თვალით შეხედავს უკვე არსებულს.
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section id="faq" className="w-full py-20 md:py-32">
+        {/* Workshops CTA */}
+        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center"
             >
-              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                მიიღეთ დამატებითი ინფორმაცია
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">ხშირად დასმული კითხვები</h2>
-              <p className="max-w-[65ჩ] text-muted-foreground md:text-lg mx-auto">აქ იპოვით პასუხებს ყველაზე ხშირად დასმულ კითხვებზე.</p>
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ვორქშოპები და სემინარები</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                შეისწავლე ცნობიერების პრინციპები
+              </h2>
+              <p className="text-neutral-400 text-lg mb-10">
+                გეპატიჟებით პრაქტიკულ სემინარებზე, სადაც ცნობიერებასთან და მის მექანიზმებთან
+                დაკავშირებულ საკითხებს განვიხილავთ.
+              </p>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-14 px-10 rounded-none border-neutral-700 bg-transparent hover:bg-neutral-900 text-white font-semibold text-base"
+                asChild
+              >
+                <Link href="/seminars/consciousness">
+                  გაიგე მეტი
+                  <ArrowRight className="ml-2 size-4" />
+                </Link>
+              </Button>
             </motion.div>
+          </div>
+        </section>
 
-            <div className="mx-auto max-w-3xl">
-              <Accordion type="multiple" defaultValue={["item-0", "item-1", "item-2"]} className="w-full">
-                {[
-                  {
-                    question: "MyPen უბრალოდ \"მომწერინე\" ხომ არაა?",
-                    answer:
-                      "არა. ეს არის სრულფასოვანი ქართული AI ასისტენტი: სამუშაო, ფაილები, კვლევა და ყოველდღიური კითხვები - ერთ სივრცეში.",
-                  },
-                  {
-                    question: "ბარათი მჭირდება დასაწყებად?",
-                    answer:
-                      "არა. დაიწყე უფასო პაკეტით და გადაიყვანე როცა დაგჭირდება.",
-                  },
-                  {
-                    question: "რამდენად ზუსტია პასუხები?",
-                    answer:
-                      "რთულ თემებზე მოაქვთ წყაროები/ციტირებები; საჭიროებისას სწრაფი fact-check.",
-                  },
-                  {
-                    question: "რა არის Mypen.ge?",
-                    answer:
-                      "Mypen.ge არის მოწინავე ჩათ-პლატფორმა მრავალ მოდელზე მუშაობისთვის - ფაილები, კოდი, სტატიები, ყველაფერი ერთ ინტერფეისში.",
-                  },
-                  {
-                    question: "რომელ AI მოდელებზე მაქვს წვდომა?",
-                    answer:
-                      'წვდომა დამოკიდებულია პაკეტზე ("Mypen LIGHT", "Mypen PRO", "Mypen ULTRA").',
-                  },
-                  {
-                    question: "როგორ მუშაობს გადახდა და გამოწერა?",
-                    answer:
-                      "PRO/ULTRA პაკეტები თვიური გადახდით მუშაობს Flitt-ის მეშვეობით. გაუქმება ნებისმიერ დროსაა შესაძლებელი.",
-                  },
-                  {
-                    question: "ფაილები უსაფრთხოა?",
-                    answer:
-                      "ფაილები ინახება დაშიფრულად; შეგიძლია წაშალო ნებისმიერ დროს.",
-                  },
-                ].map((faq, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.05 }}>
-                    <AccordionItem value={`item-${i}`} className="border-b border-border/40 py-2">
-                      <AccordionTrigger className="text-left font-medium hover:no-underline">{faq.question}</AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-                    </AccordionItem>
-                  </motion.div>
-                ))}
-              </Accordion>
-
-              {/* FAQ end small CTA */}
-              <div className="flex justify-center mt-8">
-                <Button variant="ghost" className="rounded-full" asChild>
-                  <SmartCtaLink data-cta-id="cta_faq" aria-label="დაიწყე უფასოდ">
-                    დაიწყე უფასოდ
-                    <ArrowRight className="ml-2 size-4" />
-                  </SmartCtaLink>
-                </Button>
-              </div>
-            </div>
+        {/* Inner Circle / Support Section */}
+        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-amber-950/10 to-transparent">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">შინაგანი წრე</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                შეუერთდი შინაგან წრეს
+              </h2>
+              <p className="text-neutral-400 text-lg mb-4">
+                ყველა ეპიზოდი ყოველთვის სრულიად უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის
+                ხელმისაწვდომი უნდა იყოს!
+              </p>
+              <p className="text-neutral-500 mb-10">
+                მხარი დაუჭირე დამოუკიდებელ ჟურნალისტიკას და მიიღე ადრეული წვდომა სემინარებზე.
+              </p>
+              <Button
+                size="lg"
+                className="h-14 px-10 rounded-none bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold text-base transition-all group"
+                asChild
+              >
+                <Link href="/donations">
+                  <Users className="mr-2 size-5" />
+                  შეუერთდი
+                  <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </motion.div>
           </div>
         </section>
       </main>
 
-        <Footer />
-      </div>
-    </>
+      <Footer />
+    </div>
   )
 }

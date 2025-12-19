@@ -4,22 +4,14 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Moon, Sun, ChevronRight, ChevronDown } from "lucide-react"
+import { Menu, X, Moon, Sun, ChevronDown, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
-import { SmartCtaLink } from "@/components/smart-cta-link"
 
-const modelLinks = [
-  { href: "/models/chatgpt", label: "ChatGPT" },
-  { href: "/models/claude", label: "Claude" },
-  { href: "/models/gemini", label: "Gemini" },
-]
-
-const toolLinks = [
-  { href: "/tools/paraphraser", label: "პარაფრეიზერი" },
-  { href: "/tools/spellchecker", label: "სპელჩეკერი" },
-  { href: "/tools/pdf-analyzer", label: "PDF ანალიზი" },
-  { href: "/tools/translator", label: "მთარგმნელი" },
+const seminarLinks = [
+  { href: "/seminars/consciousness", label: "ცნობიერების სემინარი" },
+  { href: "/seminars/nugzar-dzidziguri-workshop", label: "ნუგზარ ძიძიგურის ვორქშოპი" },
+  { href: "/seminars/system-constellation-retreat", label: "სისტემური განლაგების რეტრიტი" },
 ]
 
 interface HeaderProps {
@@ -28,7 +20,7 @@ interface HeaderProps {
   notSticky?: boolean
 }
 
-export default function Header({ hideLoginButton = false, hideNavigation = false, notSticky = false }: HeaderProps) {
+export default function Header({ hideNavigation = false, notSticky = false }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -37,7 +29,6 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
   const [mounted, setMounted] = useState(false)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Determine if we should show the dark logo
   const isDarkTheme = !mounted ? true : theme === "dark" || resolvedTheme === "dark"
 
   useEffect(() => {
@@ -83,82 +74,45 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold">
           <Image
-            src={isDarkTheme ? "/images/saasify-logo-dark.svg" : "/images/saasify-logo-light.svg"}
-            alt="SaaSify Logo"
-            width={150}
-            height={35}
-            className="h-auto max-w-[150px]"
+            src="/images/ცოდნისმოყვარე პოდკასტი.webp"
+            alt="ცოდნისმოყვარე პოდკასტი"
+            width={200}
+            height={56}
+            className="h-14 w-auto"
             priority
           />
         </Link>
         {!hideNavigation && (
           <nav className="hidden md:flex gap-6">
             <Link
-              href="/#features"
+              href="https://www.youtube.com/@KPODCAST_GE"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              მახასიათებლები
-            </Link>
-            <Link
-              href="/#pricing"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              ფასი
+              ეპიზოდები
             </Link>
 
-            {/* Models Dropdown */}
+            {/* Seminars Dropdown */}
             <div
               className="relative"
-              onMouseEnter={() => handleDropdownEnter('models')}
+              onMouseEnter={() => handleDropdownEnter('seminars')}
               onMouseLeave={handleDropdownLeave}
             >
               <button className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1">
-                მოდელები
-                <ChevronDown className={`size-3.5 transition-transform ${activeDropdown === 'models' ? 'rotate-180' : ''}`} />
+                სემინარები
+                <ChevronDown className={`size-3.5 transition-transform ${activeDropdown === 'seminars' ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
-                {activeDropdown === 'models' && (
+                {activeDropdown === 'seminars' && (
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-40 bg-background/95 backdrop-blur-lg border rounded-lg shadow-lg py-2"
+                    className="absolute top-full left-0 mt-2 w-52 bg-background/95 backdrop-blur-lg border rounded-lg shadow-lg py-2"
                   >
-                    {modelLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Tools Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleDropdownEnter('tools')}
-              onMouseLeave={handleDropdownLeave}
-            >
-              <button className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center gap-1">
-                ინსტრუმენტები
-                <ChevronDown className={`size-3.5 transition-transform ${activeDropdown === 'tools' ? 'rotate-180' : ''}`} />
-              </button>
-              <AnimatePresence>
-                {activeDropdown === 'tools' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-44 bg-background/95 backdrop-blur-lg border rounded-lg shadow-lg py-2"
-                  >
-                    {toolLinks.map((link) => (
+                    {seminarLinks.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
@@ -178,6 +132,13 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
             >
               ბლოგი
             </Link>
+
+            <Link
+              href="/contact"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              კონტაქტი
+            </Link>
           </nav>
         )}
         <div className="hidden md:flex gap-3 items-center">
@@ -186,21 +147,18 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
             <span className="sr-only">Toggle theme</span>
           </Button>
 
-          {!hideLoginButton && (
-            <>
-              <Button variant="ghost" className="rounded-full" asChild>
-                <Link href="https://chat.mypen.ge">
-                  შესვლა
-                </Link>
-              </Button>
-              <Button variant="default" className="rounded-full" asChild>
-                <SmartCtaLink>
-                  დაიწყე უფასოდ
-                  <ChevronRight className="ml-1 size-4" />
-                </SmartCtaLink>
-              </Button>
-            </>
-          )}
+          <Button variant="outline" className="rounded-full border-amber-500/50 text-amber-500 hover:bg-amber-500/10 hover:text-amber-400" asChild>
+            <Link href="/donations">
+              მხარდაჭერა
+            </Link>
+          </Button>
+
+          <Button variant="default" className="rounded-full bg-red-600 hover:bg-red-700" asChild>
+            <Link href="https://www.youtube.com/@KPODCAST_GE" target="_blank" rel="noopener noreferrer">
+              <Youtube className="mr-2 size-4" />
+              გამოიწერე
+            </Link>
+          </Button>
         </div>
         <div className="flex items-center gap-4 md:hidden">
           <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -213,114 +171,89 @@ export default function Header({ hideLoginButton = false, hideNavigation = false
         </div>
       </div>
       {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
-        >
-          <div className="container py-4 flex flex-col gap-2">
-            {!hideNavigation && (
-              <>
-                <Link href="/#features" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  მახასიათებლები
-                </Link>
-                <Link href="/#pricing" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  ფასი
-                </Link>
-
-                {/* Mobile Models Section */}
-                <div className="border-t border-border/40 pt-2 mt-2">
-                  <button
-                    onClick={() => toggleMobileSection('models')}
-                    className="w-full py-2 text-sm font-medium flex items-center justify-between"
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden absolute top-16 inset-x-0 bg-[#0a0a0a]/98 backdrop-blur-xl border-b border-neutral-800 overflow-hidden"
+          >
+            <div className="container py-6 flex flex-col gap-1">
+              {!hideNavigation && (
+                <>
+                  <Link
+                    href="https://www.youtube.com/@KPODCAST_GE"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    მოდელები
-                    <ChevronDown className={`size-4 transition-transform ${mobileExpanded === 'models' ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {mobileExpanded === 'models' && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pl-4 pb-2 flex flex-col gap-1">
-                          {modelLinks.map((link) => (
-                            <Link
-                              key={link.href}
-                              href={link.href}
-                              className="py-1.5 text-sm text-muted-foreground"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {link.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                    ეპიზოდები
+                  </Link>
 
-                {/* Mobile Tools Section */}
-                <div>
-                  <button
-                    onClick={() => toggleMobileSection('tools')}
-                    className="w-full py-2 text-sm font-medium flex items-center justify-between"
-                  >
-                    ინსტრუმენტები
-                    <ChevronDown className={`size-4 transition-transform ${mobileExpanded === 'tools' ? 'rotate-180' : ''}`} />
-                  </button>
-                  <AnimatePresence>
-                    {mobileExpanded === 'tools' && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pl-4 pb-2 flex flex-col gap-1">
-                          {toolLinks.map((link) => (
-                            <Link
-                              key={link.href}
-                              href={link.href}
-                              className="py-1.5 text-sm text-muted-foreground"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {link.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                  {/* Mobile Seminars Section */}
+                  <div className="border-t border-neutral-800 pt-3 mt-2">
+                    <button
+                      onClick={() => toggleMobileSection('seminars')}
+                      className="w-full py-3 text-base font-medium text-neutral-200 flex items-center justify-between"
+                    >
+                      სემინარები
+                      <ChevronDown className={`size-4 text-neutral-500 transition-transform ${mobileExpanded === 'seminars' ? 'rotate-180' : ''}`} />
+                    </button>
+                    <AnimatePresence>
+                      {mobileExpanded === 'seminars' && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pl-4 pb-3 flex flex-col gap-1 border-l border-neutral-800 ml-2">
+                            {seminarLinks.map((link) => (
+                              <Link
+                                key={link.href}
+                                href={link.href}
+                                className="py-2 text-sm text-neutral-400 hover:text-white transition-colors"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {link.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-                <Link href="/blog" className="py-2 text-sm font-medium border-t border-border/40 pt-4 mt-2" onClick={() => setMobileMenuOpen(false)}>
-                  ბლოგი
-                </Link>
-              </>
-            )}
-            {!hideLoginButton && (
-              <div className="flex flex-col gap-2 pt-2 border-t">
-                <Button variant="ghost" className="rounded-full w-full" asChild>
-                  <Link href="https://chat.mypen.ge" onClick={() => setMobileMenuOpen(false)}>
-                    შესვლა
+                  <Link href="/blog" className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors border-t border-neutral-800 mt-2" onClick={() => setMobileMenuOpen(false)}>
+                    ბლოგი
+                  </Link>
+
+                  <Link href="/contact" className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                    კონტაქტი
+                  </Link>
+                </>
+              )}
+              <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-neutral-800">
+                <Button className="w-full h-12 rounded-none bg-amber-500/10 border border-amber-500/50 text-amber-500 hover:bg-amber-500/20 font-semibold" asChild>
+                  <Link href="/donations" onClick={() => setMobileMenuOpen(false)}>
+                    მხარდაჭერა
                   </Link>
                 </Button>
-                <Button variant="default" className="rounded-full w-full" asChild>
-                  <SmartCtaLink onClick={() => setMobileMenuOpen(false)}>
-                    დაიწყე უფასოდ
-                    <ChevronRight className="ml-1 size-4" />
-                  </SmartCtaLink>
+                <Button className="w-full h-12 rounded-none bg-red-600 hover:bg-red-700 text-white font-semibold" asChild>
+                  <Link href="https://www.youtube.com/@KPODCAST_GE" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}>
+                    <Youtube className="mr-2 size-4" />
+                    გამოიწერე არხი
+                  </Link>
                 </Button>
               </div>
-            )}
-          </div>
-        </motion.div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }
