@@ -156,7 +156,7 @@ export default function LandingPage() {
         {/* Hero Section - Split Screen */}
         <section className="w-full min-h-[85vh] flex items-center relative overflow-hidden">
           {/* Hero Background Image */}
-          <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 z-0">
             <Image
               src="/images/hero-background.webp"
               alt="Podcast studio background"
@@ -165,11 +165,10 @@ export default function LandingPage() {
               priority
             />
             {/* Dark overlay for readability */}
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/60" />
+            {/* Background gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-950/30 via-transparent to-orange-950/20" />
           </div>
-
-          {/* Background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-950/30 via-transparent to-orange-950/20" />
 
           <div className="container px-4 md:px-6 relative z-10">
             <motion.div
