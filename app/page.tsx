@@ -156,19 +156,17 @@ export default function LandingPage() {
 
         {/* Hero Section - Split Screen */}
         <section className="w-full min-h-[85vh] flex items-center relative overflow-hidden">
-          {/* YouTube Video Background */}
-          <div className="absolute inset-0 -z-10 overflow-hidden">
-            <iframe
-              src="https://www.youtube.com/embed/qfRwK6O_EhM?si=sHRT9IPHCCeIf3R6&autoplay=1&mute=1&loop=1&playlist=qfRwK6O_EhM&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[100vw] min-h-[100vh] w-[177.77vh] h-[56.25vw] pointer-events-none"
+          {/* Hero Background Image */}
+          <div className="absolute inset-0 -z-10">
+            <Image
+              src={getImageUrl("/images/hero-background.png")}
+              alt="Podcast studio background"
+              fill
+              className="object-cover"
+              priority
             />
             {/* Dark overlay for readability */}
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
 
           {/* Background gradient overlay */}
