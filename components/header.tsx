@@ -74,7 +74,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold">
           <Image
-            src="/images/ცოდნისმოყვარე პოდკასტი.webp"
+            src="/images/kpodcast-logo.webp"
             alt="ცოდნისმოყვარე პოდკასტი"
             width={200}
             height={56}

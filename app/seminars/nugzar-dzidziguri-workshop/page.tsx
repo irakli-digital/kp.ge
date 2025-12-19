@@ -316,7 +316,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                   className="relative aspect-[4/3] overflow-hidden group"
                 >
                   <Image
-                    src={`/images/nugzar dzidzi/gallery-${num}.webp`}
+                    src={`/images/nugzar-dzidzi/gallery-${num}.webp`}
                     alt={`ვორქშოპის ფოტო ${num}`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

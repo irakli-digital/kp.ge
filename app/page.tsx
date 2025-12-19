@@ -462,7 +462,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square max-w-sm mx-auto relative overflow-hidden rounded-2xl">
                   <Image
-                    src="/images/guest photos/გვანვა ველთაური.jpg"
+                    src="/images/guest-photos/gvantsa-veltauri.jpg"
                     alt="გვანცა ველთაური"
                     fill
                     className="object-cover"
