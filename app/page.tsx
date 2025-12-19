@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { getImageUrl } from "@/lib/image-url"
 
 interface LatestVideo {
   id: string
@@ -159,7 +158,7 @@ export default function LandingPage() {
           {/* Hero Background Image */}
           <div className="absolute inset-0 -z-10">
             <Image
-              src="/images/hero-background.png"
+              src="/images/hero-background.webp"
               alt="Podcast studio background"
               fill
               className="object-cover"
@@ -461,7 +460,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square max-w-sm mx-auto relative overflow-hidden rounded-2xl">
                   <Image
-                    src={getImageUrl("/images/guest-photos/gvantsa-veltauri.jpg")}
+                    src="/images/guest-photos/gvantsa-veltauri.webp"
                     alt="გვანცა ველთაური"
                     fill
                     className="object-cover"
