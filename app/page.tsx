@@ -23,6 +23,7 @@ interface YouTubeStats {
   videoCount: string
   viewCount: string
   latestVideo: LatestVideo | null
+  latestVideos: LatestVideo[]
 }
 
 export default function LandingPage() {
@@ -31,6 +32,7 @@ export default function LandingPage() {
     videoCount: "...",
     viewCount: "...",
     latestVideo: null,
+    latestVideos: [],
   })
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export default function LandingPage() {
           videoCount: data.videoCount || "50+",
           viewCount: data.viewCount || "100K+",
           latestVideo: data.latestVideo || null,
+          latestVideos: data.latestVideos || [],
         })
       } catch (error) {
         console.error('Failed to fetch YouTube stats:', error)
@@ -51,6 +54,7 @@ export default function LandingPage() {
           videoCount: "50+",
           viewCount: "100K+",
           latestVideo: null,
+          latestVideos: [],
         })
       }
     }
@@ -217,7 +221,7 @@ export default function LandingPage() {
                   className="h-14 px-8 rounded-none border-neutral-500/50 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white font-semibold text-base"
                   asChild
                 >
-                  <Link href="https://open.spotify.com/show/your-show-id" target="_blank" rel="noopener noreferrer">
+                  <Link href="https://open.spotify.com/show/12W0rak7PaZnhYnCeQ60mt" target="_blank" rel="noopener noreferrer">
                     <svg className="mr-2 size-5" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                     </svg>
@@ -318,7 +322,8 @@ export default function LandingPage() {
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {latestEpisodes.map((episode, i) => (
+              {/* Show episodes 2-4 (skip first one which is shown above as featured) */}
+              {(stats.latestVideos.length > 1 ? stats.latestVideos.slice(1, 4) : latestEpisodes).map((episode, i) => (
                 <motion.div
                   key={episode.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -336,7 +341,7 @@ export default function LandingPage() {
                         {/* Thumbnail with play overlay */}
                         <div className="relative aspect-video overflow-hidden">
                           <Image
-                            src={episode.thumbnail}
+                            src={episode.thumbnail || `https://img.youtube.com/vi/${episode.id}/maxresdefault.jpg`}
                             alt={episode.title}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -353,9 +358,9 @@ export default function LandingPage() {
                         {/* Content */}
                         <div className="p-5">
                           <Badge variant="outline" className="mb-3 rounded-none text-[10px] uppercase tracking-wider border-amber-500/30 text-amber-500 bg-amber-500/5">
-                            {episode.category}
+                            პოდკასტი
                           </Badge>
-                          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">
+                          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-amber-400 transition-colors line-clamp-2">
                             {episode.title}
                           </h3>
                           <div className="flex items-center justify-between border-t border-neutral-800 pt-4">

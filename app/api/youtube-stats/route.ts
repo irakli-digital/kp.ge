@@ -1,16 +1,20 @@
 import { NextResponse } from 'next/server'
 
+// Video type for latest episodes
+interface VideoInfo {
+  id: string
+  title: string
+  thumbnail: string
+  duration: string
+}
+
 // Cache the stats for 1 hour to avoid hitting API limits
 let cachedStats: {
   subscriberCount: string
   videoCount: string
   viewCount: string
-  latestVideo: {
-    id: string
-    title: string
-    thumbnail: string
-    duration: string
-  } | null
+  latestVideo: VideoInfo | null
+  latestVideos: VideoInfo[]
   timestamp: number
 } | null = null
 
@@ -69,45 +73,54 @@ export async function GET() {
 
     const channelStats = channelData.items[0].statistics
 
-    // Fetch playlist to get podcast episode count and latest video
+    // Fetch playlist to get podcast episode count and latest videos (fetch 4 to show 1 featured + 3 more)
     const playlistItemsResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${PODCAST_PLAYLIST_ID}&maxResults=1&key=${apiKey}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${PODCAST_PLAYLIST_ID}&maxResults=4&key=${apiKey}`,
       { next: { revalidate: 3600 } }
     )
 
     let episodeCount = '50+'
-    let latestVideo: { id: string; title: string; thumbnail: string; duration: string } | null = null
+    let latestVideo: VideoInfo | null = null
+    let latestVideos: VideoInfo[] = []
 
     if (playlistItemsResponse.ok) {
       const playlistItemsData = await playlistItemsResponse.json()
 
-      // Get the latest video details
+      // Get all video IDs for batch duration fetch
       if (playlistItemsData.items && playlistItemsData.items.length > 0) {
-        const latestItem = playlistItemsData.items[0]
-        const videoId = latestItem.contentDetails.videoId
+        const videoIds = playlistItemsData.items.map((item: { contentDetails: { videoId: string } }) => item.contentDetails.videoId)
 
-        // Fetch video details for duration
+        // Fetch video details for durations (batch request)
         const videoResponse = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`,
+          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds.join(',')}&key=${apiKey}`,
           { next: { revalidate: 3600 } }
         )
 
-        let duration = ''
+        const durations: { [key: string]: string } = {}
         if (videoResponse.ok) {
           const videoData = await videoResponse.json()
-          if (videoData.items && videoData.items.length > 0) {
-            duration = formatDuration(videoData.items[0].contentDetails.duration)
+          if (videoData.items) {
+            videoData.items.forEach((item: { id: string; contentDetails: { duration: string } }) => {
+              durations[item.id] = formatDuration(item.contentDetails.duration)
+            })
           }
         }
 
-        latestVideo = {
-          id: videoId,
-          title: latestItem.snippet.title,
-          thumbnail: latestItem.snippet.thumbnails?.maxres?.url ||
-                     latestItem.snippet.thumbnails?.high?.url ||
-                     `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-          duration: duration,
-        }
+        // Build video info array
+        latestVideos = playlistItemsData.items.map((item: { contentDetails: { videoId: string }; snippet: { title: string; thumbnails?: { maxres?: { url: string }; high?: { url: string } } } }) => {
+          const videoId = item.contentDetails.videoId
+          return {
+            id: videoId,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails?.maxres?.url ||
+                       item.snippet.thumbnails?.high?.url ||
+                       `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+            duration: durations[videoId] || '',
+          }
+        })
+
+        // First video is the featured one
+        latestVideo = latestVideos[0] || null
       }
     }
 
@@ -144,6 +157,7 @@ export async function GET() {
       videoCount: episodeCount,
       viewCount: formatNumber(channelStats.viewCount),
       latestVideo,
+      latestVideos,
       timestamp: Date.now(),
     }
 
@@ -157,6 +171,7 @@ export async function GET() {
       videoCount: '50+',
       viewCount: '100K+',
       latestVideo: null,
+      latestVideos: [],
       error: 'Failed to fetch live stats',
     })
   }
