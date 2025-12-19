@@ -159,12 +159,13 @@ export default function LandingPage() {
           {/* YouTube Video Background */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <iframe
-              src="https://www.youtube.com/embed/qfRwK6O_EhM?autoplay=1&mute=1&loop=1&playlist=qfRwK6O_EhM&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&disablekb=1&iv_load_policy=3&origin=https://kp.ge"
-              title="Background Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay"
+              src="https://www.youtube.com/embed/qfRwK6O_EhM?si=sHRT9IPHCCeIf3R6&autoplay=1&mute=1&loop=1&playlist=qfRwK6O_EhM&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-[100vw] min-h-[100vh] w-[177.77vh] h-[56.25vw] pointer-events-none"
-              style={{ border: 'none' }}
             />
             {/* Dark overlay for readability */}
             <div className="absolute inset-0 bg-black/60" />
