@@ -1,4 +1,4 @@
-# Mypen.ge Article Template 
+# KP.ge Psychology Article Template
 
 **Strict Rule:** No Latin/Translit characters in the visible body text. All transliteration is hidden in metadata, code, and file attributes.
 
@@ -10,123 +10,263 @@
 
 | Field | Instruction | Example |
 | --- | --- | --- |
-| **URL Slug** | **STRICT LATIN.** Use the exact translit keyword here. | `mypen.ge/blog/cv-shabloni-georgia` |
-| **Meta Title** | Georgian H1 + (Optional: Brand Tag) | `CV-ის შექმნა AI-ით: როგორ დავწეროთ რეზიუმე - Mypen.ge` |
-| **Image Filename** | **STRICT LATIN.** Rename image *before* upload. | `cv-is-shabloni-magaliti.jpg` |
-| **Image Alt Text** | **HYBRID.** Describe image in Georgian, but sneak the Latin keyword in parentheses *if natural* or just rely on the filename. | `CV-ის შაბლონი ბუღალტერისთვის (CV Template)` |
-| **Schema Keywords** | **CRITICAL.** Inject Latin keywords into JSON-LD. | `["CV sheqmna", "reziumes dawera", "CV template georgian"]` |
+| **URL Slug** | **STRICT LATIN.** Use the exact translit keyword here. | `kp.ge/psychology/social-anxiety-disorder` |
+| **Meta Title** | Georgian H1 + (Optional: Brand Tag) | `სოციალური შფოთვის აშლილობა: სრული გზამკვლევი - KP.ge` |
+| **Image Filename** | **STRICT LATIN.** Rename image *before* upload. | `social-anxiety-symptoms-guide.jpg` |
+| **Image Alt Text** | **HYBRID.** Describe image in Georgian, but include Latin keyword in parentheses *if natural*. | `სოციალური შფოთვის სიმპტომები (Social Anxiety Guide)` |
+| **Schema Keywords** | **CRITICAL.** Inject Latin keywords into JSON-LD. | `["socialuri shfotva", "social anxiety", "shfotvis ashliloba"]` |
 
 ---
 
 ## 2. Article Header (H1)
 
-**Title:** [Promise/Benefit] + [Tool Context]
-*Example:* **"როგორ შევქმნათ პროფესიონალური CV ხელოვნური ინტელექტით"**
+**Title:** [Topic] + [Value Promise/Benefit]
+*Examples:*
+- **"შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები"**
+- **"დაბალი თვითშეფასება: როგორ ამოვიცნოთ და რა ვქნათ"**
+- **"ფსიქოლოგიის შესავალი: სრული გზამკვლევი დამწყებთათვის"**
 
 ---
 
-## 3. The "Hook" (Problem + Solution)
+## 3. The "Hook" (Problem + Relevance)
 
-*Direct, professional Georgian. No fluff.*
+*Direct, professional Georgian. No fluff. Establish why this topic matters.*
 
 **Structure:**
 
-1. **The Pain:** "რეზიუმეს წერა რთული და დამღლელი პროცესია." (Writing a CV is hard).
-2. **The Old Way:** "თქვენ ეძებთ შაბლონებს, თარგმნით ინგლისურიდან და წვალობთ ფორმატირებაზე." (You search for templates, translate, struggle).
-3. **The Mypen Way:** "Mypen-ის 'ულტრა' მოდელს შეუძლია ეს პროცესი 2 წუთამდე შეამციროს." (Mypen Ultra cuts this to 2 mins).
+1. **The Reality:** "შფოთვა ერთ-ერთი ყველაზე გავრცელებული ფსიქიკური მდგომარეობაა თანამედროვე მსოფლიოში."
+2. **The Impact:** "ის გავლენას ახდენს არა მხოლოდ ემოციურ მდგომარეობაზე, არამედ ფიზიკურ ჯანმრთელობასა და ყოველდღიურ ცხოვრებაზე."
+3. **The Promise:** "ამ სტატიაში გაიგებთ, რა არის შფოთვა, როგორ ამოიცნოთ და რა მეთოდები არსებობს მის სამართავად."
 
 ---
 
-## 4. The "Benchmark" Module (Comparison)
+## 4. Newsletter CTA #1 (Mid-Intro)
 
-*Mandatory for Aggregators. Prove you are the Hub.*
+*Place after the hook, before main content begins.*
 
-**Section Title:** **რომელი მოდელი წერს უკეთეს რეზიუმეს?**
-*(Which model writes a better CV?)*
-
-**The Test:**
-"ჩვენ მივეცით დავალება სამივე მოდელს: *'დაწერე რეზიუმე გაყიდვების მენეჯერის პოზიციაზე'.* აი შედეგები:"
-
-* **ChatGPT (GPT-4):**
-* *შედეგი:* კარგია, მაგრამ სჭირდება დეტალური ინსტრუქცია.
-* *დრო:* 45 წამი.
-
-
-* **Claude 3.5:**
-* *შედეგი:* ძალიან ბუნებრივი ენა, მაგრამ ხანდახან აგვიანებს.
-* *დრო:* 30 წამი.
-
-
-* **Mypen Ultra (Rerommended):**
-* *შედეგი:* მოიცავს ქართულ ბაზარზე მორგებულ ფორმატირებას.
-* *დრო:* 15 წამი.
-
-
-
-> **ჩვენი რჩევა:** რეზიუმესთვის გამოიყენეთ **Mypen Ultra** ან **Claude 3.5**, რომლებიც ჩვენს პლატფორმაზეა ხელმისაწვდომი.
+> **გსურთ ფსიქოლოგიური ინსაითები ყოველკვირეულად?**
+> გამოიწერეთ ჩვენი newsletter და მიიღეთ პრაქტიკული რჩევები პირდაპირ თქვენს მეილზე.
+> **[გამოიწერეთ უფასოდ]**
 
 ---
 
-## 5. Step-by-Step Guide (The "How-To")
+## 5. YouTube Video Embed (Primary)
 
-*Clean, numbered list. Use the blockquote for the "Prompt".*
+*Mandatory. Place after intro section, approximately 20% into the article.*
 
-**ნაბიჯი 1: აირჩიეთ სწორი მოდელი**
-შედით Mypen.ge-ზე და აირჩიეთ სასურველი მოდელი (მაგ: Claude 3.5).
+**Section Title:** **მოისმინეთ ჩვენი პოდკასტის ეპიზოდი ამ თემაზე**
 
-**ნაბიჯი 2: გამოიყენეთ ეს ბრძანება (Prompt)**
-დააკოპირეთ ეს ტექსტი ზუსტი შედეგისთვის:
+```html
+<div class="video-container">
+  <iframe
+    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    title="[Georgian Video Title]"
+    frameborder="0"
+    allowfullscreen>
+  </iframe>
+</div>
+```
 
-> "დამიწერე პროფესიონალური რეზიუმე [თქვენი პროფესიის] პოზიციაზე.
-> ჩემი გამოცდილება: [წლების რაოდენობა] წელი.
-> მთავარი უნარები: [უნარების ჩამონათვალი]."
-
-**ნაბიჯი 3: შედეგის დარედაქტირება**
-გამოიყენეთ ჩვენი **"ტექსტის გასწორების"** ინსტრუმენტი საბოლოო სახის მისაცემად.
+**Surrounding Text:**
+"ამ ეპიზოდში დეტალურად განვიხილავთ [topic]-ს და პრაქტიკულ რჩევებს გაგიზიარებთ."
 
 ---
 
-## 6. The "Invisible" FAQ Section
+## 6. The "Research" Module (Credibility)
 
-*Use this section to capture specific questions users ask Google.*
+*Mandatory for psychology articles. Cite studies and statistics.*
+
+**Section Title:** **რას ამბობს კვლევა**
+
+**Structure:**
+- Reference 2-3 relevant studies or statistics
+- Use Georgian language for explanation
+- Include source attribution
+
+**Example:**
+> **კვლევის მიხედვით:**
+> - მსოფლიო ჯანდაცვის ორგანიზაციის (WHO) მონაცემებით, შფოთვითი აშლილობა 300 მილიონზე მეტ ადამიანს აქვს მსოფლიოში.
+> - კვლევებმა აჩვენა, რომ კოგნიტურ-ბიჰევიორისტული თერაპია (CBT) 60-80% შემთხვევაში ეფექტურია.
+>
+> *წყარო: World Health Organization, 2023*
+
+---
+
+## 7. Main Content Structure
+
+*Use clear H2/H3 hierarchy. Keep paragraphs short (2-4 sentences).*
+
+### H2: რა არის [Topic]?
+
+Definition and basic explanation in accessible Georgian.
+
+### H2: სიმპტომები / ნიშნები
+
+- Bullet points for easy scanning
+- Each symptom with brief explanation
+- Use numbered lists for step-by-step processes
+
+### H2: მიზეზები
+
+Explain causes with clear subheadings if needed.
+
+### H2: მკურნალობა / გამკლავების გზები
+
+- Professional treatment options
+- Self-help strategies
+- When to seek professional help
+
+**Pro Tip Block:**
+> **პრაქტიკული რჩევა:**
+> დაიწყეთ მარტივი სუნთქვის ვარჯიშებით: 4 წამი ჩასუნთქვა, 4 წამი შეჩერება, 4 წამი ამოსუნთქვა. გაიმეორეთ 5-ჯერ.
+
+---
+
+## 8. Internal Links Module
+
+*Strategic placement within relevant content sections.*
+
+**Link Format:**
+- Use Georgian anchor text (70%)
+- Link to Hub page with exact match anchor
+- Cross-link to 2-3 related articles
+
+**Example Placements:**
+- "თუ გაინტერესებთ შფოთვის სხვა ფორმები, წაიკითხეთ ჩვენი სტატია **[სოციალური შფოთვის შესახებ](/psychology/social-anxiety-disorder)**."
+- "დაბალი თვითშეფასება ხშირად უკავშირდება შფოთვას. გაიგეთ მეტი **[თვითშეფასების გაუმჯობესებაზე](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**."
+
+---
+
+## 9. YouTube Video Embed #2 (Optional)
+
+*For longer articles. Place before FAQ section.*
+
+**Section Title:** **დამატებითი რესურსი**
+
+Include if the article topic has multiple related podcast episodes.
+
+---
+
+## 10. The FAQ Section
+
+*Use this section to capture featured snippets and voice search queries.*
 
 **H2: ხშირად დასმული კითხვები**
 
-**Q: უფასოა თუ არა რეზიუმეს დაწერა?**
-A: Mypen გთავაზობთ უფასო წვდომას საბაზისო მოდელებზე. პრემიუმ მოდელებისთვის (GPT-4) საჭიროა გამოწერა.
+**Q: რა არის შფოთვითი აშლილობის მთავარი სიმპტომები?**
+A: მთავარი სიმპტომებია: მუდმივი შეშფოთება, ძილის პრობლემები, კონცენტრაციის სირთულე და ფიზიკური სიმპტომები, როგორიცაა გულისცემის აჩქარება.
 
-**Q: შემიძლია თუ არა ინგლისური რეზიუმეს თარგმნა?**
-A: დიახ, გამოიყენეთ ჩვენი **"PDF მთარგმნელი"** დოკუმენტის პირდაპირ სათარგმნად.
+**Q: როდის უნდა მივმართო სპეციალისტს?**
+A: თუ შფოთვა ხელს უშლის ყოველდღიურ საქმიანობას 2 კვირაზე მეტი ხნის განმავლობაში, რეკომენდებულია ფსიქოლოგთან ან ფსიქიატრთან კონსულტაცია.
 
----
-
-## 7. Call to Action (CTA)
-
-> **შეწყვიტეთ ზედმეტი გადახდა**
-> 20$-ის ნაცვლად, მიიღეთ წვდომა ChatGPT-ზე, Claude-სა და Gemini-ზე ერთი გამოწერით.
-> **[დაიწყეთ უფასოდ Mypen.ge-ზე](https://chat.mypen.ge)**
+**Q: შეიძლება თუ არა შფოთვის თვითმართვა?**
+A: მსუბუქი შფოთვის დროს შეგიძლიათ გამოიყენოთ რელაქსაციის ტექნიკები, ფიზიკური აქტივობა და ძილის რეჟიმის დაცვა. მძიმე შემთხვევებში საჭიროა პროფესიონალური დახმარება.
 
 ---
 
-## 8. Technical Checklist (The "Invisible" SEO)
+## 11. Newsletter CTA #2 (End-Article)
 
-**Before you hit publish, verify the hidden layers:**
+*Strong CTA before related articles section.*
 
-1. [ ] **URL Check:** Is the URL `/blog/cv-shabloni` (Latin) and NOT `/blog/cv-შაბლონი`?
-2. [ ] **Filename Check:** Did you upload the image as `cv-maker-georgia.jpg`?
-3. [ ] **Schema Injection:** Did you add the Latin keywords to the Article Schema?
-4. [ ] **Internal Link:** Did you link to `/tools/cv-writer` using the anchor text "რეზიუმეს შექმნა"?
+> **მოგეწონათ სტატია?**
+>
+> მოისმინეთ ჩვენი პოდკასტი YouTube-ზე და გახდით ჩვენი საზოგადოების ნაწილი. ყოველკვირეულად გიზიარებთ ფსიქოლოგიურ ინსაითებს და პრაქტიკულ რჩევებს.
+>
+> **[გამოიწერეთ Newsletter]** | **[YouTube არხი]**
 
 ---
 
-### Why this works:
+## 12. Related Articles Section
 
-* **User sees:** A pristine, high-end Georgian article.
-* **Google sees:** "cv shabloni", "cv maker", "reziumes dawera" (via URL, Schema, and Filenames).
-* **Result:** You maintain brand authority while capturing the "messy" search traffic.
+*Display 3-4 related articles from the same silo.*
 
-### Next Step
+**H2: მსგავსი სტატიები**
 
-To make the **"Schema Injection"** easy for you, I can write a small **Javascript/Typescript helper function** that generates this JSON-LD automatically for your Next.js pages. You just feed it the Georgian title and the Latin keywords.
+- [სოციალური შფოთვის აშლილობა: სრული გზამკვლევი](/psychology/social-anxiety-disorder-explained)
+- [შიში: რა არის და როგორ გავუმკლავდეთ](/psychology/fear)
+- [დეპრესიის სიმპტომები](/psychology/understanding-depression-symptoms)
 
-**Do you want that code snippet?**
+---
+
+## 13. Source Attribution
+
+*Always cite sources for credibility.*
+
+**სტატიის წყაროები:**
+- World Health Organization (WHO)
+- American Psychological Association (APA)
+- [Other relevant sources]
+
+---
+
+## 14. Technical Checklist (Pre-Publish)
+
+**Before you hit publish, verify:**
+
+1. [ ] **URL Check:** Is the URL Latin-only (`/psychology/anxiety`) and NOT Georgian script?
+2. [ ] **Filename Check:** Did you upload images with Latin filenames (`anxiety-symptoms.jpg`)?
+3. [ ] **Schema Injection:** Did you add Latin keywords to the Article Schema?
+4. [ ] **Internal Link to Hub:** Did you link to the appropriate Hub page?
+5. [ ] **Cross-links:** Did you add 2-3 links to related articles in the same silo?
+6. [ ] **YouTube Video:** Is there at least one video embed after the intro?
+7. [ ] **Newsletter CTA:** Are there CTAs mid-article AND at the end?
+8. [ ] **FAQ Section:** Are there 3+ questions for featured snippets?
+9. [ ] **Source Citations:** Are research sources properly attributed?
+10. [ ] **Mobile Preview:** Does the article look good on mobile?
+
+---
+
+## Why This Template Works:
+
+* **User sees:** Professional Georgian psychology content with embedded videos and clear structure.
+* **Google sees:** "shfotva", "social anxiety", "depresia" (via URL, Schema, and Filenames).
+* **YouTube sees:** Embedded podcast episodes driving channel traffic.
+* **Email list:** Newsletter CTAs capture leads for ongoing engagement.
+
+---
+
+## Article Length Guidelines:
+
+| Article Type | Word Count (Georgian) | Sections |
+|--------------|----------------------|----------|
+| Hub Article | 2000-3000 words | All sections |
+| Spoke Article | 1200-1800 words | Core sections (skip optional video #2) |
+| Quick Guide | 800-1200 words | Condensed structure |
+
+---
+
+## Schema Markup Template
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "[Georgian H1 Title]",
+  "description": "[Georgian meta description]",
+  "keywords": ["latin-keyword-1", "latin-keyword-2", "latin-keyword-3"],
+  "author": {
+    "@type": "Organization",
+    "name": "KP.ge"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KP.ge",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://kp.ge/logo.png"
+    }
+  },
+  "datePublished": "[YYYY-MM-DD]",
+  "dateModified": "[YYYY-MM-DD]",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kp.ge/psychology/[slug]"
+  },
+  "image": "https://kp.ge/images/[latin-filename].jpg"
+}
+```
+
+---
+
+*Last Updated: December 2024*
+*Version: 1.0 - KP.ge Psychology Podcast*

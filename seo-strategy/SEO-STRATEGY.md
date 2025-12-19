@@ -1,178 +1,221 @@
-Mypen.ge Master SEO Strategy (The Aggregator Blueprint)
+# KP.ge Master SEO Strategy (Psychology Podcast Blueprint)
 
 ## 1. Executive Summary & Positioning
 
-**The Shift:** Mypen.ge is not a "wrapper." It is an **AI Aggregator**.
-**The Pitch:** "Why pay $20/month for ChatGPT, $20 for Claude, and $20 for Gemini? Get them ALL in one place, optimized for the Georgian language, for a fraction of the price."
+**The Identity:** KP.ge is not just a blog. It is a **Psychology Knowledge Hub** and **Podcast Gateway**.
+**The Pitch:** "საქართველოს #1 ფსიქოლოგიის პოდკასტი და რესურსი — მეცნიერებაზე დაფუძნებული ცოდნა თქვენს ენაზე."
 
 **Primary Objectives:**
 
-1. **Intercept Brand Traffic:** Capture users searching for "ChatGPT Georgia" or "Claude AI".
-2. **Dominate "Tool" Intent:** Rank #1 for utility searches (Paraphraser, Spellchecker).
-3. **Clean Aesthetics, Dirty SEO:** Maintain a premium Georgian UI while capturing "Translit/Latin" search volume via invisible metadata layers.
+1. **Newsletter Signups:** Convert readers into email subscribers for podcast updates and exclusive content.
+2. **YouTube Channel Growth:** Drive traffic to podcast episodes through strategic video embeds.
+3. **Dominate Psychology Searches:** Rank #1 for Georgian psychology queries (depression, anxiety, self-esteem, etc.).
+4. **Clean Aesthetics, Dirty SEO:** Maintain premium Georgian UI while capturing "Translit/Latin" search volume via invisible metadata layers.
 
 ---
 
 ## 2. Semantic Core & Architecture
 
-This is how your website is structured. It is designed to trap traffic at every stage of the funnel.
+The website structure is designed to capture traffic at every awareness stage — from curious browsers to newsletter subscribers.
 
-### The "Money" Clusters
+### The "Psychology" Clusters
 
-| Priority | Cluster Name | User Intent | Primary Keywords (Concept) | Target URL Structure |
+| Priority | Cluster Name | User Intent | Primary Keywords (Concept) | Target Hub Article |
 | --- | --- | --- | --- | --- |
-| **P1** | **The Models (Access)** | "I want GPT-4 cheap/easy" | `ChatGPT საქართველოში`, `Claude AI უფასოდ`, `Gemini Pro` | `/models/[model-name]` |
-| **P1** | **Native Tools (Sticky)** | "Fix my text" | `ტექსტის გადაკეთება`, `სპელჩეკერი`, `PDF თარგმნა` | `/tools/[tool-name]` |
-| **P2** | **Comparisons (Battle)** | "Which one is better?" | `GPT-4 vs Claude 3.5`, `საუკეთესო AI` | `/blog/battles/[article-slug]` |
-| **P3** | **pSEO Templates** | "Do this specific task" | `CV შაბლონი`, `სამოტივაციო წერილი`, `სადღეგრძელო` | `/templates/[category]/[slug]` |
+| **P1** | **Mental Health (Awareness)** | "What is wrong with me?" | `დეპრესია`, `შფოთვა`, `სოციალური შფოთვა`, `შიში` | `anxiety.md` or dedicated hub |
+| **P1** | **Self-Development (Growth)** | "How do I improve myself?" | `თვითშეფასება`, `თვითგანვითარება`, `დაბალი თვითშეფასება` | `tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi.md` |
+| **P2** | **Psychology Education (Learning)** | "I want to understand psychology" | `ფსიქოლოგია`, `ფსიქოლოგიის შესავალი`, `ფსიქოლოგიის წიგნები` | `introduction-to-psychology.md` |
+| **P2** | **Aggression & Emotions (Management)** | "Why am I angry?" | `აგრესია`, `ემოციების მართვა`, `ბრაზი` | `understanding-aggression-types-management.md` |
+| **P3** | **Cognitive Psychology (Theory)** | "How does the mind work?" | `ინტელექტი`, `სწავლის სტილები`, `იუნგი` | `why-intelligence-is-not-the-same-for-everyone.md` |
 
 ---
 
 ## 3. The "Invisible Layer" Strategy (Translit/Latin)
 
-**The Problem:** 40% of Georgians search in Latin (`cv is dawera`), but Latin text looks ugly in articles.
+**The Problem:** 30-40% of Georgians search in Latin (`depresია`, `shfotva`, `tvitshefaseba`), but Latin text looks unprofessional in articles.
 **The Solution:** We hide the Latin signals where Google sees them, but the user does not.
 
 ### Implementation Rules:
 
 1. **URL Slugs:** **ALWAYS Latin.**
-* ✅ `mypen.ge/tools/textis-gadaketeba`
-* ❌ `mypen.ge/tools/ტექსტის-გადაკეთება`
-
+   * ✅ `kp.ge/psychology/social-anxiety-disorder`
+   * ❌ `kp.ge/psychology/სოციალური-შფოთვა`
 
 2. **Image Filenames:** **ALWAYS Latin.**
-* Upload images as: `cv-shabloni-georgia.jpg`, `chatgpt-georgia-review.png`.
-
+   * Upload images as: `depression-symptoms-georgia.jpg`, `self-esteem-tips.png`
 
 3. **Schema Keywords:** Inject Latin variations into the `keywords` field of your JSON-LD Schema.
+   * Example: `["depresia", "shfotva", "tvitshefaseba", "fsiqologia"]`
+
 4. **Alt Text:** Hybrid approach.
-* `alt="CV შაბლონი (CV Template for Accountants)"` - The parenthesis makes it acceptable.
-
-
+   * `alt="დეპრესიის სიმპტომები (Depression Symptoms Guide)"` - Parentheses make it acceptable.
 
 ---
 
 ## 4. Internal Linking Strategy (The "Silo" Architecture)
 
-Do not link randomly. We use **Semantic Silos** to pass authority from your high-traffic blog posts to your high-conversion tool pages.
+Use **Semantic Silos** to pass authority from your high-traffic articles to hub pages and conversion points.
 
 ### The "Hub & Spoke" Model
 
-#### A. The "Career" Silo (Example)
+#### A. The "Mental Health" Silo
 
-* **The Hub (Money Page):** `/templates/cv-maker` (The Tool)
-* **The Spokes (Support Content):**
-* `/blog/rogor-davwerot-cv` (Guide) -> **Links to Hub** with anchor: "შექმენით CV"
-* `/blog/cv-vs-resume` (Info) -> **Links to Hub**
-* `/templates/cover-letter` (Related Tool) -> **Links to Hub**
-
-
-* **The Rule:** Spoke pages link to the Hub. Spoke pages link to *each other* if relevant. The Hub links *out* only to high-value conversion points (Pricing).
-
-#### B. The "Model Access" Silo
-
-* **The Hub:** `/models/chatgpt` (The Access Page)
+* **The Hub:** `anxiety.md` (Comprehensive anxiety overview)
 * **The Spokes:**
-* `/blog/chatgpt-vs-claude` -> **Links to Hub** with anchor: "გამოიყენეთ ChatGPT"
-* `/blog/chatgpt-tricks` -> **Links to Hub**
+  * `understanding-depression-symptoms.md` → **Links to Hub** with anchor: "შფოთვითი აშლილობები"
+  * `social-anxiety-disorder.md` → **Links to Hub**
+  * `social-anxiety-disorder-explained.md` → **Links to Hub**
+  * `social-anxiety-disorder-overview.md` → **Links to Hub**
+  * `fear.md` → **Links to Hub**
+  * `antidepressants-overview-uses-types.md` → **Links to Hub**
 
+#### B. The "Self-Development" Silo
 
+* **The Hub:** `tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi.md`
+* **The Spokes:**
+  * `low-self-esteem-signs-and-solutions.md` → **Links to Hub**
+  * `low-self-esteem-improvement-tips.md` → **Links to Hub**
+  * `self-development-skills-15-essential-skills-2023.md` → **Links to Hub**
+  * `self-development-skills-2025.md` → **Links to Hub**
+
+#### C. The "Psychology Education" Silo
+
+* **The Hub:** `introduction-to-psychology.md`
+* **The Spokes:**
+  * `psychology-degree-options.md` → **Links to Hub**
+  * `famous-psychology-experiments.md` → **Links to Hub**
+  * `25-best-psychology-books-2024.md` → **Links to Hub**
+
+#### D. The "Aggression" Silo
+
+* **The Hub:** `understanding-aggression-types-management.md`
+* **The Spokes:**
+  * `understanding-aggression-emotions.md` → **Links to Hub**
+  * `understanding-aggression-emotions-management.md` → **Links to Hub**
+
+#### E. The "Cognitive Psychology" Silo
+
+* **The Hub:** `why-intelligence-is-not-the-same-for-everyone.md`
+* **The Spokes:**
+  * `learning-styles-jung-theory.md` → **Links to Hub**
 
 ### Anchor Text Distribution Rules
 
-* **70% Exact Match (Georgian):** "ტექსტის გადაკეთება" (Linking to Paraphraser).
-* **20% Action Based:** "სცადეთ უფასოდ", "დაიწყე აქ".
-* **10% Navigational:** "Mypen Paraphraser", "ჩვენი ინსტრუმენტი".
+* **70% Exact Match (Georgian):** "შფოთვითი აშლილობა", "თვითშეფასება" (Linking to hub articles)
+* **20% Action Based:** "გაიგეთ მეტი", "წაიკითხეთ სრულად"
+* **10% Podcast CTA:** "მოისმინეთ ეპიზოდი", "გამოიწერეთ პოდკასტი"
 
 ---
 
-## 5. Content Strategy: The "Consumer Reports"
+## 5. Video Integration Strategy
 
-Every piece of content must prove you are the Aggregator.
+Every article should include at least one YouTube video embed to:
+1. Increase time on page
+2. Drive YouTube channel subscriptions
+3. Provide multimedia learning experience
 
-**The "Battle-Test" Loop:**
+### Video Placement Rules:
 
-1. Take a keyword (e.g., "Writing a Poem").
-2. Run it on GPT-4, Claude, and Mypen Ultra.
-3. Publish the results.
-4. **Verdict:** "Mypen Ultra won. But if you prefer GPT-4, we have that too."
+1. **Primary Video:** After the introduction/hook section (approximately 20% into the article)
+2. **Secondary Video (if applicable):** Before the FAQ section
+3. **Format:** Use responsive iframe with proper aspect ratio
+4. **Surrounding Text:** Brief description of what the video covers
+
+### Video Matching Guidelines:
+
+| Article Topic | Video Content Suggestion |
+|---------------|--------------------------|
+| Depression | Podcast episode about depression awareness |
+| Anxiety | Expert interview on anxiety management |
+| Self-Esteem | Practical tips video for building confidence |
+| Psychology Education | Educational overview of the topic |
+| Aggression | Emotional regulation techniques |
 
 ---
 
-## 6. The Master Article Template (v3.0 - Invisible SEO Edition)
+## 6. Content Strategy: Research-Backed Authority
 
-Use this for every manual blog post.
+Every piece of content must establish KP.ge as a credible psychology resource.
 
-```markdown
-# Mypen.ge Article Template
+**The "Trust Triangle":**
 
-## 1. Invisible Metadata (Dev Only)
-- **Slug:** [Latin-only keywords, e.g., /blog/reziumes-dawera]
-- **Schema Keywords:** ["reziumes dawera", "cv is sheqmna", "cv maker georgia"]
-- **Featured Image File:** `cv-maker-tutorial.jpg`
+1. **Cite Research:** Reference studies, statistics, and expert sources.
+2. **Embed Videos:** Show the faces behind the content (podcast hosts, experts).
+3. **Newsletter CTA:** Build ongoing relationship through email.
 
-## 2. Header (H1)
-**Title:** [Promise] + [Context]
-*Example:* "როგორ დავწეროთ CV ხელოვნური ინტელექტით (2025 წლის გზამკვლევი)"
+### Article Value Formula:
 
-## 3. The Hook (BLUF)
-- **Problem:** Writing is hard.
-- **Solution:** AI makes it fast.
-- **Aggregator Flex:** "We tested GPT-4, Claude, and Mypen. Here is the winner."
-
-## 4. The "Benchmark" Module (Mandatory)
-**Section:** რომელი მოდელი ჯობია?
-- **GPT-4 Result:** [Screenshot] - "Good logic, stiff language."
-- **Claude 3.5 Result:** [Screenshot] - "Natural flow."
-- **Mypen Ultra Result:** [Screenshot] - "Perfect grammar."
-
-> **Internal Link:** "გინდათ თავად შეადაროთ? [სცადეთ სამივე მოდელი აქ](/models/comparison)."
-
-## 5. Step-by-Step Guide
-- H2: Step 1 (Georgian Title)
-- H2: Step 2 (Georgian Title)
-- **Pro Tip:** Include a copy-paste prompt block.
-
-## 6. The "Invisible" FAQ (Capturing Snippets)
-*H2: ხშირად დასმული კითხვები*
-- Q: [Georgian Question]?
-- A: [Answer including link to Tool].
-
-## 7. CTA (The Closer)
-"Don't buy 3 subscriptions. Get Mypen."
-[Button: Start Free Trial]
-
+```
+Article Value = (Research Depth × Georgian Relevance × Video Integration) + Newsletter CTA
 ```
 
 ---
 
-## 7. Execution Roadmap (Next 90 Days)
+## 7. Newsletter Strategy (Primary Conversion)
 
-### Month 1: The Foundation & Aggregator Pivot
+### Newsletter CTA Placement:
 
-1. **Technical:** Implement `SoftwareApplication` Schema with the "Invisible Keyword" injection logic.
-2. **Pages:** Launch the `/models/` pages (ChatGPT, Claude, Gemini landing pages).
-3. **Content:** Publish 5 "Battle" articles (e.g., GPT vs Claude for Georgian).
-4. **Linking:** Ensure Homepage links to `/models/` pages clearly.
+1. **Floating/Sticky:** Subtle sidebar or bottom banner
+2. **Mid-Article:** After the first major section (before video)
+3. **End-Article:** Strong CTA before related articles
+4. **Exit Intent:** Popup for leaving visitors
 
-### Month 2: The Utility Dominance
+### Newsletter Value Proposition:
 
-1. **Pages:** Launch `/tools/paraphraser` and `/tools/spellchecker` with devoted URLs.
-2. **pSEO:** Launch first 50 Templates (CVs, Letters).
-3. **Linking:** Connect all "Career" blog posts to the "CV Template" page.
-
-### Month 3: Authority & Scale
-
-1. **Outreach:** Send your "Battle Data" to Georgian tech blogs.
-2. **Expansion:** Add 50 more templates (Lifestyle, Social Media).
-3. **Review:** Check GSC for "Translit" impressions. If high, double down on that metadata.
+* "გამოიწერეთ და მიიღეთ ყოველკვირეული ფსიქოლოგიური ინსაითები"
+* "პირველებმა მოისმინეთ ახალი ეპიზოდები"
+* "ექსკლუზიური კონტენტი მხოლოდ გამომწერებისთვის"
 
 ---
 
-### Final Sign-Off
+## 8. Execution Roadmap (Next 90 Days)
 
-This strategy moves you from a "Junior Wrapper" to a "Senior Tech Product."
+### Month 1: Foundation & Content Optimization
 
-* You are capturing the **Brand** traffic (GPT/Claude).
-* You are capturing the **Lazy** traffic (Templates).
-* You are capturing the **Messy** traffic (Translit).
+1. **Technical:** Implement Article Schema with "Invisible Keyword" injection
+2. **Content:** Optimize all 21 existing articles with proper metadata
+3. **Linking:** Establish hub-spoke internal links across all silos
+4. **Video:** Add YouTube embeds to top 10 traffic articles
+5. **Newsletter:** Implement signup forms on all article pages
+
+### Month 2: Authority Building
+
+1. **New Content:** Publish 4-5 new articles to fill content gaps
+2. **Video:** Create article-specific video content for high-traffic pages
+3. **Email:** Launch weekly newsletter with podcast highlights
+4. **Social:** Share articles on Facebook/Instagram with video teasers
+
+### Month 3: Scale & Optimize
+
+1. **Analytics:** Review GSC for "Translit" impressions and optimize
+2. **A/B Testing:** Test newsletter CTA variations
+3. **Expansion:** Plan next content cluster (e.g., relationships, parenting psychology)
+4. **Outreach:** Pitch guest appearances on other Georgian podcasts
+
+---
+
+## 9. Success Metrics (KPIs)
+
+| Metric | Target (90 Days) |
+|--------|------------------|
+| Newsletter Signups | 500+ subscribers |
+| Organic Traffic | 50% increase |
+| YouTube Referrals | 20% of article readers watch embedded videos |
+| Top 10 Rankings | 5+ articles in top 10 for target keywords |
+| Email Open Rate | 25%+ |
+
+---
+
+### Final Note
+
+This strategy positions KP.ge as the authoritative Georgian psychology resource. You are:
+
+* Capturing **Awareness Traffic** (mental health searches)
+* Capturing **Growth Traffic** (self-improvement seekers)
+* Capturing **Education Traffic** (psychology students)
+* Converting all of them into **Newsletter Subscribers** and **Podcast Listeners**
+
+---
+
+*Last Updated: December 2024*
+*Version: 1.0 - KP.ge Psychology Podcast*
