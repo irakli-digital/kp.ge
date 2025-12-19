@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import { getImageUrl } from "@/lib/image-url"
 import {
   MapPin,
   Clock,
@@ -316,7 +317,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                   className="relative aspect-[4/3] overflow-hidden group"
                 >
                   <Image
-                    src={`/images/nugzar-dzidzi/gallery-${num}.webp`}
+                    src={getImageUrl(`/images/nugzar-dzidzi/gallery-${num}.webp`)}
                     alt={`ვორქშოპის ფოტო ${num}`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

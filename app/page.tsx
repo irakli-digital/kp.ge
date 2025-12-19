@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { getImageUrl } from "@/lib/image-url"
 
 interface LatestVideo {
   id: string
@@ -462,7 +463,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square max-w-sm mx-auto relative overflow-hidden rounded-2xl">
                   <Image
-                    src="/images/guest-photos/gvantsa-veltauri.jpg"
+                    src={getImageUrl("/images/guest-photos/gvantsa-veltauri.jpg")}
                     alt="გვანცა ველთაური"
                     fill
                     className="object-cover"

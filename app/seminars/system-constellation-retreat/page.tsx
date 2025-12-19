@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import { getImageUrl } from "@/lib/image-url"
 import {
   MapPin,
   Clock,
@@ -83,14 +84,14 @@ export default function SystemConstellationRetreatPage() {
   ]
 
   const venueImages = [
-    { src: "/images/system/facade.webp", alt: "სასტუმროს ფასადი" },
-    { src: "/images/system/lobby.webp", alt: "ლობი" },
-    { src: "/images/system/pool.webp", alt: "აუზი" },
-    { src: "/images/system/jacuzzi.webp", alt: "ჯაკუზი" },
-    { src: "/images/system/breakfast.webp", alt: "საუზმე" },
-    { src: "/images/system/restaurant.webp", alt: "რესტორანი" },
-    { src: "/images/system/enotca.webp", alt: "ენოთეკა" },
-    { src: "/images/system/retreat.webp", alt: "რითრითი" },
+    { src: getImageUrl("/images/system/facade.webp"), alt: "სასტუმროს ფასადი" },
+    { src: getImageUrl("/images/system/lobby.webp"), alt: "ლობი" },
+    { src: getImageUrl("/images/system/pool.webp"), alt: "აუზი" },
+    { src: getImageUrl("/images/system/jacuzzi.webp"), alt: "ჯაკუზი" },
+    { src: getImageUrl("/images/system/breakfast.webp"), alt: "საუზმე" },
+    { src: getImageUrl("/images/system/restaurant.webp"), alt: "რესტორანი" },
+    { src: getImageUrl("/images/system/enotca.webp"), alt: "ენოთეკა" },
+    { src: getImageUrl("/images/system/retreat.webp"), alt: "რითრითი" },
   ]
 
   return (

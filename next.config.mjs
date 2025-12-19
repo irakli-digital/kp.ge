@@ -131,6 +131,11 @@ const nextConfig = {
         hostname: 'i.ytimg.com',
         pathname: '/vi/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'mype-uploads.s3.eu-central-1.amazonaws.com',
+        pathname: '/kp-images/**',
+      },
     ],
   },
 }

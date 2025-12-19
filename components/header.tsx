@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Moon, Sun, ChevronDown, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
+import { getImageUrl } from "@/lib/image-url"
 
 const seminarLinks = [
   { href: "/seminars/consciousness", label: "ცნობიერების სემინარი" },
@@ -74,7 +75,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold">
           <Image
-            src="/images/kpodcast-logo.webp"
+            src={getImageUrl("/images/kpodcast-logo.webp")}
             alt="ცოდნისმოყვარე პოდკასტი"
             width={200}
             height={56}
