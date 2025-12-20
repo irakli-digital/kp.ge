@@ -184,7 +184,7 @@ export default function LandingPage() {
                 </Badge>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
                 ცოდნისმოყვარე
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
@@ -192,9 +192,9 @@ export default function LandingPage() {
                 </span>
               </h1>
 
-              <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-zinc-300 mb-10 leading-relaxed max-w-2xl mx-auto">
                 აღმოაჩინე მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის სიღრმეები
-                <span className="text-foreground font-medium"> გვანცა ველთაურთან ერთად.</span>
+                <span className="text-white font-medium"> გვანცა ველთაურთან ერთად.</span>
               </p>
 
               {/* Platform buttons */}
@@ -215,7 +215,7 @@ export default function LandingPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-14 px-8 rounded-none border-border bg-background/30 backdrop-blur-sm hover:bg-muted text-foreground font-semibold text-base"
+                  className="h-14 px-8 rounded-none border-zinc-600 bg-zinc-800/50 backdrop-blur-sm hover:bg-zinc-700/50 text-white font-semibold text-base"
                   asChild
                 >
                   <Link href="https://open.spotify.com/show/12W0rak7PaZnhYnCeQ60mt" target="_blank" rel="noopener noreferrer">
@@ -228,17 +228,17 @@ export default function LandingPage() {
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 justify-center text-sm text-muted-foreground">
+              <div className="flex gap-8 justify-center text-sm text-zinc-400">
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.videoCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.videoCount}</span>
                   ეპიზოდი
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.subscriberCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.subscriberCount}</span>
                   გამომწერი
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.viewCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.viewCount}</span>
                   მოსმენა
                 </div>
               </div>

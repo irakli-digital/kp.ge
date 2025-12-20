@@ -12,6 +12,7 @@ import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/schema";
 import { format } from "date-fns";
 import { ka } from "date-fns/locale";
 import ArticleContent from "@/components/blog/ArticleContent";
+import MedicalDisclaimer from "@/components/blog/MedicalDisclaimer";
 
 interface BlogPostPageProps {
   params: {
@@ -137,6 +138,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           <Separator className="mb-10 opacity-40" />
+
+          {/* Medical disclaimer for psychology content */}
+          <MedicalDisclaimer />
 
           {/* Article content with optimized dark mode typography */}
           <ArticleContent html={post.content_ka} />

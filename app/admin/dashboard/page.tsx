@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Upload, Loader2 } from 'lucide-react';
 
 interface Article {
   id: number;
@@ -12,6 +13,159 @@ interface Article {
   published: boolean;
   published_at: string;
   updated_at: string;
+  featured_image: string | null;
+}
+
+// Image upload cell component
+function ImageUploadCell({
+  articleId,
+  currentImage,
+  onImageUpdated,
+}: {
+  articleId: number;
+  currentImage: string | null;
+  onImageUpdated: (url: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadFile = async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      setError('Only images allowed');
+      setTimeout(() => setError(''), 3000);
+      return;
+    }
+
+    setUploading(true);
+    setError('');
+
+    try {
+      // Upload to S3
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadResponse = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok || !uploadData.url) {
+        throw new Error(uploadData.error || 'Upload failed');
+      }
+
+      // Update article's featured_image
+      const updateResponse = await fetch(`/api/admin/articles/${articleId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ featured_image: uploadData.url }),
+      });
+
+      if (updateResponse.ok) {
+        onImageUpdated(uploadData.url);
+      } else {
+        throw new Error('Failed to update article');
+      }
+    } catch (err) {
+      setError('Upload failed');
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      uploadFile(files[0]);
+    }
+  }, [articleId]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOver(false);
+  }, []);
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      uploadFile(files[0]);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  return (
+    <div
+      className={
+        'relative w-16 h-16 rounded-md cursor-pointer transition-all ' +
+        (dragOver
+          ? 'ring-2 ring-blue-500 bg-blue-500/20'
+          : currentImage
+            ? 'ring-1 ring-zinc-700 hover:ring-zinc-500'
+            : 'border-2 border-dashed border-zinc-700 hover:border-zinc-500 bg-zinc-800/50')
+      }
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onClick={handleClick}
+      title={currentImage ? 'Click or drop to replace image' : 'Click or drop to upload image'}
+    >
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        className="hidden"
+      />
+
+      {uploading ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-zinc-900/80 rounded-md">
+          <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+        </div>
+      ) : currentImage ? (
+        <>
+          <img
+            src={currentImage}
+            alt="Featured"
+            className="w-full h-full object-cover rounded-md"
+          />
+          <div className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
+            <Upload className="w-4 h-4 text-white" />
+          </div>
+        </>
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center text-zinc-500">
+          <Upload className="w-5 h-5" />
+        </div>
+      )}
+
+      {error && (
+        <div className="absolute -bottom-6 left-0 text-xs text-red-500 whitespace-nowrap">
+          {error}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function AdminDashboard() {
@@ -241,6 +395,7 @@ export default function AdminDashboard() {
                     className="w-4 h-4 rounded border-zinc-600 bg-zinc-700 text-blue-600 focus:ring-blue-500"
                   />
                 </th>
+                <th className="w-20 px-4 py-3 text-left text-sm font-medium text-zinc-400">Image</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Title</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Slug</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Status</th>
@@ -263,6 +418,17 @@ export default function AdminDashboard() {
                       checked={selectedIds.has(article.id)}
                       onChange={() => toggleSelect(article.id)}
                       className="w-4 h-4 rounded border-zinc-600 bg-zinc-700 text-blue-600 focus:ring-blue-500"
+                    />
+                  </td>
+                  <td className="px-4 py-4">
+                    <ImageUploadCell
+                      articleId={article.id}
+                      currentImage={article.featured_image}
+                      onImageUpdated={(url) => {
+                        setArticles(articles.map(a =>
+                          a.id === article.id ? { ...a, featured_image: url } : a
+                        ));
+                      }}
                     />
                   </td>
                   <td className="px-4 py-3">

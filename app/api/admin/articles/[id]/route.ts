@@ -103,7 +103,7 @@ export async function PUT(
   }
 }
 
-// Quick toggle publish status
+// Quick toggle publish status or update featured_image
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -117,35 +117,56 @@ export async function PATCH(
 
   try {
     const body = await request.json();
-    const { published } = body;
+    const { published, featured_image } = body;
 
-    if (published) {
-      // Publishing - set published_at if not already set
+    // Handle featured_image update
+    if (featured_image !== undefined) {
       await sql`
         UPDATE posts
         SET
-          published = true,
-          published_at = COALESCE(published_at, NOW()),
+          featured_image = ${featured_image},
           updated_at = NOW()
         WHERE id = ${articleId}
       `;
-    } else {
-      // Unpublishing - just set published to false
-      await sql`
-        UPDATE posts
-        SET
-          published = false,
-          updated_at = NOW()
-        WHERE id = ${articleId}
-      `;
+
+      // Invalidate blog cache so changes appear immediately
+      revalidateTag('blog-posts');
+
+      return NextResponse.json({ success: true, featured_image });
     }
 
-    // Invalidate blog cache so changes appear immediately
-    revalidateTag('blog-posts');
+    // Handle publish toggle
+    if (published !== undefined) {
+      if (published) {
+        // Publishing - set published_at if not already set
+        await sql`
+          UPDATE posts
+          SET
+            published = true,
+            published_at = COALESCE(published_at, NOW()),
+            updated_at = NOW()
+          WHERE id = ${articleId}
+        `;
+      } else {
+        // Unpublishing - just set published to false
+        await sql`
+          UPDATE posts
+          SET
+            published = false,
+            updated_at = NOW()
+          WHERE id = ${articleId}
+        `;
+      }
 
-    return NextResponse.json({ success: true, published });
+      // Invalidate blog cache so changes appear immediately
+      revalidateTag('blog-posts');
+
+      return NextResponse.json({ success: true, published });
+    }
+
+    return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
   } catch (error) {
-    console.error('Error toggling publish status:', error);
-    return NextResponse.json({ error: 'Failed to update status' }, { status: 500 });
+    console.error('Error updating article:', error);
+    return NextResponse.json({ error: 'Failed to update article' }, { status: 500 });
   }
 }

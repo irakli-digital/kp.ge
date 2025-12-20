@@ -362,16 +362,18 @@ function CalculatorContent() {
                     >
                       {/* Recommended Badge for Silver */}
                       {isSilver && (
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full text-xs font-bold text-black">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full text-xs font-bold text-black z-10">
                           რეკომენდებული
                         </div>
                       )}
 
-                      <div className="p-6">
-                        {/* Tag */}
-                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 ${pkg.tag_classes}`}>
-                          {pkg.tag}
-                        </span>
+                      <div className={`p-6 ${isSilver ? 'pt-8' : ''}`}>
+                        {/* Tag - Fixed height container for alignment */}
+                        <div className="h-8 flex items-start">
+                          <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${pkg.tag_classes}`}>
+                            {pkg.tag}
+                          </span>
+                        </div>
 
                         {/* Icon & Name */}
                         <div className="flex items-center gap-3 mb-4">

@@ -18,7 +18,7 @@ export async function GET() {
 
   try {
     const articles = await sql`
-      SELECT id, title, title_ka, slug, published, published_at, updated_at
+      SELECT id, title, title_ka, slug, published, published_at, updated_at, featured_image
       FROM posts
       ORDER BY updated_at DESC
     `;
