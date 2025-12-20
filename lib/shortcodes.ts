@@ -18,26 +18,46 @@ const SHORTCODE_PATTERNS = {
 };
 
 /**
+ * Cleans up empty HTML elements that might be left behind after shortcode extraction
+ */
+function cleanEmptyElements(html: string): string {
+  // Remove empty paragraphs, blockquotes, and other common wrappers
+  return html
+    .replace(/<p>\s*<\/p>/gi, '')
+    .replace(/<blockquote>\s*<\/blockquote>/gi, '')
+    .replace(/<div>\s*<\/div>/gi, '')
+    .replace(/<span>\s*<\/span>/gi, '')
+    .replace(/<strong>\s*<\/strong>/gi, '')
+    .replace(/<em>\s*<\/em>/gi, '')
+    // Also clean up paragraphs/blockquotes that only contain whitespace or line breaks
+    .replace(/<p>(\s|<br\s*\/?>)*<\/p>/gi, '')
+    .replace(/<blockquote>(\s|<br\s*\/?>)*<\/blockquote>/gi, '');
+}
+
+/**
  * Splits HTML content into parts, separating shortcodes from regular HTML
  */
 export function parseContentWithShortcodes(html: string): ContentPart[] {
   const parts: ContentPart[] = [];
   let lastIndex = 0;
 
-  // Combined pattern for all shortcodes
+  // Combined pattern for all shortcodes - also capture surrounding paragraph/blockquote tags
   const combinedPattern = new RegExp(
-    `(${SHORTCODE_PATTERNS.newsletter.source}|${SHORTCODE_PATTERNS.youtubeChannel.source})`,
+    `(<p>\\s*)?(${SHORTCODE_PATTERNS.newsletter.source}|${SHORTCODE_PATTERNS.youtubeChannel.source})(\\s*<\\/p>)?`,
     'gi'
   );
 
   let match;
   while ((match = combinedPattern.exec(html)) !== null) {
-    // Add HTML before this shortcode
+    // Add HTML before this shortcode (cleaned of empty elements)
     if (match.index > lastIndex) {
-      parts.push({
-        type: 'html',
-        content: html.slice(lastIndex, match.index),
-      });
+      const htmlContent = cleanEmptyElements(html.slice(lastIndex, match.index));
+      if (htmlContent.trim()) {
+        parts.push({
+          type: 'html',
+          content: htmlContent,
+        });
+      }
     }
 
     // Determine shortcode type
@@ -67,12 +87,15 @@ export function parseContentWithShortcodes(html: string): ContentPart[] {
     lastIndex = match.index + match[0].length;
   }
 
-  // Add remaining HTML after last shortcode
+  // Add remaining HTML after last shortcode (cleaned of empty elements)
   if (lastIndex < html.length) {
-    parts.push({
-      type: 'html',
-      content: html.slice(lastIndex),
-    });
+    const htmlContent = cleanEmptyElements(html.slice(lastIndex));
+    if (htmlContent.trim()) {
+      parts.push({
+        type: 'html',
+        content: htmlContent,
+      });
+    }
   }
 
   // If no shortcodes found, return the whole content as HTML

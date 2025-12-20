@@ -2,22 +2,32 @@
 
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
-// Register Georgian-compatible font
-Font.register({
-  family: 'Inter',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2', fontWeight: 400 },
-    { src: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2', fontWeight: 600 },
-    { src: 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZ9hiJ-Ek-_EeA.woff2', fontWeight: 700 },
-  ],
-});
+// Font will be registered when component is rendered with baseUrl
+let fontRegistered = false;
+
+export function registerFonts(baseUrl: string) {
+  if (fontRegistered) return;
+
+  Font.register({
+    family: 'NotoSansGeorgian',
+    fonts: [
+      { src: `${baseUrl}/fonts/NotoSansGeorgian-Regular.ttf`, fontWeight: 400 },
+      { src: `${baseUrl}/fonts/NotoSansGeorgian-Bold.ttf`, fontWeight: 700 },
+    ],
+  });
+
+  // Disable hyphenation to avoid issues with Georgian text
+  Font.registerHyphenationCallback(word => [word]);
+
+  fontRegistered = true;
+}
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
     backgroundColor: '#0f0f10',
     color: '#ffffff',
-    fontFamily: 'Inter',
+    fontFamily: 'NotoSansGeorgian',
   },
   header: {
     flexDirection: 'row',

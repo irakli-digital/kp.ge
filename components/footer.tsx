@@ -1,24 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Loader2, CheckCircle, Mail } from "lucide-react"
-import { useTheme } from "next-themes"
 
 export default function Footer() {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
-  const { theme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const isDarkTheme = !mounted ? true : theme === "dark" || resolvedTheme === "dark"
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -60,7 +51,7 @@ export default function Footer() {
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block">
               <Image
-                src={isDarkTheme ? "/images/Logo/logo-dark.svg" : "/images/Logo/logo-light.svg"}
+                src="/images/Logo/logo-dark.svg"
                 alt="ცოდნისმოყვარე პოდკასტი"
                 width={191}
                 height={46}

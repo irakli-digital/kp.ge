@@ -126,10 +126,14 @@ function CalculatorContent() {
     setGeneratingPdf(true);
     try {
       // Dynamically import PDF modules only when needed
-      const [{ pdf }, { ProposalPDF }] = await Promise.all([
+      const [{ pdf }, { ProposalPDF, registerFonts }] = await Promise.all([
         import('@react-pdf/renderer'),
         import('@/components/calculator/ProposalPDF'),
       ]);
+
+      // Register fonts with full URL (required for @react-pdf/renderer in browser)
+      const baseUrl = window.location.origin;
+      registerFonts(baseUrl);
 
       const doc = (
         <ProposalPDF
@@ -363,7 +367,7 @@ function CalculatorContent() {
                 <p className="text-zinc-500">სრული სპონსორობის პაკეტები ფასდაკლებით</p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-4 md:gap-6 items-start">
+              <div className="grid md:grid-cols-3 gap-4 md:gap-6 items-start pt-4">
                 {sortedPackages.map((pkg, index) => {
                   const Icon = getPackageIcon(pkg.type);
                   const isSelected = selectedPackage?.id === pkg.id;
@@ -380,7 +384,7 @@ function CalculatorContent() {
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20, delay: index * 0.1 }}
                       className={`relative text-left rounded-2xl border-2 transition-all duration-300 ${
-                        isSilver ? 'md:scale-105 md:z-10 mt-4' : ''
+                        isSilver ? 'md:scale-105 md:z-10' : ''
                       } ${
                         isSelected
                           ? 'border-amber-500 shadow-lg shadow-amber-500/20'

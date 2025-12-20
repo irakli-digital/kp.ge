@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Moon, Sun, ChevronDown, Youtube } from "lucide-react"
+import { Menu, X, ChevronDown, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useTheme } from "next-themes"
 
 const seminarLinks = [
   { href: "/seminars/consciousness", label: "ცნობიერების სემინარი" },
@@ -25,15 +24,9 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
-  const { theme, setTheme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const isDarkTheme = !mounted ? true : theme === "dark" || resolvedTheme === "dark"
-
   useEffect(() => {
-    setMounted(true)
-
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true)
@@ -45,10 +38,6 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  const toggleTheme = () => {
-    setTheme(isDarkTheme ? "light" : "dark")
-  }
 
   const handleDropdownEnter = (dropdown: string) => {
     if (dropdownTimeoutRef.current) {
@@ -74,7 +63,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
       <div className="container flex h-20 items-center justify-between relative">
         <Link href="/" className="flex items-center gap-2 font-bold z-10">
           <Image
-            src={isDarkTheme ? "/images/Logo/logo-dark.svg" : "/images/Logo/logo-light.svg"}
+            src="/images/Logo/logo-dark.svg"
             alt="ცოდნისმოყვარე პოდკასტი"
             width={191}
             height={46}
@@ -142,11 +131,6 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
           </nav>
         )}
         <div className="hidden md:flex gap-3 items-center">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-            {isDarkTheme ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-            <span className="sr-only">Toggle theme</span>
-          </Button>
-
           <Button variant="outline" className="rounded-full border-amber-500/50 text-amber-500 hover:bg-amber-500/10 hover:text-amber-400" asChild>
             <Link href="/donations">
               მხარდაჭერა
@@ -164,9 +148,6 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
           <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             <span className="sr-only">Toggle menu</span>
-          </Button>
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-            {isDarkTheme ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
           </Button>
         </div>
       </div>

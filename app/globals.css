@@ -133,6 +133,16 @@
     color: hsl(var(--brand) / 0.8);
   }
 
+  /* YouTube CTA button - exclude from article link styling */
+  .article-content .youtube-cta-button {
+    color: white !important;
+    text-decoration: none !important;
+  }
+
+  .article-content .youtube-cta-button:hover {
+    color: white !important;
+  }
+
   .article-content strong,
   .article-content b {
     @apply font-semibold text-foreground;
