@@ -84,7 +84,7 @@ export default function NugzarDzidziguriWorkshopPage() {
   ]
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-[#0a0a0a]">
+    <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header />
 
       <main className="flex-1 relative">
@@ -113,7 +113,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                   </Badge>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground">
                   ტრანსფორმაციის
                   <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-400 to-purple-500">
@@ -121,13 +121,13 @@ export default function NugzarDzidziguriWorkshopPage() {
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg">
+                <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
                   როგორ გათავისუფლდე დესტრუქციული როლებისგან და შეცვალო შენი ცხოვრება.
-                  <span className="text-neutral-300"> ორდღიანი ინტენსიური გამოცდილება ნუგზარ ძიძიგურთან.</span>
+                  <span className="text-foreground/80"> ორდღიანი ინტენსიური გამოცდილება ნუგზარ ძიძიგურთან.</span>
                 </p>
 
                 {/* Event details - minimal */}
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-500 mb-8">
+                <div className="flex flex-wrap gap-6 text-sm text-muted-foreground mb-8">
                   <div className="flex items-center gap-2">
                     <Clock className="size-4" />
                     <span>10:00 – 18:00</span>
@@ -143,10 +143,10 @@ export default function NugzarDzidziguriWorkshopPage() {
                 </div>
 
                 {/* Social proof */}
-                <div className="flex items-center gap-3 text-sm text-neutral-500">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <div className="flex -space-x-2">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-purple-600 to-violet-600 border-2 border-[#0a0a0a] flex items-center justify-center text-[10px] font-medium text-white">
+                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-purple-600 to-violet-600 border-2 border-background flex items-center justify-center text-[10px] font-medium text-white">
                         {["ნძ", "გვ", "ია", "ბა"][i]}
                       </div>
                     ))}
@@ -162,13 +162,13 @@ export default function NugzarDzidziguriWorkshopPage() {
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className="lg:pl-8"
               >
-                <div className="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 p-8 md:p-10">
+                <div className="bg-card/50 backdrop-blur-sm border border-border p-8 md:p-10">
                   <div className="mb-8">
                     <p className="text-xs uppercase tracking-widest text-purple-500 mb-3 font-semibold">მომავალი ვორქშოპი</p>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
                       გამოტოვე? დაესწარი შემდეგს..
                     </h2>
-                    <p className="text-neutral-400">
+                    <p className="text-muted-foreground">
                       დარეგისტრირდი პრიორიტეტულ სიაში და პირველმა შეიტყვე მომავალი ვორქშოპის შესახებ.
                     </p>
                   </div>
@@ -182,8 +182,8 @@ export default function NugzarDzidziguriWorkshopPage() {
                       <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
                         <CheckCircle className="size-8 text-emerald-500" />
                       </div>
-                      <p className="text-white font-medium text-lg mb-2">მადლობა!</p>
-                      <p className="text-neutral-400 text-sm">შეგატყობინებთ ახალი ვორქშოპის შესახებ</p>
+                      <p className="text-foreground font-medium text-lg mb-2">მადლობა!</p>
+                      <p className="text-muted-foreground text-sm">შეგატყობინებთ ახალი ვორქშოპის შესახებ</p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -194,9 +194,9 @@ export default function NugzarDzidziguriWorkshopPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="h-14 bg-transparent border-0 border-b-2 border-neutral-700 rounded-none px-0 text-white placeholder:text-neutral-600 focus:border-purple-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
+                          className="h-14 bg-transparent border-0 border-b-2 border-border rounded-none px-0 text-foreground placeholder:text-muted-foreground focus:border-purple-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
                         />
-                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-neutral-600" />
+                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
                       </div>
                       <Button
                         type="submit"
@@ -205,7 +205,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                         შემატყობინე პირველს
                         <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
-                      <p className="text-center text-xs text-neutral-600 pt-2">
+                      <p className="text-center text-xs text-muted-foreground pt-2">
                         <Users className="inline size-3 mr-1" />
                         შეუერთდი 100+ დაინტერესებულს
                       </p>
@@ -218,7 +218,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* What You Missed - Value Grid */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -228,7 +228,7 @@ export default function NugzarDzidziguriWorkshopPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-4 font-semibold">რა მოხდა ვორქშოპზე</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 ამას გამოტოვებდი
               </h2>
             </motion.div>
@@ -242,13 +242,13 @@ export default function NugzarDzidziguriWorkshopPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                 >
-                  <Card className="bg-neutral-900/30 border-neutral-800 hover:border-purple-500/30 transition-all duration-300 h-full group">
+                  <Card className="bg-muted/30 border-border hover:border-purple-500/30 transition-all duration-300 h-full group">
                     <CardContent className="p-6">
                       <div className="size-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 text-purple-500 group-hover:bg-purple-500/20 transition-colors">
                         {card.icon}
                       </div>
-                      <h3 className="text-lg font-extrabold text-white mb-1">{card.title}</h3>
-                      <p className="text-sm text-neutral-500 mb-3">{card.subtitle}</p>
+                      <h3 className="text-lg font-extrabold text-foreground mb-1">{card.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{card.subtitle}</p>
                       <Badge variant="outline" className="text-[10px] uppercase tracking-[0.15em] border-emerald-500/30 text-emerald-500 bg-emerald-500/5 font-semibold">
                         {card.status}
                       </Badge>
@@ -261,7 +261,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* About - Cinematic Text */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -273,14 +273,14 @@ export default function NugzarDzidziguriWorkshopPage() {
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-6 font-semibold text-center">მანიფესტი</p>
 
               <div className="space-y-6 text-center">
-                <p className="text-2xl md:text-3xl font-light text-white leading-relaxed">
+                <p className="text-2xl md:text-3xl font-light text-foreground leading-relaxed">
                   ეს არ იყო უბრალოდ ვორქშოპი.
                 </p>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   ეს იყო შენი შანსი, გაგეცნობიერებინა <span className="text-white">რა გიშლის ხელს</span> ბედნიერ ცხოვრებაში
                   და როგორ შეცვალო ეს <span className="text-purple-400">ერთხელ და სამუდამოდ.</span>
                 </p>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   თუ ცხოვრებაში ერთსა და იმავე ნეგატიურ სცენარებში ხვდები,
                   თუ ურთიერთობებში კვლავ და კვლავ იმავე პრობლემებს ეჯახები.
                 </p>
@@ -290,7 +290,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Photo Gallery */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -300,7 +300,7 @@ export default function NugzarDzidziguriWorkshopPage() {
               className="text-center mb-12"
             >
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-4 font-semibold">გალერეა</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 ფოტოები ვორქშოპიდან
               </h2>
             </motion.div>
@@ -329,7 +329,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Schedule - Accordion Style */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-neutral-950/50">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-muted/30">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -339,7 +339,7 @@ export default function NugzarDzidziguriWorkshopPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-4 font-semibold">პროგრამა</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 2 დღე ტრანსფორმაციის
               </h2>
             </motion.div>
@@ -359,8 +359,8 @@ export default function NugzarDzidziguriWorkshopPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-purple-500">დღე I • 3 მაისი</span>
                     <div>
-                      <span className="text-white font-medium block">გააცნობიერე, სად ხარ ახლა</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">10:00 – 18:00</span>
+                      <span className="text-foreground font-medium block">გააცნობიერე, სად ხარ ახლა</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">10:00 – 18:00</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-purple-500 transition-transform ${expandedSection === 'day1' ? 'rotate-180' : ''}`} />
@@ -377,7 +377,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-purple-500/20">
                         <ul className="space-y-2">
                           {day1Topics.map((topic, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-purple-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{topic}</span>
                             </li>
@@ -403,8 +403,8 @@ export default function NugzarDzidziguriWorkshopPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-violet-500">დღე II • 4 მაისი</span>
                     <div>
-                      <span className="text-white font-medium block">შენი ტრანსფორმაციის გზა</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">10:00 – 18:00</span>
+                      <span className="text-foreground font-medium block">შენი ტრანსფორმაციის გზა</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">10:00 – 18:00</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-violet-500 transition-transform ${expandedSection === 'day2' ? 'rotate-180' : ''}`} />
@@ -421,7 +421,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-violet-500/20">
                         <ul className="space-y-2">
                           {day2Topics.map((topic, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-violet-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{topic}</span>
                             </li>
@@ -437,7 +437,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Speakers - Hero Portraits */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -447,7 +447,7 @@ export default function NugzarDzidziguriWorkshopPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-4 font-semibold">წამყვანები</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 შენი მეგზურები
               </h2>
             </motion.div>
@@ -461,14 +461,14 @@ export default function NugzarDzidziguriWorkshopPage() {
                 transition={{ duration: 0.5 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 md:p-10 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 md:p-10 text-center">
                   {/* Large initial */}
                   <div className="size-32 md:size-40 rounded-full bg-gradient-to-br from-purple-500/20 to-violet-500/20 mx-auto mb-6 flex items-center justify-center border border-purple-500/20 group-hover:border-purple-500/40 transition-colors">
                     <span className="text-5xl md:text-6xl font-bold text-purple-500/80">ნძ</span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">ნუგზარ ძიძიგური</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">ნუგზარ ძიძიგური</h3>
                   <p className="text-purple-500 uppercase tracking-widest text-xs font-semibold mb-4">ტრენერი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     პიროვნული განვითარებისა და ტრანსფორმაციის ექსპერტი
                   </p>
                 </div>
@@ -482,14 +482,14 @@ export default function NugzarDzidziguriWorkshopPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 md:p-10 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 md:p-10 text-center">
                   {/* Large initial */}
                   <div className="size-32 md:size-40 rounded-full bg-gradient-to-br from-purple-500/20 to-violet-500/20 mx-auto mb-6 flex items-center justify-center border border-purple-500/20 group-hover:border-purple-500/40 transition-colors">
                     <span className="text-5xl md:text-6xl font-bold text-purple-500/80">გვ</span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">გვანცა ველთაური</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">გვანცა ველთაური</h3>
                   <p className="text-purple-500 uppercase tracking-widest text-xs font-semibold mb-4">ფასილიტატორი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                   ფასილიტატორი
                   </p>
                 </div>
@@ -499,7 +499,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Podcast Bridge */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-neutral-950/50 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-neutral-950/50 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -509,10 +509,10 @@ export default function NugzarDzidziguriWorkshopPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <p className="text-xs uppercase tracking-widest text-purple-500 mb-4 font-semibold">ვერ დაიცადო?</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 დაიწყე მოგზაურობა ახლავე
               </h2>
-              <p className="text-neutral-400 mb-10 text-lg">
+              <p className="text-muted-foreground mb-10 text-lg">
                 სანამ მომავალ ვორქშოპს დაველოდებით, მოისმინე პოდკასტი და გაეცანი
                 პიროვნული განვითარებისა და ტრანსფორმაციის თემებს.
               </p>
@@ -524,12 +524,12 @@ export default function NugzarDzidziguriWorkshopPage() {
                     key={i}
                     href="https://www.youtube.com/@KPODCAST_GE"
                     target="_blank"
-                    className="group bg-neutral-900/50 border border-neutral-800 p-6 hover:border-purple-500/30 transition-all"
+                    className="group bg-card/50 border border-border p-6 hover:border-purple-500/30 transition-all"
                   >
                     <div className="aspect-square bg-gradient-to-br from-purple-500/10 to-violet-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-purple-500/20 group-hover:to-violet-500/20 transition-colors">
                       <Youtube className="size-12 text-purple-500/60 group-hover:text-purple-500 transition-colors" />
                     </div>
-                    <p className="text-sm text-neutral-500 group-hover:text-neutral-400 transition-colors">ეპიზოდი #{i}</p>
+                    <p className="text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors">ეპიზოდი #{i}</p>
                   </Link>
                 ))}
               </div>
@@ -550,7 +550,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Previous Price - Anchoring */}
-        <section className="w-full py-16 border-t border-neutral-800/50">
+        <section className="w-full py-16 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -559,14 +559,14 @@ export default function NugzarDzidziguriWorkshopPage() {
               transition={{ duration: 0.6 }}
               className="max-w-md mx-auto"
             >
-              <div className="border border-neutral-800 bg-neutral-900/30 p-8 text-center">
-                <p className="text-xs uppercase tracking-[0.15em] text-neutral-500 mb-4 font-semibold">წინა ვორქშოპის ღირებულება</p>
+              <div className="border border-border bg-card/30 p-8 text-center">
+                <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4 font-semibold">წინა ვორქშოპის ღირებულება</p>
                 <div className="flex items-baseline justify-center gap-2 mb-3">
-                  <span className="text-5xl font-bold text-neutral-400">650</span>
-                  <span className="text-neutral-500 text-lg">GEL</span>
+                  <span className="text-5xl font-bold text-muted-foreground">650</span>
+                  <span className="text-muted-foreground text-lg">GEL</span>
                 </div>
-                <div className="border-t border-neutral-800 pt-4 mt-4">
-                  <p className="text-neutral-500 text-sm">
+                <div className="border-t border-border pt-4 mt-4">
+                  <p className="text-muted-foreground text-sm">
                     16 საათი • პრაქტიკული მეთოდები • პირადი უკუკავშირი
                   </p>
                 </div>
@@ -576,7 +576,7 @@ export default function NugzarDzidziguriWorkshopPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-purple-950/10 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-purple-950/10 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -585,10 +585,10 @@ export default function NugzarDzidziguriWorkshopPage() {
               transition={{ duration: 0.6 }}
               className="max-w-xl mx-auto text-center"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 შემდეგი ვორქშოპი მალე
               </h2>
-              <p className="text-neutral-400 mb-8">
+              <p className="text-muted-foreground mb-8">
                 არ გამოტოვო მომავალი ვორქშოპი. დარეგისტრირდი ახლა.
               </p>
 
@@ -605,7 +605,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-14 bg-neutral-900/50 border-neutral-800 rounded-none text-white placeholder:text-neutral-600 focus:border-purple-500 focus-visible:ring-0"
+                    className="h-14 bg-muted/50 border-border rounded-none text-foreground placeholder:text-muted-foreground focus:border-purple-500 focus-visible:ring-0"
                   />
                   <Button
                     type="submit"

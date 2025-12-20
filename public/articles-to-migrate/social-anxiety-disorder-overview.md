@@ -1,7 +1,7 @@
 ---
 slug: social-anxiety-disorder-overview
-title_ka: სოციალური შფოთვის მიმოხილვა: მიზეზები და რისკ-ფაქტორები
-excerpt_ka: რა იწვევს სოციალურ შფოთვას? გაიგეთ ბიოლოგიური, გენეტიკური და გარემოებრივი ფაქტორების როლი.
+title_ka: "სოციალური შფოთვის მიმოხილვა: მიზეზები და რისკ-ფაქტორები"
+excerpt_ka: "რა იწვევს სოციალურ შფოთვას? გაიგეთ ბიოლოგიური, გენეტიკური და გარემოებრივი ფაქტორების როლი."
 schema_keywords: ["socialuri shfotva mizezebi", "social anxiety causes", "shfotvis risk faktorebi"]
 featured_image: social-anxiety-causes-overview.jpg
 hub_article: false
@@ -76,7 +76,7 @@ silo: mental-health
 - ალკოჰოლის ან ნარკოტიკების ბოროტად გამოყენება
 - დეპრესია
 
-სრული ინფორმაციისთვის წაიკითხეთ **[სოციალური შფოთვის აშლილობა: სრული გზამკვლევი](/psychology/social-anxiety-disorder-explained)**.
+სრული ინფორმაციისთვის წაიკითხეთ **[სოციალური შფოთვის აშლილობა: სრული გზამკვლევი](/blog/social-anxiety-disorder-explained)**.
 
 ---
 
@@ -87,15 +87,15 @@ silo: mental-health
 - მოერიდეთ ალკოჰოლს და კოფეინს
 - ივარჯიშეთ რეგულარულად
 
-გაიგეთ მეტი **[შფოთვის მართვის შესახებ](/psychology/anxiety)**.
+გაიგეთ მეტი **[შფოთვის მართვის შესახებ](/blog/anxiety)**.
 
 ---
 
 ## მსგავსი სტატიები
 
-- [სოციალური შფოთვის აშლილობა: სრული გზამკვლევი](/psychology/social-anxiety-disorder-explained)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [სოციალური შფოთვის აშლილობა: სრული გზამკვლევი](/blog/social-anxiety-disorder-explained)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
 
 ---
 

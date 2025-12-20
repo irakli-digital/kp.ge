@@ -1,7 +1,7 @@
 ---
 slug: self-development-skills-2025
-title_ka: 15 თვითგანვითარების უნარი 2025 წლისთვის
-excerpt_ka: მოკლე სია 15 უმნიშვნელოვანესი უნარისა, რომელიც პიროვნულ და პროფესიულ წარმატებას მოგიტანთ.
+title_ka: "15 თვითგანვითარების უნარი 2025 წლისთვის"
+excerpt_ka: "მოკლე სია 15 უმნიშვნელოვანესი უნარისა, რომელიც პიროვნულ და პროფესიულ წარმატებას მოგიტანთ."
 schema_keywords: ["tvitganvitareba 2025", "self-development skills 2025", "pirovnuli zrda", "essential skills georgia"]
 featured_image: self-development-2025-skills.jpg
 hub_article: false
@@ -16,7 +16,7 @@ silo: self-development
 
 თვითგანვითარების უნარები უმნიშვნელოვანესია პიროვნული ზრდისა და წარმატებისთვის ცხოვრების სხვადასხვა სფეროში. ეს უნარები ეხმარება ადამიანს დაეუფლოს ახალ ცოდნას, იპოვოს საკუთარი შესაძლებლობები და გაუმკლავდეს ცვალებად გარემოს.
 
-დეტალური სახელმძღვანელოსთვის წაიკითხეთ **[თვითგანვითარების უნარების სრული გზამკვლევი](/psychology/self-development-skills-15-essential-skills-2023)**.
+დეტალური სახელმძღვანელოსთვის წაიკითხეთ **[თვითგანვითარების უნარების სრული გზამკვლევი](/blog/self-development-skills-15-essential-skills-2023)**.
 
 ---
 
@@ -94,7 +94,7 @@ silo: self-development
 
 ამ 15 უნარის განვითარება მნიშვნელოვნად გააძლიერებს თქვენს თვითგანვითარების პროცესს. დაიწყეთ ერთი ან ორი უნარით და თანდათანობით დაამატეთ ახლები.
 
-გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -108,9 +108,9 @@ silo: self-development
 
 ## მსგავსი სტატიები
 
-- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [თვითგანვითარების უნარები: სრული გზამკვლევი](/psychology/self-development-skills-15-essential-skills-2023)
-- [დაბალი თვითშეფასება: ნიშნები და გამოსავალი](/psychology/low-self-esteem-signs-and-solutions)
+- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [თვითგანვითარების უნარები: სრული გზამკვლევი](/blog/self-development-skills-15-essential-skills-2023)
+- [დაბალი თვითშეფასება: ნიშნები და გამოსავალი](/blog/low-self-esteem-signs-and-solutions)
 
 ---
 

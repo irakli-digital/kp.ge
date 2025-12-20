@@ -1,7 +1,7 @@
 ---
 slug: fear
-title_ka: შიში: რა არის და როგორ გავუმკლავდეთ
-excerpt_ka: შიში უნივერსალური ემოციაა, რომელიც გვიცავს. გაიგეთ, რა იწვევს შიშს, როგორ ამოვიცნოთ და როდის საჭიროებს ყურადღებას.
+title_ka: "შიში: რა არის და როგორ გავუმკლავდეთ"
+excerpt_ka: "შიში უნივერსალური ემოციაა, რომელიც გვიცავს. გაიგეთ, რა იწვევს შიშს, როგორ ამოვიცნოთ და როდის საჭიროებს ყურადღებას."
 schema_keywords: ["shishi", "fear psychology", "shishis fsiqologia", "fobia", "shfotva", "shishis dadzleva"]
 featured_image: fear-psychology-guide.jpg
 hub_article: false
@@ -141,7 +141,7 @@ silo: mental-health
 - იწვევს თავის არიდებას მნიშვნელოვანი აქტივობებისგან
 - თან ახლავს პანიკის შეტევები
 
-გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/psychology/anxiety)**.
+გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/blog/anxiety)**.
 
 ---
 
@@ -185,10 +185,10 @@ silo: mental-health
 
 ## მსგავსი სტატიები
 
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [სოციალური შფოთვის აშლილობა](/psychology/social-anxiety-disorder-explained)
-- [აგრესია: ტიპები და მართვის გზები](/psychology/understanding-aggression-types-management)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [სოციალური შფოთვის აშლილობა](/blog/social-anxiety-disorder-explained)
+- [აგრესია: ტიპები და მართვის გზები](/blog/understanding-aggression-types-management)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
 
 ---
 

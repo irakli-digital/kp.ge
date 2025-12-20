@@ -1,7 +1,7 @@
 ---
 slug: self-development-skills-15-essential-skills-2023
-title_ka: თვითგანვითარების უნარები: 15 აუცილებელი უნარი პიროვნული ზრდისთვის
-excerpt_ka: თვითგანვითარება დაიწყეთ სწორი უნარებით. გაიგეთ 15 ძირითადი უნარი და როგორ დაეუფლოთ მათ ნაბიჯ-ნაბიჯ.
+title_ka: "თვითგანვითარების უნარები: 15 აუცილებელი უნარი პიროვნული ზრდისთვის"
+excerpt_ka: "თვითგანვითარება დაიწყეთ სწორი უნარებით. გაიგეთ 15 ძირითადი უნარი და როგორ დაეუფლოთ მათ ნაბიჯ-ნაბიჯ."
 schema_keywords: ["tvitganvitareba", "self-development skills", "pirovnuli zrda", "personal growth georgia", "maslouis piramida", "skills 2024"]
 featured_image: self-development-skills-guide.jpg
 hub_article: false
@@ -174,7 +174,7 @@ silo: self-development
 - **წიგნები:** „The 7 Habits of Highly Effective People" (სტივენ კოვი), „Mindset: The New Psychology of Success" (კეროლ დუეკი)
 - **ონლაინ კურსები:** LinkedIn Learning, Udemy, Coursera
 
-გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -188,10 +188,10 @@ silo: self-development
 
 ## მსგავსი სტატიები
 
-- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [15 თვითგანვითარების უნარი 2025 წლისთვის](/psychology/self-development-skills-2025)
-- [დაბალი თვითშეფასება: ნიშნები და გამოსავალი](/psychology/low-self-esteem-signs-and-solutions)
-- [რატომ არ არის ინტელექტი ყველასთვის ერთნაირი](/psychology/why-intelligence-is-not-the-same-for-everyone)
+- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [15 თვითგანვითარების უნარი 2025 წლისთვის](/blog/self-development-skills-2025)
+- [დაბალი თვითშეფასება: ნიშნები და გამოსავალი](/blog/low-self-esteem-signs-and-solutions)
+- [რატომ არ არის ინტელექტი ყველასთვის ერთნაირი](/blog/why-intelligence-is-not-the-same-for-everyone)
 
 ---
 

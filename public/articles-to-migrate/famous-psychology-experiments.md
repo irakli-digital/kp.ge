@@ -1,7 +1,7 @@
 ---
 slug: famous-psychology-experiments
-title_ka: 7 ცნობილი ფსიქოლოგიური ექსპერიმენტი, რომელმაც მეცნიერება შეცვალა
-excerpt_ka: Little Albert-დან მილგრამის ექსპერიმენტამდე - ექსპერიმენტები, რომლებმაც ადამიანის ფსიქიკის გაგება რადიკალურად შეცვალა.
+title_ka: "7 ცნობილი ფსიქოლოგიური ექსპერიმენტი, რომელმაც მეცნიერება შეცვალა"
+excerpt_ka: "Little Albert-დან მილგრამის ექსპერიმენტამდე - ექსპერიმენტები, რომლებმაც ადამიანის ფსიქიკის გაგება რადიკალურად შეცვალა."
 schema_keywords: ["fsiqologiuri eqsperimentebi", "psychology experiments", "milgram experiment", "stanford prison experiment", "little albert", "fsiqologia istoria"]
 featured_image: famous-psychology-experiments.jpg
 hub_article: false
@@ -129,7 +129,7 @@ silo: psychology-education
 
 ამ ექსპერიმენტების ავტორებმა — უოთსონმა, ბანდურამ, ნისბეტმა და ზიმბარდომ — ფსიქოლოგიის განვითარებაში შეტანილი წვლილისთვის ამერიკის ფსიქოლოგიური ასოციაციისგან ოქროს მედლები მიიღეს.
 
-გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/psychology/introduction-to-psychology)**.
+გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/blog/introduction-to-psychology)**.
 
 ---
 
@@ -143,9 +143,9 @@ silo: psychology-education
 
 ## მსგავსი სტატიები
 
-- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/psychology/introduction-to-psychology)
-- [ფსიქოლოგიის ხარისხები: რომელი აირჩიოთ?](/psychology/psychology-degree-options)
-- [25 საუკეთესო ფსიქოლოგიის წიგნი](/psychology/25-best-psychology-books-2024)
+- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/blog/introduction-to-psychology)
+- [ფსიქოლოგიის ხარისხები: რომელი აირჩიოთ?](/blog/psychology-degree-options)
+- [25 საუკეთესო ფსიქოლოგიის წიგნი](/blog/25-best-psychology-books-2024)
 
 ---
 

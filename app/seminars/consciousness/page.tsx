@@ -95,7 +95,7 @@ export default function ConsciousnessSeminarPage() {
   ]
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-[#0a0a0a]">
+    <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header />
 
       <main className="flex-1 relative">
@@ -124,7 +124,7 @@ export default function ConsciousnessSeminarPage() {
                   </Badge>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground">
                   ცნობიერების
                   <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
@@ -132,13 +132,13 @@ export default function ConsciousnessSeminarPage() {
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg">
+                <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
                   6-საათიანი ჩაღრმავება გადაწყვეტილების მიღების მექანიზმებში.
-                  <span className="text-neutral-300"> ეს ღონისძიება დასრულდა, მაგრამ მოგზაურობა გრძელდება.</span>
+                  <span className="text-foreground/80"> ეს ღონისძიება დასრულდა, მაგრამ მოგზაურობა გრძელდება.</span>
                 </p>
 
                 {/* Event details - minimal */}
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-500 mb-8">
+                <div className="flex flex-wrap gap-6 text-sm text-muted-foreground mb-8">
                   <div className="flex items-center gap-2">
                     <Clock className="size-4" />
                     <span>12:00 – 18:00</span>
@@ -154,10 +154,10 @@ export default function ConsciousnessSeminarPage() {
                 </div>
 
                 {/* Social proof */}
-                <div className="flex items-center gap-3 text-sm text-neutral-500">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <div className="flex -space-x-2">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 border-2 border-[#0a0a0a] flex items-center justify-center text-[10px] font-medium text-white">
+                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-amber-600 to-orange-600 border-2 border-background flex items-center justify-center text-[10px] font-medium text-white">
                         {["დკ", "გვ", "ია", "ბა"][i]}
                       </div>
                     ))}
@@ -173,13 +173,13 @@ export default function ConsciousnessSeminarPage() {
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className="lg:pl-8"
               >
-                <div className="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 p-8 md:p-10">
+                <div className="bg-card/50 backdrop-blur-sm border border-border p-8 md:p-10">
                   <div className="mb-8">
                     <p className="text-xs uppercase tracking-widest text-amber-500 mb-3 font-semibold">მომავალი სემინარი</p>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
                       ვერ დაესწარი? შემდეგი სემინარი მალე ჩატარდება.
                     </h2>
-                    <p className="text-neutral-400">
+                    <p className="text-muted-foreground">
                       დარეგისტრირდი მომლოდინეთა სიაში და პირველმა შეიტყვე მომავალი სემინარის შესახებ.
                     </p>
                   </div>
@@ -193,8 +193,8 @@ export default function ConsciousnessSeminarPage() {
                       <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
                         <CheckCircle className="size-8 text-emerald-500" />
                       </div>
-                      <p className="text-white font-medium text-lg mb-2">მადლობა!</p>
-                      <p className="text-neutral-400 text-sm">შეგატყობინებთ ახალი სემინარის შესახებ</p>
+                      <p className="text-foreground font-medium text-lg mb-2">მადლობა!</p>
+                      <p className="text-muted-foreground text-sm">შეგატყობინებთ ახალი სემინარის შესახებ</p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -205,9 +205,9 @@ export default function ConsciousnessSeminarPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="h-14 bg-transparent border-0 border-b-2 border-neutral-700 rounded-none px-0 text-white placeholder:text-neutral-600 focus:border-amber-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
+                          className="h-14 bg-transparent border-0 border-b-2 border-border rounded-none px-0 text-foreground placeholder:text-muted-foreground focus:border-amber-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
                         />
-                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-neutral-600" />
+                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
                       </div>
                       <Button
                         type="submit"
@@ -216,7 +216,7 @@ export default function ConsciousnessSeminarPage() {
                         შემატყობინე პირველს
                         <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
-                      <p className="text-center text-xs text-neutral-600 pt-2">
+                      <p className="text-center text-xs text-muted-foreground pt-2">
                         <Users className="inline size-3 mr-1" />
                         შეუერთდი 200+ დაინტერესებულს
                       </p>
@@ -229,11 +229,11 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* What You Missed - Value Grid */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <div className="text-center mb-16">
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">რა მოხდა სემინარზე</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 რა განვიხილეთ
               </h2>
             </div>
@@ -247,13 +247,13 @@ export default function ConsciousnessSeminarPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                 >
-                  <Card className="bg-neutral-900/30 border-neutral-800 hover:border-amber-500/30 transition-all duration-300 h-full group">
+                  <Card className="bg-muted/30 border-border hover:border-amber-500/30 transition-all duration-300 h-full group">
                     <CardContent className="p-6">
                       <div className="size-12 rounded-lg bg-amber-500/10 flex items-center justify-center mb-4 text-amber-500 group-hover:bg-amber-500/20 transition-colors">
                         {card.icon}
                       </div>
-                      <h3 className="text-lg font-extrabold text-white mb-1">{card.title}</h3>
-                      <p className="text-sm text-neutral-500 mb-3">{card.subtitle}</p>
+                      <h3 className="text-lg font-extrabold text-foreground mb-1">{card.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{card.subtitle}</p>
                       <Badge variant="outline" className="text-[10px] uppercase tracking-[0.15em] border-emerald-500/30 text-emerald-500 bg-emerald-500/5 font-semibold">
                         {card.status}
                       </Badge>
@@ -266,7 +266,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* About - Cinematic Text */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -278,14 +278,14 @@ export default function ConsciousnessSeminarPage() {
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-6 font-semibold text-center">მანიფესტი</p>
 
               <div className="space-y-6 text-center">
-                <p className="text-2xl md:text-3xl font-light text-white leading-relaxed">
+                <p className="text-2xl md:text-3xl font-light text-foreground leading-relaxed">
                   ეს არ იყო უბრალოდ სემინარი.
                 </p>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   ეს იყო გამოცდილების, დაკვირვებებისა და აღმოჩენების გაზიარება, რომელიც დაგეხმარებათ
-                  <span className="text-white"> სხვა თვალით დაინახოთ</span>, თუ საიდან მოდის თქვენი გადაწყვეტილებები.
+                  <span className="text-foreground"> სხვა თვალით დაინახოთ</span>, თუ საიდან მოდის თქვენი გადაწყვეტილებები.
                 </p>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   ეს არის ის, რაც თქვენ უკვე იცით, უბრალოდ, შესაძლოა,
                   <span className="text-amber-400"> ყურადღება არასდროს მიგიქცევიათ.</span>
                 </p>
@@ -295,7 +295,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* Schedule - Accordion Style */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-neutral-950/50">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-muted/30">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -305,7 +305,7 @@ export default function ConsciousnessSeminarPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">პროგრამა</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 ჩაღრმავების 6 საათი
               </h2>
             </motion.div>
@@ -316,14 +316,14 @@ export default function ConsciousnessSeminarPage() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="border border-neutral-800 bg-neutral-900/30"
+                className="border border-border bg-card/30"
               >
                 <div className="p-6 md:p-8 flex items-center justify-between">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                    <span className="text-sm font-mono text-neutral-500">11:30</span>
-                    <span className="text-white font-medium">მისალმება და ჩაი</span>
+                    <span className="text-sm font-mono text-muted-foreground">11:30</span>
+                    <span className="text-foreground font-medium">მისალმება და ჩაი</span>
                   </div>
-                  <span className="text-xs text-neutral-600">30 წთ</span>
+                  <span className="text-xs text-muted-foreground/60">30 წთ</span>
                 </div>
               </motion.div>
 
@@ -341,8 +341,8 @@ export default function ConsciousnessSeminarPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-amber-500">12:00 – 15:00</span>
                     <div>
-                      <span className="text-white font-medium block">გონების მექანიკა</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">12 პრინციპი</span>
+                      <span className="text-foreground font-medium block">გონების მექანიკა</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">12 პრინციპი</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-amber-500 transition-transform ${expandedSection === 'principles' ? 'rotate-180' : ''}`} />
@@ -359,7 +359,7 @@ export default function ConsciousnessSeminarPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-amber-500/20">
                         <ul className="grid sm:grid-cols-2 gap-2">
                           {principles12.map((principle, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-amber-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{principle}</span>
                             </li>
@@ -376,14 +376,14 @@ export default function ConsciousnessSeminarPage() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="border border-neutral-800 bg-neutral-900/30"
+                className="border border-border bg-card/30"
               >
                 <div className="p-6 md:p-8 flex items-center justify-between">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                    <span className="text-sm font-mono text-neutral-500">15:00</span>
-                    <span className="text-white font-medium">შესვენება</span>
+                    <span className="text-sm font-mono text-muted-foreground">15:00</span>
+                    <span className="text-foreground font-medium">შესვენება</span>
                   </div>
-                  <span className="text-xs text-neutral-600">30 წთ</span>
+                  <span className="text-xs text-muted-foreground/60">30 წთ</span>
                 </div>
               </motion.div>
 
@@ -401,8 +401,8 @@ export default function ConsciousnessSeminarPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-blue-500">15:30 – 18:00</span>
                     <div>
-                      <span className="text-white font-medium block">ქმედების კანონები</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">13 კანონი</span>
+                      <span className="text-foreground font-medium block">ქმედების კანონები</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">13 კანონი</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-blue-500 transition-transform ${expandedSection === 'laws' ? 'rotate-180' : ''}`} />
@@ -419,7 +419,7 @@ export default function ConsciousnessSeminarPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-blue-500/20">
                         <ul className="grid sm:grid-cols-2 gap-2">
                           {laws13.map((law, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-blue-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{law}</span>
                             </li>
@@ -435,7 +435,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* Speakers - Hero Portraits */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -445,7 +445,7 @@ export default function ConsciousnessSeminarPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">წამყვანები</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 შენი მეგზურები
               </h2>
             </motion.div>
@@ -459,14 +459,14 @@ export default function ConsciousnessSeminarPage() {
                 transition={{ duration: 0.5 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 md:p-10 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 md:p-10 text-center">
                   {/* Large initial */}
                   <div className="size-32 md:size-40 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 mx-auto mb-6 flex items-center justify-center border border-amber-500/20 group-hover:border-amber-500/40 transition-colors">
                     <span className="text-5xl md:text-6xl font-bold text-amber-500/80">დკ</span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">დავით კანდელაკი</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">დავით კანდელაკი</h3>
                   <p className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-4">მენტორი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     მენტორი
                   </p>
                 </div>
@@ -480,14 +480,14 @@ export default function ConsciousnessSeminarPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 md:p-10 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 md:p-10 text-center">
                   {/* Large initial */}
                   <div className="size-32 md:size-40 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 mx-auto mb-6 flex items-center justify-center border border-amber-500/20 group-hover:border-amber-500/40 transition-colors">
                     <span className="text-5xl md:text-6xl font-bold text-amber-500/80">გვ</span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">გვანცა ველთაური</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">გვანცა ველთაური</h3>
                   <p className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-4">ფასილიტატორი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     ფასილიტატორი
                   </p>
                 </div>
@@ -497,7 +497,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* Podcast Bridge - Moved Up */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-neutral-950/50 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-muted/50 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -507,10 +507,10 @@ export default function ConsciousnessSeminarPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ვერ ითმენთ?</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 დაიწყე მოგზაურობა ახლავე
               </h2>
-              <p className="text-neutral-400 mb-10 text-lg">
+              <p className="text-muted-foreground mb-10 text-lg">
                 სანამ მომავალ სემინარს დაველოდებით, მოისმინე პოდკასტი და გაეცანი ცნობიერების,
                 ჯანმრთელობისა და პიროვნული განვითარების თემებს.
               </p>
@@ -522,12 +522,12 @@ export default function ConsciousnessSeminarPage() {
                     key={i}
                     href="https://www.youtube.com/@KPODCAST_GE"
                     target="_blank"
-                    className="group bg-neutral-900/50 border border-neutral-800 p-6 hover:border-amber-500/30 transition-all"
+                    className="group bg-card/50 border border-border p-6 hover:border-amber-500/30 transition-all"
                   >
                     <div className="aspect-square bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-amber-500/20 group-hover:to-orange-500/20 transition-colors">
                       <Youtube className="size-12 text-amber-500/60 group-hover:text-amber-500 transition-colors" />
                     </div>
-                    <p className="text-sm text-neutral-500 group-hover:text-neutral-400 transition-colors">ეპიზოდი #{i}</p>
+                    <p className="text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors">ეპიზოდი #{i}</p>
                   </Link>
                 ))}
               </div>
@@ -548,7 +548,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* Previous Price - Anchoring */}
-        <section className="w-full py-16 border-t border-neutral-800/50">
+        <section className="w-full py-16 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -557,14 +557,14 @@ export default function ConsciousnessSeminarPage() {
               transition={{ duration: 0.6 }}
               className="max-w-md mx-auto"
             >
-              <div className="border border-neutral-800 bg-neutral-900/30 p-8 text-center">
-                <p className="text-xs uppercase tracking-[0.15em] text-neutral-500 mb-4 font-semibold">წინა სემინარის ღირებულება</p>
+              <div className="border border-border bg-card/30 p-8 text-center">
+                <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4 font-semibold">წინა სემინარის ღირებულება</p>
                 <div className="flex items-baseline justify-center gap-2 mb-3">
-                  <span className="text-5xl font-bold text-neutral-400">220</span>
-                  <span className="text-neutral-500 text-lg">GEL</span>
+                  <span className="text-5xl font-bold text-muted-foreground">220</span>
+                  <span className="text-muted-foreground text-lg">GEL</span>
                 </div>
-                <div className="border-t border-neutral-800 pt-4 mt-4">
-                  <p className="text-neutral-500 text-sm">
+                <div className="border-t border-border pt-4 mt-4">
+                  <p className="text-muted-foreground text-sm">
                     6 საათი • პრაქტიკული მეთოდები • პირადი უკუკავშირი
                   </p>
                 </div>
@@ -574,7 +574,7 @@ export default function ConsciousnessSeminarPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-amber-950/10 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-amber-950/10 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -583,10 +583,10 @@ export default function ConsciousnessSeminarPage() {
               transition={{ duration: 0.6 }}
               className="max-w-xl mx-auto text-center"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 გაინტერესებს მსგავსი კონტენტი?
               </h2>
-              <p className="text-neutral-400 mb-8">
+              <p className="text-muted-foreground mb-8">
                 არ გამოტოვო მომავალი სემინარი. დარეგისტრირდი ახლა.
               </p>
 
@@ -603,7 +603,7 @@ export default function ConsciousnessSeminarPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-14 bg-neutral-900/50 border-neutral-800 rounded-none text-white placeholder:text-neutral-600 focus:border-amber-500 focus-visible:ring-0"
+                    className="h-14 bg-muted/50 border-border rounded-none text-foreground placeholder:text-muted-foreground focus:border-amber-500 focus-visible:ring-0"
                   />
                   <Button
                     type="submit"

@@ -1,7 +1,7 @@
 ---
 slug: understanding-aggression-types-management
-title_ka: აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები
-excerpt_ka: აგრესია ადამიანის ბუნებრივი რეაქციაა, მაგრამ მისი გაუკონტროლებელი ფორმები ზიანს აყენებს როგორც საკუთარ თავს, ისე გარშემომყოფებს. ისწავლეთ აგრესიის სხვადასხვა ტიპის ამოცნობა და მართვა.
+title_ka: "აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები"
+excerpt_ka: "აგრესია ადამიანის ბუნებრივი რეაქციაა, მაგრამ მისი გაუკონტროლებელი ფორმები ზიანს აყენებს როგორც საკუთარ თავს, ისე გარშემომყოფებს. ისწავლეთ აგრესიის სხვადასხვა ტიპის ამოცნობა და მართვა."
 schema_keywords: ["agresia", "aggression types", "agresiis marTva", "fizikuri agresia", "verbaluri agresia", "anger management georgia", "risxvis kontroli"]
 featured_image: aggression-types-management-guide.jpg
 hub_article: true
@@ -142,7 +142,7 @@ silo: aggression
 - აგრესიის გააზრებული გამოყენება
 - სხვა პირების განზრახ მანიპულირება
 
-თუ გაინტერესებთ როგორ უკავშირდება აგრესია ემოციურ რეგულაციას, წაიკითხეთ ჩვენი სტატია **[აგრესია და ემოციების მართვა](/psychology/understanding-aggression-emotions-management)**-ს შესახებ.
+თუ გაინტერესებთ როგორ უკავშირდება აგრესია ემოციურ რეგულაციას, წაიკითხეთ ჩვენი სტატია **[აგრესია და ემოციების მართვა](/blog/understanding-aggression-emotions-management)**-ს შესახებ.
 
 ---
 
@@ -233,7 +233,7 @@ silo: aggression
 - რისხვის მართვის ჯგუფური თერაპია
 - ფსიქოლოგიური კონსულტაცია
 
-შფოთვა ხშირად უკავშირდება აგრესიულ ქცევას. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/psychology/anxiety)**.
+შფოთვა ხშირად უკავშირდება აგრესიულ ქცევას. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/blog/anxiety)**.
 
 ---
 
@@ -263,10 +263,10 @@ silo: aggression
 
 ## მსგავსი სტატიები
 
-- [აგრესია და ემოციების მართვა](/psychology/understanding-aggression-emotions-management)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [შიში: რა არის და როგორ გავუმკლავდეთ](/psychology/fear)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [აგრესია და ემოციების მართვა](/blog/understanding-aggression-emotions-management)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [შიში: რა არის და როგორ გავუმკლავდეთ](/blog/fear)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
 
 ---
 

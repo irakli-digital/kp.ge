@@ -1,7 +1,7 @@
 ---
 slug: 25-best-psychology-books-2024
-title_ka: 25 საუკეთესო ფსიქოლოგიის წიგნი
-excerpt_ka: საუკეთესო ფსიქოლოგიის წიგნები დამწყებთათვის და გამოცდილთათვის - ბედნიერებიდან ტრავმამდე, გადაწყვეტილების მიღებიდან ემოციურ ინტელექტამდე.
+title_ka: "25 საუკეთესო ფსიქოლოგიის წიგნი"
+excerpt_ka: "საუკეთესო ფსიქოლოგიის წიგნები დამწყებთათვის და გამოცდილთათვის - ბედნიერებიდან ტრავმამდე, გადაწყვეტილების მიღებიდან ემოციურ ინტელექტამდე."
 schema_keywords: ["fsiqologiis wignebi", "psychology books", "self-help books georgia", "emotional intelligence book", "thinking fast slow"]
 featured_image: best-psychology-books-2024.jpg
 hub_article: false
@@ -159,7 +159,7 @@ silo: psychology-education
 
 ---
 
-გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/psychology/introduction-to-psychology)**.
+გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/blog/introduction-to-psychology)**.
 
 ---
 
@@ -173,9 +173,9 @@ silo: psychology-education
 
 ## მსგავსი სტატიები
 
-- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/psychology/introduction-to-psychology)
-- [ფსიქოლოგიის ხარისხები: რომელი აირჩიოთ?](/psychology/psychology-degree-options)
-- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/psychology/famous-psychology-experiments)
+- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/blog/introduction-to-psychology)
+- [ფსიქოლოგიის ხარისხები: რომელი აირჩიოთ?](/blog/psychology-degree-options)
+- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/blog/famous-psychology-experiments)
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 slug: understanding-aggression-emotions-management
-title_ka: აგრესიის მართვა: პრაქტიკული რჩევები და ტექნიკები
-excerpt_ka: როგორ გავუმკლავდეთ აგრესიას? პრაქტიკული ტექნიკები ბრაზის კონტროლისთვის და სხვისი აგრესიიდან თავის დაცვისთვის.
+title_ka: "აგრესიის მართვა: პრაქტიკული რჩევები და ტექნიკები"
+excerpt_ka: "როგორ გავუმკლავდეთ აგრესიას? პრაქტიკული ტექნიკები ბრაზის კონტროლისთვის და სხვისი აგრესიიდან თავის დაცვისთვის."
 schema_keywords: ["agresiis marTva", "anger management", "bragis kontroli", "risxvis martva", "anger management georgia"]
 featured_image: aggression-management-tips.jpg
 hub_article: false
@@ -16,7 +16,7 @@ silo: aggression
 
 თუ ხშირად გრძნობთ აგრესიას, შეგიძლიათ ისწავლოთ მისი მართვა და კონსტრუქციულად რეაგირება. კვლევები აჩვენებს, რომ ბრაზის მართვის ინტერვენციები ეფექტურია აგრესიის შეკავებაში.
 
-გაიგეთ მეტი **[აგრესიის მიზეზების შესახებ](/psychology/understanding-aggression-emotions)**.
+გაიგეთ მეტი **[აგრესიის მიზეზების შესახებ](/blog/understanding-aggression-emotions)**.
 
 ---
 
@@ -152,7 +152,7 @@ silo: aggression
 
 ---
 
-გაიგეთ მეტი **[აგრესიის გაგების შესახებ](/psychology/understanding-aggression-types-management)**.
+გაიგეთ მეტი **[აგრესიის გაგების შესახებ](/blog/understanding-aggression-types-management)**.
 
 ---
 
@@ -166,9 +166,9 @@ silo: aggression
 
 ## მსგავსი სტატიები
 
-- [აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები](/psychology/understanding-aggression-types-management)
-- [აგრესია და ემოციები: რატომ ვხდებით აგრესიულნი?](/psychology/understanding-aggression-emotions)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
+- [აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები](/blog/understanding-aggression-types-management)
+- [აგრესია და ემოციები: რატომ ვხდებით აგრესიულნი?](/blog/understanding-aggression-emotions)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
 
 ---
 

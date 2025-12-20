@@ -1,7 +1,7 @@
 ---
 slug: low-self-esteem-improvement-tips
-title_ka: თვითშეფასების გაუმჯობესება: 7 პრაქტიკული რჩევა
-excerpt_ka: პრაქტიკული რჩევები ჯანსაღი თვითშეფასების შესანარჩუნებლად. დაიწყეთ მცირე ნაბიჯებით უკვე დღეს.
+title_ka: "თვითშეფასების გაუმჯობესება: 7 პრაქტიკული რჩევა"
+excerpt_ka: "პრაქტიკული რჩევები ჯანსაღი თვითშეფასების შესანარჩუნებლად. დაიწყეთ მცირე ნაბიჯებით უკვე დღეს."
 schema_keywords: ["tvitshefasebis gaumjobeseba", "self-esteem tips", "tavdajerebuloba", "self-improvement georgia"]
 featured_image: self-esteem-improvement-tips.jpg
 hub_article: false
@@ -18,7 +18,7 @@ silo: self-development
 
 კარგი ამბავი ის არის, რომ თვითშეფასება არის ნასწავლი დამოკიდებულება — და შესაძლებელია მისი გაუმჯობესება.
 
-გაიგეთ მეტი **[დაბალი თვითშეფასების ნიშნებისა და მიზეზების შესახებ](/psychology/low-self-esteem-signs-and-solutions)**.
+გაიგეთ მეტი **[დაბალი თვითშეფასების ნიშნებისა და მიზეზების შესახებ](/blog/low-self-esteem-signs-and-solutions)**.
 
 ---
 
@@ -94,7 +94,7 @@ silo: self-development
 
 გახსოვდეთ: შესაძლოა დღეს გაქვთ დაბალი თავდაჯერება ბავშვობაში მიღებული გამოცდილების გამო, თუმცა ნებისმიერ ასაკში შეგვიძლია განვვითარდეთ და ახალი ხედვა შევიძინოთ საკუთარი თავის მიმართ.
 
-გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -108,9 +108,9 @@ silo: self-development
 
 ## მსგავსი სტატიები
 
-- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [დაბალი თვითშეფასება: ნიშნები, მიზეზები და გამოსავალი](/psychology/low-self-esteem-signs-and-solutions)
-- [პიროვნული განვითარების 15 უნარი](/psychology/self-development-skills-15-essential-skills-2023)
+- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [დაბალი თვითშეფასება: ნიშნები, მიზეზები და გამოსავალი](/blog/low-self-esteem-signs-and-solutions)
+- [პიროვნული განვითარების 15 უნარი](/blog/self-development-skills-15-essential-skills-2023)
 
 ---
 

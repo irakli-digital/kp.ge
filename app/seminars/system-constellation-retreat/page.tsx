@@ -94,7 +94,7 @@ export default function SystemConstellationRetreatPage() {
   ]
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-[#0a0a0a]">
+    <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header />
 
       <main className="flex-1 relative">
@@ -123,7 +123,7 @@ export default function SystemConstellationRetreatPage() {
                   </Badge>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground">
                   სისტემური განლაგებების
                   <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500">
@@ -131,13 +131,13 @@ export default function SystemConstellationRetreatPage() {
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg">
+                <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-lg">
                   3 დღიანი ტრანსფორმაციული გამოცდილება მთებში.
-                  <span className="text-neutral-300"> სისტემური განლაგებები, ბგერითი თერაპია და თვითაღმოჩენა.</span>
+                  <span className="text-foreground/80"> სისტემური განლაგებები, ბგერითი თერაპია და თვითაღმოჩენა.</span>
                 </p>
 
                 {/* Event details - minimal */}
-                <div className="flex flex-wrap gap-6 text-sm text-neutral-500 mb-8">
+                <div className="flex flex-wrap gap-6 text-sm text-muted-foreground mb-8">
                   <div className="flex items-center gap-2">
                     <Mountain className="size-4" />
                     <span>გუდაური ლოჯი</span>
@@ -153,10 +153,10 @@ export default function SystemConstellationRetreatPage() {
                 </div>
 
                 {/* Social proof */}
-                <div className="flex items-center gap-3 text-sm text-neutral-500">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <div className="flex -space-x-2">
                     {[...Array(4)].map((_, i) => (
-                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 border-2 border-[#0a0a0a] flex items-center justify-center text-[10px] font-medium text-white">
+                      <div key={i} className="size-8 rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 border-2 border-background flex items-center justify-center text-[10px] font-medium text-white">
                         {["იბ", "ბა", "გვ", "დკ"][i]}
                       </div>
                     ))}
@@ -172,13 +172,13 @@ export default function SystemConstellationRetreatPage() {
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className="lg:pl-8"
               >
-                <div className="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 p-8 md:p-10">
+                <div className="bg-card/50 backdrop-blur-sm border border-border p-8 md:p-10">
                   <div className="mb-8">
                     <p className="text-xs uppercase tracking-widest text-emerald-500 mb-3 font-semibold">მომავალი რითრითი</p>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
                       გამოტოვე? დაესწარი შემდეგს.
                     </h2>
-                    <p className="text-neutral-400">
+                    <p className="text-muted-foreground">
                       დარეგისტრირდი პრიორიტეტულ სიაში და პირველმა შეიტყვე მომავალი რითრითის შესახებ.
                     </p>
                   </div>
@@ -192,8 +192,8 @@ export default function SystemConstellationRetreatPage() {
                       <div className="size-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
                         <CheckCircle className="size-8 text-emerald-500" />
                       </div>
-                      <p className="text-white font-medium text-lg mb-2">მადლობა!</p>
-                      <p className="text-neutral-400 text-sm">შეგატყობინებთ ახალი რითრითის შესახებ</p>
+                      <p className="text-foreground font-medium text-lg mb-2">მადლობა!</p>
+                      <p className="text-muted-foreground text-sm">შეგატყობინებთ ახალი რითრითის შესახებ</p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -204,9 +204,9 @@ export default function SystemConstellationRetreatPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="h-14 bg-transparent border-0 border-b-2 border-neutral-700 rounded-none px-0 text-white placeholder:text-neutral-600 focus:border-emerald-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
+                          className="h-14 bg-transparent border-0 border-b-2 border-border rounded-none px-0 text-foreground placeholder:text-muted-foreground focus:border-emerald-500 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg"
                         />
-                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-neutral-600" />
+                        <Mail className="absolute right-0 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
                       </div>
                       <Button
                         type="submit"
@@ -215,7 +215,7 @@ export default function SystemConstellationRetreatPage() {
                         შემატყობინე პირველს
                         <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
-                      <p className="text-center text-xs text-neutral-600 pt-2">
+                      <p className="text-center text-xs text-muted-foreground pt-2">
                         <Users className="inline size-3 mr-1" />
                         შეუერთდი 150+ დაინტერესებულს
                       </p>
@@ -228,7 +228,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* What You Missed - Value Grid */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -238,7 +238,7 @@ export default function SystemConstellationRetreatPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold">რა მოხდა რითრითზე</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 ამას გამოტოვებდი
               </h2>
             </motion.div>
@@ -252,13 +252,13 @@ export default function SystemConstellationRetreatPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                 >
-                  <Card className="bg-neutral-900/30 border-neutral-800 hover:border-emerald-500/30 transition-all duration-300 h-full group">
+                  <Card className="bg-muted/30 border-border hover:border-emerald-500/30 transition-all duration-300 h-full group">
                     <CardContent className="p-6">
                       <div className="size-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4 text-emerald-500 group-hover:bg-emerald-500/20 transition-colors">
                         {card.icon}
                       </div>
-                      <h3 className="text-lg font-extrabold text-white mb-1">{card.title}</h3>
-                      <p className="text-sm text-neutral-500 mb-3">{card.subtitle}</p>
+                      <h3 className="text-lg font-extrabold text-foreground mb-1">{card.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{card.subtitle}</p>
                       <Badge variant="outline" className="text-[10px] uppercase tracking-[0.15em] border-teal-500/30 text-teal-500 bg-teal-500/5 font-semibold">
                         {card.status}
                       </Badge>
@@ -271,7 +271,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* About - Cinematic Text */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -283,10 +283,10 @@ export default function SystemConstellationRetreatPage() {
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-6 font-semibold text-center">მანიფესტი</p>
 
               <div className="space-y-6 text-center">
-                <p className="text-2xl md:text-3xl font-light text-white leading-relaxed">
+                <p className="text-2xl md:text-3xl font-light text-foreground leading-relaxed">
                   გინდა დაინახო, რა უხილავი ძალები მართავს შენს ცხოვრებას?
                 </p>
-                <p className="text-lg text-neutral-400 leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   ყოველი ჩვენგანი ცხოვრობს <span className="text-white">დიდ სისტემაში</span> – ოჯახში, საზოგადოებაში, ურთიერთობებში.
                   ხშირად ამ სისტემებში არსებული უხილავი კავშირები განსაზღვრავს ჩვენს
                   <span className="text-emerald-400"> არჩევანს და ცხოვრების გზას.</span>
@@ -297,7 +297,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Venue Gallery */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -307,10 +307,10 @@ export default function SystemConstellationRetreatPage() {
               className="text-center mb-12"
             >
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold">ლოკაცია</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 გუდაური ლოჯი
               </h2>
-              <p className="text-neutral-400 max-w-xl mx-auto">
+              <p className="text-muted-foreground max-w-xl mx-auto">
                 ადგილი, სადაც სიმშვიდე, ბუნება და კომფორტი ერთიანდება.
               </p>
             </motion.div>
@@ -345,19 +345,19 @@ export default function SystemConstellationRetreatPage() {
               className="mt-12 max-w-2xl mx-auto"
             >
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="flex items-center gap-2 text-neutral-400">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Coffee className="size-4 text-emerald-500" />
                   <span className="text-sm">2 ღამე</span>
                 </div>
-                <div className="flex items-center gap-2 text-neutral-400">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Utensils className="size-4 text-emerald-500" />
                   <span className="text-sm">საუზმე & ვახშამი</span>
                 </div>
-                <div className="flex items-center gap-2 text-neutral-400">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Waves className="size-4 text-emerald-500" />
                   <span className="text-sm">აუზი & სპა</span>
                 </div>
-                <div className="flex items-center gap-2 text-neutral-400">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Mountain className="size-4 text-emerald-500" />
                   <span className="text-sm">მთის ხედი</span>
                 </div>
@@ -367,7 +367,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Schedule - Accordion Style */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-neutral-950/50">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-muted/30">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -377,7 +377,7 @@ export default function SystemConstellationRetreatPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold">პროგრამა</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 3 დღე ტრანსფორმაციის
               </h2>
             </motion.div>
@@ -397,8 +397,8 @@ export default function SystemConstellationRetreatPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-emerald-500">დღე I • 1 ნოემბერი</span>
                     <div>
-                      <span className="text-white font-medium block">სისტემური განლაგებები</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">11:30 – 22:15</span>
+                      <span className="text-foreground font-medium block">სისტემური განლაგებები</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">11:30 – 22:15</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-emerald-500 transition-transform ${expandedSection === 'day1' ? 'rotate-180' : ''}`} />
@@ -415,7 +415,7 @@ export default function SystemConstellationRetreatPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-emerald-500/20">
                         <ul className="space-y-2">
                           {day1Activities.map((activity, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-emerald-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{activity}</span>
                             </li>
@@ -441,8 +441,8 @@ export default function SystemConstellationRetreatPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-teal-500">დღე II • 2 ნოემბერი</span>
                     <div>
-                      <span className="text-white font-medium block">ღრმა ტრანსფორმაცია</span>
-                      <span className="text-xs text-neutral-500 mt-1 block">11:30 – 22:15</span>
+                      <span className="text-foreground font-medium block">ღრმა ტრანსფორმაცია</span>
+                      <span className="text-xs text-muted-foreground mt-1 block">11:30 – 22:15</span>
                     </div>
                   </div>
                   <ChevronDown className={`size-5 text-teal-500 transition-transform ${expandedSection === 'day2' ? 'rotate-180' : ''}`} />
@@ -459,7 +459,7 @@ export default function SystemConstellationRetreatPage() {
                       <div className="px-6 pb-6 pt-2 border-t border-teal-500/20">
                         <ul className="space-y-2">
                           {day2Activities.map((activity, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-400">
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className="text-teal-500/60 font-mono text-xs mt-0.5">{String(i + 1).padStart(2, '0')}</span>
                               <span>{activity}</span>
                             </li>
@@ -476,14 +476,14 @@ export default function SystemConstellationRetreatPage() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="border border-neutral-800 bg-neutral-900/30"
+                className="border border-border bg-card/30"
               >
                 <div className="p-6 md:p-8 flex items-center justify-between">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                    <span className="text-sm font-mono text-neutral-500">დღე III • 3 ნოემბერი</span>
-                    <span className="text-white font-medium">საუზმე და დაბრუნება</span>
+                    <span className="text-sm font-mono text-muted-foreground">დღე III • 3 ნოემბერი</span>
+                    <span className="text-foreground font-medium">საუზმე და დაბრუნება</span>
                   </div>
-                  <span className="text-xs text-neutral-600">07:00 – 11:30</span>
+                  <span className="text-xs text-muted-foreground/60">07:00 – 11:30</span>
                 </div>
               </motion.div>
             </div>
@@ -491,7 +491,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Speakers - Hero Portraits */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -501,7 +501,7 @@ export default function SystemConstellationRetreatPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold">წამყვანები</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 შენი მეგზურები
               </h2>
             </motion.div>
@@ -515,13 +515,13 @@ export default function SystemConstellationRetreatPage() {
                 transition={{ duration: 0.5 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 text-center">
                   <div className="size-28 md:size-32 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 mx-auto mb-6 flex items-center justify-center border border-emerald-500/20 group-hover:border-emerald-500/40 transition-colors">
                     <span className="text-4xl md:text-5xl font-bold text-emerald-500/80">იბ</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">ია ბერსენაძე</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">ია ბერსენაძე</h3>
                   <p className="text-emerald-500 uppercase tracking-widest text-xs font-semibold mb-4">ტრენერი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     პიროვნული განვითარების ტრენერი
                   </p>
                 </div>
@@ -535,13 +535,13 @@ export default function SystemConstellationRetreatPage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 text-center">
                   <div className="size-28 md:size-32 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 mx-auto mb-6 flex items-center justify-center border border-emerald-500/20 group-hover:border-emerald-500/40 transition-colors">
                     <span className="text-4xl md:text-5xl font-bold text-emerald-500/80">ბა</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">ბაქარ აბრამიშვილი</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">ბაქარ აბრამიშვილი</h3>
                   <p className="text-emerald-500 uppercase tracking-widest text-xs font-semibold mb-4">ტრენერი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     სისტემური განლაგებების ექსპერტი
                   </p>
                 </div>
@@ -555,13 +555,13 @@ export default function SystemConstellationRetreatPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="group"
               >
-                <div className="relative overflow-hidden bg-neutral-900 border border-neutral-800 p-8 text-center">
+                <div className="relative overflow-hidden bg-card border border-border p-8 text-center">
                   <div className="size-28 md:size-32 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 mx-auto mb-6 flex items-center justify-center border border-emerald-500/20 group-hover:border-emerald-500/40 transition-colors">
                     <span className="text-4xl md:text-5xl font-bold text-emerald-500/80">გვ</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">გვანცა ველთაური</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">გვანცა ველთაური</h3>
                   <p className="text-emerald-500 uppercase tracking-widest text-xs font-semibold mb-4">ფასილიტატორი</p>
-                  <p className="text-neutral-500 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                   ფასილიტატორი
                   </p>
                 </div>
@@ -571,7 +571,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Podcast Bridge */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-neutral-950/50 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-neutral-950/50 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -581,10 +581,10 @@ export default function SystemConstellationRetreatPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold">ვერ დაიცადო?</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 დაიწყე მოგზაურობა ახლავე
               </h2>
-              <p className="text-neutral-400 mb-10 text-lg">
+              <p className="text-muted-foreground mb-10 text-lg">
                 სანამ მომავალ რითრითს დაველოდებით, მოისმინე პოდკასტი და გაეცანი
                 სისტემური განლაგებებისა და პიროვნული განვითარების თემებს.
               </p>
@@ -596,12 +596,12 @@ export default function SystemConstellationRetreatPage() {
                     key={i}
                     href="https://www.youtube.com/@KPODCAST_GE"
                     target="_blank"
-                    className="group bg-neutral-900/50 border border-neutral-800 p-6 hover:border-emerald-500/30 transition-all"
+                    className="group bg-card/50 border border-border p-6 hover:border-emerald-500/30 transition-all"
                   >
                     <div className="aspect-square bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-emerald-500/20 group-hover:to-teal-500/20 transition-colors">
                       <Youtube className="size-12 text-emerald-500/60 group-hover:text-emerald-500 transition-colors" />
                     </div>
-                    <p className="text-sm text-neutral-500 group-hover:text-neutral-400 transition-colors">ეპიზოდი #{i}</p>
+                    <p className="text-sm text-muted-foreground group-hover:text-muted-foreground transition-colors">ეპიზოდი #{i}</p>
                   </Link>
                 ))}
               </div>
@@ -622,7 +622,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Previous Price - Anchoring */}
-        <section className="w-full py-16 border-t border-neutral-800/50">
+        <section className="w-full py-16 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -631,14 +631,14 @@ export default function SystemConstellationRetreatPage() {
               transition={{ duration: 0.6 }}
               className="max-w-md mx-auto"
             >
-              <div className="border border-neutral-800 bg-neutral-900/30 p-8 text-center">
-                <p className="text-xs uppercase tracking-[0.15em] text-neutral-500 mb-4 font-semibold">წინა რითრითის ღირებულება</p>
+              <div className="border border-border bg-card/30 p-8 text-center">
+                <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4 font-semibold">წინა რითრითის ღირებულება</p>
                 <div className="flex items-baseline justify-center gap-2 mb-3">
-                  <span className="text-5xl font-bold text-neutral-400">2000</span>
-                  <span className="text-neutral-500 text-lg">GEL</span>
+                  <span className="text-5xl font-bold text-muted-foreground">2000</span>
+                  <span className="text-muted-foreground text-lg">GEL</span>
                 </div>
-                <div className="border-t border-neutral-800 pt-4 mt-4">
-                  <p className="text-neutral-500 text-sm">
+                <div className="border-t border-border pt-4 mt-4">
+                  <p className="text-muted-foreground text-sm">
                     3 დღე • 2 ღამე • სისტემური განლაგებები • ბგერითი თერაპია
                   </p>
                 </div>
@@ -648,7 +648,7 @@ export default function SystemConstellationRetreatPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-emerald-950/10 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-emerald-950/10 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -657,10 +657,10 @@ export default function SystemConstellationRetreatPage() {
               transition={{ duration: 0.6 }}
               className="max-w-xl mx-auto text-center"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 შემდეგი რითრითი მალე
               </h2>
-              <p className="text-neutral-400 mb-8">
+              <p className="text-muted-foreground mb-8">
                 არ გამოტოვო მომავალი რითრითი. დარეგისტრირდი ახლა.
               </p>
 
@@ -677,7 +677,7 @@ export default function SystemConstellationRetreatPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-14 bg-neutral-900/50 border-neutral-800 rounded-none text-white placeholder:text-neutral-600 focus:border-emerald-500 focus-visible:ring-0"
+                    className="h-14 bg-muted/50 border-border rounded-none text-foreground placeholder:text-muted-foreground focus:border-emerald-500 focus-visible:ring-0"
                   />
                   <Button
                     type="submit"

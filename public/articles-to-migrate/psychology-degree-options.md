@@ -1,7 +1,7 @@
 ---
 slug: psychology-degree-options
-title_ka: ფსიქოლოგიის ხარისხები: რომელი გჭირდებათ თქვენი კარიერისთვის?
-excerpt_ka: გაიგეთ ფსიქოლოგიის განათლების საფეხურები - ასოცირებულიდან დოქტორანტურამდე და რა კარიერული შესაძლებლობები იხსნება თითოეულით.
+title_ka: "ფსიქოლოგიის ხარისხები: რომელი გჭირდებათ თქვენი კარიერისთვის?"
+excerpt_ka: "გაიგეთ ფსიქოლოგიის განათლების საფეხურები - ასოცირებულიდან დოქტორანტურამდე და რა კარიერული შესაძლებლობები იხსნება თითოეულით."
 schema_keywords: ["fsiqologiis xarisxi", "psychology degree", "PhD psychology", "PsyD", "fsiqologi kariera", "clinical psychology georgia"]
 featured_image: psychology-degree-guide.jpg
 hub_article: false
@@ -136,7 +136,7 @@ silo: psychology-education
 
 ---
 
-გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/psychology/introduction-to-psychology)**.
+გაიგეთ მეტი **[ფსიქოლოგიის შესავლის შესახებ](/blog/introduction-to-psychology)**.
 
 ---
 
@@ -150,9 +150,9 @@ silo: psychology-education
 
 ## მსგავსი სტატიები
 
-- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/psychology/introduction-to-psychology)
-- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/psychology/famous-psychology-experiments)
-- [25 საუკეთესო ფსიქოლოგიის წიგნი](/psychology/25-best-psychology-books-2024)
+- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/blog/introduction-to-psychology)
+- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/blog/famous-psychology-experiments)
+- [25 საუკეთესო ფსიქოლოგიის წიგნი](/blog/25-best-psychology-books-2024)
 
 ---
 

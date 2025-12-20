@@ -144,7 +144,7 @@ export default function LandingPage() {
   ]
 
   return (
-    <div className="flex min-h-[100dvh] flex-col bg-[#0a0a0a]">
+    <div className="flex min-h-[100dvh] flex-col bg-background">
       <Header />
 
       <main className="flex-1 relative">
@@ -184,7 +184,7 @@ export default function LandingPage() {
                 </Badge>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-white">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-foreground">
                 ცოდნისმოყვარე
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500">
@@ -192,9 +192,9 @@ export default function LandingPage() {
                 </span>
               </h1>
 
-              <p className="text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
                 აღმოაჩინე მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის სიღრმეები
-                <span className="text-white font-medium"> გვანცა ველთაურთან ერთად.</span>
+                <span className="text-foreground font-medium"> გვანცა ველთაურთან ერთად.</span>
               </p>
 
               {/* Platform buttons */}
@@ -215,7 +215,7 @@ export default function LandingPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-14 px-8 rounded-none border-neutral-500/50 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white font-semibold text-base"
+                  className="h-14 px-8 rounded-none border-border bg-background/30 backdrop-blur-sm hover:bg-muted text-foreground font-semibold text-base"
                   asChild
                 >
                   <Link href="https://open.spotify.com/show/12W0rak7PaZnhYnCeQ60mt" target="_blank" rel="noopener noreferrer">
@@ -228,17 +228,17 @@ export default function LandingPage() {
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 justify-center text-sm text-neutral-400">
+              <div className="flex gap-8 justify-center text-sm text-muted-foreground">
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.videoCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.videoCount}</span>
                   ეპიზოდი
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.subscriberCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.subscriberCount}</span>
                   გამომწერი
                 </div>
                 <div>
-                  <span className="text-2xl md:text-3xl font-bold text-white block">{stats.viewCount}</span>
+                  <span className="text-2xl md:text-3xl font-bold text-foreground block">{stats.viewCount}</span>
                   მოსმენა
                 </div>
               </div>
@@ -247,7 +247,7 @@ export default function LandingPage() {
         </section>
 
         {/* Featured Episode - Big Player */}
-        <section className="w-full py-16 md:py-20 border-t border-neutral-800/50">
+        <section className="w-full py-16 md:py-20 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -258,14 +258,14 @@ export default function LandingPage() {
             >
               <div className="text-center mb-10">
                 <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">უახლესი ეპიზოდი</p>
-                <h2 className="text-3xl md:text-4xl font-bold text-white">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                   {stats.latestVideo?.title || featuredEpisode.title}
                 </h2>
               </div>
 
               {/* Video embed with custom overlay */}
               <div className="relative group">
-                <div className="aspect-video bg-neutral-900 rounded-lg overflow-hidden border border-neutral-800 brightness-90 hover:brightness-100 transition-all duration-300">
+                <div className="aspect-video bg-muted rounded-lg overflow-hidden border border-border brightness-90 hover:brightness-100 transition-all duration-300">
                   <iframe
                     width="100%"
                     height="100%"
@@ -278,7 +278,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* Meta info below */}
-                <div className="flex items-center justify-between mt-4 text-sm text-neutral-500">
+                <div className="flex items-center justify-between mt-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-4">
                     <Badge variant="outline" className="rounded-none border-amber-500/30 text-amber-500 bg-amber-500/5 text-xs uppercase tracking-wider">
                       პოდკასტი
@@ -305,7 +305,7 @@ export default function LandingPage() {
         </section>
 
         {/* Latest Episodes Grid */}
-        <section className="w-full py-16 md:py-20 border-t border-neutral-800/50 bg-neutral-950/50">
+        <section className="w-full py-16 md:py-20 border-t border-border bg-muted/30">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -315,7 +315,7 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ეპიზოდები</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white text-balance">მოისმინე პოდკასტი</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">მოისმინე პოდკასტი</h2>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -333,7 +333,7 @@ export default function LandingPage() {
                     target="_blank"
                     className="group block"
                   >
-                    <Card className="h-full overflow-hidden bg-neutral-900/30 border-neutral-800 hover:border-amber-500/30 transition-all duration-300">
+                    <Card className="h-full overflow-hidden bg-card/50 border-border hover:border-amber-500/30 transition-all duration-300">
                       <CardContent className="p-0">
                         {/* Thumbnail with play overlay */}
                         <div className="relative aspect-video overflow-hidden">
@@ -357,15 +357,15 @@ export default function LandingPage() {
                           <Badge variant="outline" className="mb-3 rounded-none text-[10px] uppercase tracking-wider border-amber-500/30 text-amber-500 bg-amber-500/5">
                             პოდკასტი
                           </Badge>
-                          <h3 className="text-lg font-bold text-white mb-3 group-hover:text-amber-400 transition-colors line-clamp-2">
+                          <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-amber-400 transition-colors line-clamp-2">
                             {episode.title}
                           </h3>
-                          <div className="flex items-center justify-between border-t border-neutral-800 pt-4">
-                            <span className="text-neutral-500 text-sm flex items-center gap-2">
+                          <div className="flex items-center justify-between border-t border-border pt-4">
+                            <span className="text-muted-foreground text-sm flex items-center gap-2">
                               <Clock className="size-4" />
                               {episode.duration}
                             </span>
-                            <span className="text-white bg-neutral-800 hover:bg-amber-500 px-4 py-2 text-sm font-semibold flex items-center gap-2 transition-colors">
+                            <span className="text-foreground bg-muted hover:bg-amber-500 hover:text-white px-4 py-2 text-sm font-semibold flex items-center gap-2 transition-colors">
                               <Play className="size-4" fill="currentColor" />
                               მოსმენა
                             </span>
@@ -401,7 +401,7 @@ export default function LandingPage() {
         </section>
 
         {/* Topics - Editorial Style */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -411,8 +411,8 @@ export default function LandingPage() {
               className="text-center mb-16"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">თემატიკა</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-balance">რაზე ვსაუბრობთ</h2>
-              <p className="text-neutral-400 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">რაზე ვსაუბრობთ</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
                 მოისმინე საინტერესო ინტერვიუები, ისტორიები და მიიღე პრაქტიკული რჩევები.
               </p>
             </motion.div>
@@ -428,13 +428,13 @@ export default function LandingPage() {
                 <motion.div key={i} variants={item}>
                   <Card className={`h-full bg-gradient-to-br ${topic.gradient} border ${topic.borderColor} hover:border-opacity-60 transition-all duration-300 group`}>
                     <CardContent className="p-6">
-                      <div className={`size-12 rounded-lg bg-neutral-900/50 flex items-center justify-center mb-4 ${topic.iconColor}`}>
+                      <div className={`size-12 rounded-lg bg-background/50 flex items-center justify-center mb-4 ${topic.iconColor}`}>
                         {topic.icon}
                       </div>
-                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+                      <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-amber-400 transition-colors">
                         {topic.title}
                       </h3>
-                      <p className="text-neutral-400 text-sm leading-relaxed">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
                         {topic.description}
                       </p>
                     </CardContent>
@@ -446,7 +446,7 @@ export default function LandingPage() {
         </section>
 
         {/* About Host */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-neutral-950/50">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-muted/30">
           <div className="container px-4 md:px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
               {/* Image */}
@@ -477,8 +477,8 @@ export default function LandingPage() {
                 transition={{ duration: 0.6 }}
               >
                 <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">წამყვანი</p>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">გვანცა ველთაური</h2>
-                <div className="space-y-4 text-neutral-400">
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">გვანცა ველთაური</h2>
+                <div className="space-y-4 text-muted-foreground">
                   <p>
                   აღმოაჩინე მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის სიღრმეები გვანცა ველთაურთან ერთად.
 
@@ -494,7 +494,7 @@ export default function LandingPage() {
         </section>
 
         {/* Workshops CTA */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
+        <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -504,17 +504,17 @@ export default function LandingPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ვორქშოპები და სემინარები</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
                 შეისწავლე ცნობიერების პრინციპები
               </h2>
-              <p className="text-neutral-400 text-lg mb-10">
-                გეპატიჟებით პრაქტიკულ სემინარებზე, სადაც ცნობიერების მექანიზმებსა და პიროვნული 
+              <p className="text-muted-foreground text-lg mb-10">
+                გეპატიჟებით პრაქტიკულ სემინარებზე, სადაც ცნობიერების მექანიზმებსა და პიროვნული
                 ტრანსფორმაციის საკითხებს სიღრმისეულად განვიხილავთ.
               </p>
               <Button
                 size="lg"
                 variant="outline"
-                className="h-14 px-10 rounded-none border-neutral-700 bg-transparent hover:bg-neutral-900 text-white font-semibold text-base"
+                className="h-14 px-10 rounded-none border-border bg-transparent hover:bg-muted text-foreground font-semibold text-base"
                 asChild
               >
                 <Link href="/seminars/consciousness">
@@ -527,7 +527,7 @@ export default function LandingPage() {
         </section>
 
         {/* Inner Circle / Support Section */}
-        <section className="w-full py-20 md:py-28 border-t border-neutral-800/50 bg-gradient-to-b from-amber-950/10 to-transparent">
+        <section className="w-full py-20 md:py-28 border-t border-border bg-gradient-to-b from-amber-950/10 to-transparent">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -537,13 +537,13 @@ export default function LandingPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">მხარდამჭერთა კლუბი</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
               შემოუერთდი ჩვენს საზოგადოებას!
               </h2>
-              <p className="text-neutral-400 text-lg mb-4">
+              <p className="text-muted-foreground text-lg mb-4">
               ჩვენი ეპიზოდები ყოველთვის უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის ხელმისაწვდომი უნდა იყოს.
               </p>
-              <p className="text-neutral-500 mb-10">
+              <p className="text-muted-foreground/70 mb-10">
               მხარი დაუჭირე დამოუკიდებელ კონტენტს და მიიღე პრიორიტეტული წვდომა სემინარებზე.
               </p>
               <Button

@@ -112,7 +112,7 @@ export default function ContactPage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="max-w-xl mx-auto mb-16"
             >
-              <Card className="border-neutral-800 bg-neutral-900/50">
+              <Card className="border-border bg-card/50">
                 <CardContent className="p-6 md:p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
@@ -124,7 +124,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
-                        className="bg-neutral-800/50 border-neutral-700"
+                        className="bg-muted/50 border-border"
                       />
                     </div>
 
@@ -137,7 +137,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
-                        className="bg-neutral-800/50 border-neutral-700"
+                        className="bg-muted/50 border-border"
                       />
                     </div>
 
@@ -150,7 +150,7 @@ export default function ContactPage() {
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         required
                         rows={5}
-                        className="bg-neutral-800/50 border-neutral-700 resize-none"
+                        className="bg-muted/50 border-border resize-none"
                       />
                     </div>
 

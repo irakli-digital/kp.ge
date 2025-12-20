@@ -1,7 +1,7 @@
 ---
 slug: low-self-esteem-signs-and-solutions
-title_ka: დაბალი თვითშეფასება: ნიშნები, მიზეზები და გამოსავალი
-excerpt_ka: დაბალი თვითშეფასება ფსიქიკურ ჯანმრთელობაზე მნიშვნელოვან გავლენას ახდენს. გაიგეთ ძირითადი ნიშნები და როგორ დაიწყოთ გაუმჯობესება.
+title_ka: "დაბალი თვითშეფასება: ნიშნები, მიზეზები და გამოსავალი"
+excerpt_ka: "დაბალი თვითშეფასება ფსიქიკურ ჯანმრთელობაზე მნიშვნელოვან გავლენას ახდენს. გაიგეთ ძირითადი ნიშნები და როგორ დაიწყოთ გაუმჯობესება."
 schema_keywords: ["dabali tvitshefaseba", "low self-esteem signs", "tvitshefasebis problemebi", "self-esteem georgia", "tavdajerebuloba"]
 featured_image: low-self-esteem-signs-solutions.jpg
 hub_article: false
@@ -142,7 +142,7 @@ silo: self-development
 5. **ნეგატიურ აზრებს დაუპირისპირეთ რაციონალური მსჯელობა**
 6. **აპატიეთ საკუთარ თავს ძველი შეცდომები**
 
-წაიკითხეთ დამატებითი პრაქტიკული რჩევები **[თვითშეფასების გაუმჯობესების შესახებ](/psychology/low-self-esteem-improvement-tips)**.
+წაიკითხეთ დამატებითი პრაქტიკული რჩევები **[თვითშეფასების გაუმჯობესების შესახებ](/blog/low-self-esteem-improvement-tips)**.
 
 ---
 
@@ -157,7 +157,7 @@ silo: self-development
 
 **კოგნიტურ-ბიჰევიორალური თერაპია (CBT)** ეფექტურია დაბალი თვითშეფასების მკურნალობაში.
 
-გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+გაიგეთ მეტი **[თვითშეფასებისა და პიროვნული ღირებულების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -187,10 +187,10 @@ silo: self-development
 
 ## მსგავსი სტატიები
 
-- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [თვითშეფასების გაუმჯობესების პრაქტიკული რჩევები](/psychology/low-self-esteem-improvement-tips)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [სოციალური შფოთვის აშლილობა](/psychology/social-anxiety-disorder-explained)
+- [თვითშეფასება და პიროვნული ღირებულება: სრული გზამკვლევი](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [თვითშეფასების გაუმჯობესების პრაქტიკული რჩევები](/blog/low-self-esteem-improvement-tips)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [სოციალური შფოთვის აშლილობა](/blog/social-anxiety-disorder-explained)
 
 ---
 

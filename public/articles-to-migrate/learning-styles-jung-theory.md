@@ -1,7 +1,7 @@
 ---
 slug: learning-styles-jung-theory
-title_ka: იუნგის თეორია და სასწავლო სტილები: როგორ ვსწავლობთ საუკეთესოდ?
-excerpt_ka: გაიგეთ, როგორ განსაზღვრავს იუნგის პიროვნების თეორია თქვენს სასწავლო სტილს - ექსტრავერტულიდან ინტროვერტულამდე, სენსორულიდან ინტუიტიურამდე.
+title_ka: "იუნგის თეორია და სასწავლო სტილები: როგორ ვსწავლობთ საუკეთესოდ?"
+excerpt_ka: "გაიგეთ, როგორ განსაზღვრავს იუნგის პიროვნების თეორია თქვენს სასწავლო სტილს - ექსტრავერტულიდან ინტროვერტულამდე, სენსორულიდან ინტუიტიურამდე."
 schema_keywords: ["saswavlo stili", "learning styles jung", "iungi teoria", "extrovert introvert learning", "MBTI swavla", "cognitive psychology georgia"]
 featured_image: jung-learning-styles-guide.jpg
 hub_article: false
@@ -18,7 +18,7 @@ silo: cognitive
 
 მიუხედავად იმისა, რომ VARK-ის მოდელი (ვიზუალური, აუდიტორული, კითხვა/წერა, კინესთეტიკური) ფართოდ არის ცნობილი, არსებობს სხვა მიდგომებიც — მათ შორის კარლ იუნგის პიროვნების თეორიაზე დაფუძნებული სასწავლო სტილები.
 
-გაიგეთ მეტი **[ინტელექტის მრავალფეროვნების შესახებ](/psychology/why-intelligence-is-not-the-same-for-everyone)**.
+გაიგეთ მეტი **[ინტელექტის მრავალფეროვნების შესახებ](/blog/why-intelligence-is-not-the-same-for-everyone)**.
 
 ---
 
@@ -237,7 +237,7 @@ Paragon Learning Style Inventory-ის მონაცემებით:
 
 ---
 
-გაიგეთ მეტი **[ინტელექტის ტიპების შესახებ](/psychology/why-intelligence-is-not-the-same-for-everyone)**.
+გაიგეთ მეტი **[ინტელექტის ტიპების შესახებ](/blog/why-intelligence-is-not-the-same-for-everyone)**.
 
 ---
 
@@ -251,9 +251,9 @@ Paragon Learning Style Inventory-ის მონაცემებით:
 
 ## მსგავსი სტატიები
 
-- [რატომ არ არის ინტელექტი ყველასთვის ერთნაირი?](/psychology/why-intelligence-is-not-the-same-for-everyone)
-- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/psychology/introduction-to-psychology)
-- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/psychology/famous-psychology-experiments)
+- [რატომ არ არის ინტელექტი ყველასთვის ერთნაირი?](/blog/why-intelligence-is-not-the-same-for-everyone)
+- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/blog/introduction-to-psychology)
+- [7 ცნობილი ფსიქოლოგიური ექსპერიმენტი](/blog/famous-psychology-experiments)
 
 ---
 

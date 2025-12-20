@@ -1,7 +1,7 @@
 ---
 slug: understanding-aggression-emotions
-title_ka: აგრესია და ემოციები: რატომ ვხდებით აგრესიულნი?
-excerpt_ka: რა იწვევს აგრესიას? გაიგეთ აგრესიის ტიპები, ნიშნები და ბიოლოგიური, გარემო და ფსიქოლოგიური მიზეზები.
+title_ka: "აგრესია და ემოციები: რატომ ვხდებით აგრესიულნი?"
+excerpt_ka: "რა იწვევს აგრესიას? გაიგეთ აგრესიის ტიპები, ნიშნები და ბიოლოგიური, გარემო და ფსიქოლოგიური მიზეზები."
 schema_keywords: ["agresia mizezebi", "aggression causes", "impulsive aggression", "agresiis tipebi", "anger psychology georgia"]
 featured_image: aggression-emotions-causes.jpg
 hub_article: false
@@ -129,7 +129,7 @@ silo: aggression
 - **ურთიერთობებზე** — აგრესორი შეიძლება ვერ აცნობიერებდეს ზეგავლენას, მაგრამ მსხვერპლი განიცდის ტრავმას
 - **კარიერაზე** — უკონტროლო აგრესია აფუჭებს სამუშაო გარემოს
 
-გაიგეთ მეტი **[აგრესიის მართვის შესახებ](/psychology/understanding-aggression-emotions-management)**.
+გაიგეთ მეტი **[აგრესიის მართვის შესახებ](/blog/understanding-aggression-emotions-management)**.
 
 ---
 
@@ -146,7 +146,7 @@ silo: aggression
 
 ---
 
-გაიგეთ მეტი **[აგრესიის გაგების შესახებ](/psychology/understanding-aggression-types-management)**.
+გაიგეთ მეტი **[აგრესიის გაგების შესახებ](/blog/understanding-aggression-types-management)**.
 
 ---
 
@@ -160,9 +160,9 @@ silo: aggression
 
 ## მსგავსი სტატიები
 
-- [აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები](/psychology/understanding-aggression-types-management)
-- [აგრესიის მართვა: პრაქტიკული რჩევები](/psychology/understanding-aggression-emotions-management)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
+- [აგრესიის გაგება: ტიპები, გამომწვევები და მართვის გზები](/blog/understanding-aggression-types-management)
+- [აგრესიის მართვა: პრაქტიკული რჩევები](/blog/understanding-aggression-emotions-management)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
 
 ---
 

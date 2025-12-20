@@ -1,15 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Loader2, CheckCircle, Mail } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export default function Footer() {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
   const [message, setMessage] = useState("")
+  const { theme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDarkTheme = !mounted ? true : theme === "dark" || resolvedTheme === "dark"
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,11 +60,11 @@ export default function Footer() {
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block">
               <Image
-                src="/images/kpodcast-logo.webp"
+                src={isDarkTheme ? "/images/Logo/logo-dark.svg" : "/images/Logo/logo-light.svg"}
                 alt="ცოდნისმოყვარე პოდკასტი"
-                width={276}
-                height={74}
-                className="h-[74px] w-auto"
+                width={191}
+                height={46}
+                className="h-[46px] w-auto"
               />
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -202,7 +211,7 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 h-10 px-3 rounded-md border border-neutral-700 bg-neutral-800/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="flex-1 h-10 px-3 rounded-md border border-border bg-muted/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/50"
               />
               <button
                 type="submit"

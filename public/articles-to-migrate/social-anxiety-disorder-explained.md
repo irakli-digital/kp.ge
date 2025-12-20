@@ -1,7 +1,7 @@
 ---
 slug: social-anxiety-disorder-explained
-title_ka: სოციალური შფოთვის აშლილობა: სრული გზამკვლევი
-excerpt_ka: სოციალური შფოთვა მეტია ვიდრე მორიდებულობა. გაიგეთ სიმპტომები, მიზეზები და მკურნალობის ეფექტური მეთოდები — თერაპიიდან მედიკამენტებამდე.
+title_ka: "სოციალური შფოთვის აშლილობა: სრული გზამკვლევი"
+excerpt_ka: "სოციალური შფოთვა მეტია ვიდრე მორიდებულობა. გაიგეთ სიმპტომები, მიზეზები და მკურნალობის ეფექტური მეთოდები — თერაპიიდან მედიკამენტებამდე."
 schema_keywords: ["socialuri shfotva", "social anxiety", "socialuri fobia", "shfotvis ashliloba", "social phobia georgia", "SAD"]
 featured_image: social-anxiety-disorder-guide.jpg
 hub_article: false
@@ -97,7 +97,7 @@ silo: mental-health
 - კითხვების დასმა ან პასუხის გაცემა
 - პრეზენტაციის ჩატარება
 
-სოციალური შფოთვა ხშირად სხვა შფოთვით აშლილობებთან ერთად გვხვდება. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/psychology/anxiety)**.
+სოციალური შფოთვა ხშირად სხვა შფოთვით აშლილობებთან ერთად გვხვდება. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/blog/anxiety)**.
 
 ---
 
@@ -201,7 +201,7 @@ silo: mental-health
 - დეპრესია
 - თვითმკვლელობის აზრები
 
-დაბალი თვითშეფასება ხშირად თანხმლები პრობლემაა. გაიგეთ მეტი **[თვითშეფასების გაუმჯობესების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+დაბალი თვითშეფასება ხშირად თანხმლები პრობლემაა. გაიგეთ მეტი **[თვითშეფასების გაუმჯობესების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -245,10 +245,10 @@ silo: mental-health
 
 ## მსგავსი სტატიები
 
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [დეპრესიის სიმპტომები: როგორ ამოვიცნოთ და რა ვქნათ](/psychology/understanding-depression-symptoms)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [შიში: რა არის და როგორ გავუმკლავდეთ](/psychology/fear)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [დეპრესიის სიმპტომები: როგორ ამოვიცნოთ და რა ვქნათ](/blog/understanding-depression-symptoms)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [შიში: რა არის და როგორ გავუმკლავდეთ](/blog/fear)
 
 ---
 

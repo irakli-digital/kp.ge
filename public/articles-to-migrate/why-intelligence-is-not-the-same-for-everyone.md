@@ -1,7 +1,7 @@
 ---
 slug: why-intelligence-is-not-the-same-for-everyone
-title_ka: რატომ არ არის ინტელექტი ყველასთვის ერთნაირი: მრავალმხრივი ინტელექტის თეორია
-excerpt_ka: ჰოვარდ გარდნერის მრავალმხრივი ინტელექტის თეორია განმარტავს, რატომ შეიძლება გონიერება გაცილებით ფართო იყოს ვიდრე მხოლოდ ლოგიკა და რიცხვები. აღმოაჩინეთ ინტელექტის 9 ტიპი.
+title_ka: "რატომ არ არის ინტელექტი ყველასთვის ერთნაირი: მრავალმხრივი ინტელექტის თეორია"
+excerpt_ka: "ჰოვარდ გარდნერის მრავალმხრივი ინტელექტის თეორია განმარტავს, რატომ შეიძლება გონიერება გაცილებით ფართო იყოს ვიდრე მხოლოდ ლოგიკა და რიცხვები. აღმოაჩინეთ ინტელექტის 9 ტიპი."
 schema_keywords: ["inteleqti", "intelligence types", "gardneris teoria", "IQ", "mravalxmrivi inteleqti", "multiple intelligences georgia", "swavlis stilebi"]
 featured_image: multiple-intelligences-theory-guide.jpg
 hub_article: true
@@ -174,7 +174,7 @@ silo: cognitive-psychology
 
 **შესაძლო კარიერული არჩევანი:** ფსიქოლოგი, კონსულტანტი, გაყიდვების სპეციალისტი, პოლიტიკოსი, HR მენეჯერი
 
-თუ გაინტერესებთ როგორ უკავშირდება ინტერპერსონალური უნარები თვითშეფასებას, წაიკითხეთ ჩვენი სტატია **[თვითშეფასების გაუმჯობესების შესახებ](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
+თუ გაინტერესებთ როგორ უკავშირდება ინტერპერსონალური უნარები თვითშეფასებას, წაიკითხეთ ჩვენი სტატია **[თვითშეფასების გაუმჯობესების შესახებ](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)**.
 
 ---
 
@@ -248,7 +248,7 @@ silo: cognitive-psychology
 3. **სწავლის სტრატეგია** — გამოიყენეთ სხვადასხვა მეთოდი, არა მხოლოდ ერთი
 4. **ურთიერთობები** — გაიგეთ, როგორ აზროვნებენ და აღიქვამენ სხვები
 
-შფოთვა სწავლის პროცესში ხშირი პრობლემაა. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მართვის შესახებ](/psychology/anxiety)**.
+შფოთვა სწავლის პროცესში ხშირი პრობლემაა. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მართვის შესახებ](/blog/anxiety)**.
 
 ---
 
@@ -278,10 +278,10 @@ silo: cognitive-psychology
 
 ## მსგავსი სტატიები
 
-- [იუნგის თეორია და სწავლის სტილები](/psychology/learning-styles-jung-theory)
-- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/psychology/introduction-to-psychology)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
+- [იუნგის თეორია და სწავლის სტილები](/blog/learning-styles-jung-theory)
+- [ფსიქოლოგიის შესავალი: სრული გზამკვლევი](/blog/introduction-to-psychology)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
 
 ---
 

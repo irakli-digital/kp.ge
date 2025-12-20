@@ -1,7 +1,7 @@
 ---
 slug: antidepressants-overview-uses-types
-title_ka: ანტიდეპრესანტები: ტიპები, მოქმედების პრინციპი და რჩევები
-excerpt_ka: ანტიდეპრესანტები დეპრესიის მკურნალობის ეფექტური საშუალებაა. გაიგეთ, როგორ მუშაობენ ისინი, რა ტიპები არსებობს და რა უნდა იცოდეთ მათ შესახებ.
+title_ka: "ანტიდეპრესანტები: ტიპები, მოქმედების პრინციპი და რჩევები"
+excerpt_ka: "ანტიდეპრესანტები დეპრესიის მკურნალობის ეფექტური საშუალებაა. გაიგეთ, როგორ მუშაობენ ისინი, რა ტიპები არსებობს და რა უნდა იცოდეთ მათ შესახებ."
 schema_keywords: ["antidepresantebi", "antidepressants", "SSRI", "depresiis mkurnaloba", "serotonini", "fsiqotropuli preparatebi"]
 featured_image: antidepressants-types-guide.jpg
 hub_article: false
@@ -127,7 +127,7 @@ silo: mental-health
 
 უძველესი ტიპი, იშვიათად გამოიყენება დიეტური შეზღუდვების გამო.
 
-თუ გაინტერესებთ დეპრესიის სრული სიმპტომატიკა, წაიკითხეთ ჩვენი სტატია **[დეპრესიის სიმპტომების შესახებ](/psychology/understanding-depression-symptoms)**.
+თუ გაინტერესებთ დეპრესიის სრული სიმპტომატიკა, წაიკითხეთ ჩვენი სტატია **[დეპრესიის სიმპტომების შესახებ](/blog/understanding-depression-symptoms)**.
 
 ---
 
@@ -182,7 +182,7 @@ silo: mental-health
 2. **შეატყობინეთ ექიმს** — შესაძლებელია დოზის ან პრეპარატის შეცვლა
 3. **მოთმინება** — ბევრი ეფექტი დროებითია
 
-დეპრესია ხშირად შფოთვასთან ერთად გვხვდება. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/psychology/anxiety)**.
+დეპრესია ხშირად შფოთვასთან ერთად გვხვდება. გაიგეთ მეტი **[შფოთვის სიმპტომებისა და მკურნალობის შესახებ](/blog/anxiety)**.
 
 ---
 
@@ -236,10 +236,10 @@ silo: mental-health
 
 ## მსგავსი სტატიები
 
-- [დეპრესიის სიმპტომები: როგორ ამოვიცნოთ და რა ვქნათ](/psychology/understanding-depression-symptoms)
-- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/psychology/anxiety)
-- [სოციალური შფოთვის აშლილობა](/psychology/social-anxiety-disorder-explained)
-- [თვითშეფასება და პიროვნული ღირებულება](/psychology/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
+- [დეპრესიის სიმპტომები: როგორ ამოვიცნოთ და რა ვქნათ](/blog/understanding-depression-symptoms)
+- [შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები](/blog/anxiety)
+- [სოციალური შფოთვის აშლილობა](/blog/social-anxiety-disorder-explained)
+- [თვითშეფასება და პიროვნული ღირებულება](/blog/tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi)
 
 ---
 

@@ -74,11 +74,11 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
       <div className="container flex h-20 items-center justify-between relative">
         <Link href="/" className="flex items-center gap-2 font-bold z-10">
           <Image
-            src="/images/kpodcast-logo.webp"
+            src={isDarkTheme ? "/images/Logo/logo-dark.svg" : "/images/Logo/logo-light.svg"}
             alt="ცოდნისმოყვარე პოდკასტი"
-            width={276}
-            height={74}
-            className="h-[74px] w-auto"
+            width={191}
+            height={46}
+            className="h-[46px] w-auto"
             priority
           />
         </Link>
@@ -178,7 +178,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-20 inset-x-0 bg-[#0a0a0a] border-b border-neutral-800 overflow-hidden"
+            className="md:hidden absolute top-20 inset-x-0 bg-background border-b border-border overflow-hidden"
           >
             <div className="container py-6 flex flex-col gap-1">
               {!hideNavigation && (
@@ -187,20 +187,20 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
                     href="https://www.youtube.com/@KPODCAST_GE"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors"
+                    className="py-3 text-base font-medium text-foreground/90 hover:text-foreground transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     ეპიზოდები
                   </Link>
 
                   {/* Mobile Seminars Section */}
-                  <div className="border-t border-neutral-800 pt-3 mt-2">
+                  <div className="border-t border-border pt-3 mt-2">
                     <button
                       onClick={() => toggleMobileSection('seminars')}
-                      className="w-full py-3 text-base font-medium text-neutral-200 flex items-center justify-between"
+                      className="w-full py-3 text-base font-medium text-foreground/90 flex items-center justify-between"
                     >
                       სემინარები
-                      <ChevronDown className={`size-4 text-neutral-500 transition-transform ${mobileExpanded === 'seminars' ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`size-4 text-muted-foreground transition-transform ${mobileExpanded === 'seminars' ? 'rotate-180' : ''}`} />
                     </button>
                     <AnimatePresence>
                       {mobileExpanded === 'seminars' && (
@@ -211,12 +211,12 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
                           transition={{ duration: 0.2 }}
                           className="overflow-hidden"
                         >
-                          <div className="pl-4 pb-3 flex flex-col gap-1 border-l border-neutral-800 ml-2">
+                          <div className="pl-4 pb-3 flex flex-col gap-1 border-l border-border ml-2">
                             {seminarLinks.map((link) => (
                               <Link
                                 key={link.href}
                                 href={link.href}
-                                className="py-2 text-sm text-neutral-400 hover:text-white transition-colors"
+                                className="py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
                                 {link.label}
@@ -228,16 +228,16 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
                     </AnimatePresence>
                   </div>
 
-                  <Link href="/blog" className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors border-t border-neutral-800 mt-2" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/blog" className="py-3 text-base font-medium text-foreground/90 hover:text-foreground transition-colors border-t border-border mt-2" onClick={() => setMobileMenuOpen(false)}>
                     ბლოგი
                   </Link>
 
-                  <Link href="/contact" className="py-3 text-base font-medium text-neutral-200 hover:text-white transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/contact" className="py-3 text-base font-medium text-foreground/90 hover:text-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
                     კონტაქტი
                   </Link>
                 </>
               )}
-              <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-neutral-800">
+              <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-border">
                 <Button className="w-full h-12 rounded-none bg-amber-500/10 border border-amber-500/50 text-amber-500 hover:bg-amber-500/20 font-semibold" asChild>
                   <Link href="/donations" onClick={() => setMobileMenuOpen(false)}>
                     მხარდაჭერა
