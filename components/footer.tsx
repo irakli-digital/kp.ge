@@ -1,9 +1,48 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Loader2, CheckCircle, Mail } from "lucide-react"
 
 export default function Footer() {
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
+  const [message, setMessage] = useState("")
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setIsSubmitting(true)
+    setStatus("idle")
+
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setStatus("success")
+        setMessage(data.message)
+        setEmail("")
+      } else {
+        setStatus("error")
+        setMessage(data.error)
+      }
+    } catch {
+      setStatus("error")
+      setMessage("დაფიქსირდა შეცდომა")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <footer className="w-full border-t bg-background/95 backdrop-blur-sm">
       <div className="container flex flex-col gap-8 px-4 py-10 md:px-6 lg:py-16">
@@ -96,7 +135,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* ვორქშოპები */}
+          {/* სემინარები */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold">სემინარები</h4>
             <ul className="space-y-2 text-sm">
@@ -145,6 +184,51 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Newsletter Section */}
+        <div className="border-t border-border/40 pt-8">
+          <div className="max-w-md">
+            <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
+              <Mail className="size-4" />
+              გამოიწერე სიახლეები
+            </h4>
+            <p className="text-sm text-muted-foreground mb-4">
+              მიიღე შეტყობინებები ახალი ეპიზოდების და სემინარების შესახებ.
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+              <input
+                type="email"
+                placeholder="შენი ელ-ფოსტა"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="flex-1 h-10 px-3 rounded-md border border-neutral-700 bg-neutral-800/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="h-10 px-4 rounded-md bg-amber-500 hover:bg-amber-600 text-white font-medium text-sm transition-colors disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  "გამოწერა"
+                )}
+              </button>
+            </form>
+            {status !== "idle" && (
+              <div
+                className={`mt-3 text-sm flex items-center gap-2 ${
+                  status === "success" ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {status === "success" && <CheckCircle className="size-4" />}
+                {message}
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 sm:flex-row justify-between items-center border-t border-border/40 pt-8">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} ცოდნისმოყვარე პოდკასტი. ყველა უფლება დაცულია.
