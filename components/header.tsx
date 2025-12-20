@@ -11,7 +11,7 @@ import { useTheme } from "next-themes"
 const seminarLinks = [
   { href: "/seminars/consciousness", label: "ცნობიერების სემინარი" },
   { href: "/seminars/nugzar-dzidziguri-workshop", label: "ნუგზარ ძიძიგურის ვორქშოპი" },
-  { href: "/seminars/system-constellation-retreat", label: "სისტემური განლაგების რეტრიტი" },
+  { href: "/seminars/system-constellation-retreat", label: "სისტემური განლაგების რიტრიტი" },
 ]
 
 interface HeaderProps {
@@ -76,9 +76,9 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
           <Image
             src="/images/kpodcast-logo.webp"
             alt="ცოდნისმოყვარე პოდკასტი"
-            width={200}
-            height={56}
-            className="h-14 w-auto"
+            width={240}
+            height={64}
+            className="h-16 w-auto"
             priority
           />
         </Link>
@@ -178,7 +178,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-16 inset-x-0 bg-[#0a0a0a]/98 backdrop-blur-xl border-b border-neutral-800 overflow-hidden"
+            className="md:hidden absolute top-16 inset-x-0 bg-[#0a0a0a] border-b border-neutral-800 overflow-hidden"
           >
             <div className="container py-6 flex flex-col gap-1">
               {!hideNavigation && (

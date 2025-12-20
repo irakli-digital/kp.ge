@@ -177,10 +177,10 @@ export default function ConsciousnessSeminarPage() {
                   <div className="mb-8">
                     <p className="text-xs uppercase tracking-widest text-amber-500 mb-3 font-semibold">მომავალი სემინარი</p>
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                      გამოტოვე? შემდეგი მალე.
+                      ვერ დაესწარი? შემდეგი სემინარი მალე ჩატარდება.
                     </h2>
                     <p className="text-neutral-400">
-                      დარეგისტრირდი პრიორიტეტულ სიაში და პირველმა შეიტყვე მომავალი სემინარის შესახებ.
+                      დარეგისტრირდი მომლოდინეთა სიაში და პირველმა შეიტყვე მომავალი სემინარის შესახებ.
                     </p>
                   </div>
 
@@ -231,18 +231,12 @@ export default function ConsciousnessSeminarPage() {
         {/* What You Missed - Value Grid */}
         <section className="w-full py-20 md:py-28 border-t border-neutral-800/50">
           <div className="container px-4 md:px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
+            <div className="text-center mb-16">
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">რა მოხდა სემინარზე</p>
               <h2 className="text-3xl md:text-4xl font-bold text-white">
-                ამას გამოტოვებდი
+                რა განვიხილეთ
               </h2>
-            </motion.div>
+            </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
               {valueCards.map((card, i) => (
@@ -312,7 +306,7 @@ export default function ConsciousnessSeminarPage() {
             >
               <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">პროგრამა</p>
               <h2 className="text-3xl md:text-4xl font-bold text-white">
-                6 საათი ჩაღრმავების
+                ჩაღრმავების 6 საათი
               </h2>
             </motion.div>
 
@@ -327,7 +321,7 @@ export default function ConsciousnessSeminarPage() {
                 <div className="p-6 md:p-8 flex items-center justify-between">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                     <span className="text-sm font-mono text-neutral-500">11:30</span>
-                    <span className="text-white font-medium">Welcome Tea</span>
+                    <span className="text-white font-medium">მისალმება და ჩაი</span>
                   </div>
                   <span className="text-xs text-neutral-600">30 წთ</span>
                 </div>
@@ -473,7 +467,7 @@ export default function ConsciousnessSeminarPage() {
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">დავით კანდელაკი</h3>
                   <p className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-4">მენტორი</p>
                   <p className="text-neutral-500 text-sm leading-relaxed">
-                    ცოდნისმოყვარე პოდკასტის დამფუძნებელი და წამყვანი
+                    მენტორი
                   </p>
                 </div>
               </motion.div>
@@ -494,7 +488,7 @@ export default function ConsciousnessSeminarPage() {
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">გვანცა ველთაური</h3>
                   <p className="text-amber-500 uppercase tracking-widest text-xs font-semibold mb-4">ფასილიტატორი</p>
                   <p className="text-neutral-500 text-sm leading-relaxed">
-                    სისტემური კონსტელაციების ფასილიტატორი და ტრენერი
+                    ფასილიტატორი
                   </p>
                 </div>
               </motion.div>
@@ -512,7 +506,7 @@ export default function ConsciousnessSeminarPage() {
               transition={{ duration: 0.6 }}
               className="max-w-3xl mx-auto text-center"
             >
-              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ვერ დაიცადო?</p>
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">ვერ ითმენთ?</p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 დაიწყე მოგზაურობა ახლავე
               </h2>
@@ -590,7 +584,7 @@ export default function ConsciousnessSeminarPage() {
               className="max-w-xl mx-auto text-center"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                შემდეგი გაღვიძება მალე
+                გაინტერესებს მსგავსი კონტენტი?
               </h2>
               <p className="text-neutral-400 mb-8">
                 არ გამოტოვო მომავალი სემინარი. დარეგისტრირდი ახლა.

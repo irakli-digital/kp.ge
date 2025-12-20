@@ -110,15 +110,15 @@ export default function LandingPage() {
 
   const topics = [
     {
-      title: "საკუთარი თავის ფსიქოლოგია",
-      description: "თვითშეფასება, ემოციები და შინაგანი ბალანსი.",
+      title: "ფსიქოლოგია და თვითშემეცნება",
+      description: "თვითშეფასება, ემოციური ინტელექტი და შინაგანი ბალანსი.",
       icon: <Brain className="size-6" />,
       gradient: "from-rose-500/20 to-pink-500/20",
       borderColor: "border-rose-500/30",
       iconColor: "text-rose-500",
     },
     {
-      title: "სხეული და დღეგრძელობა",
+      title: "ჯანმრთელობა და დღეგრძელობა",
       description: "ჯანსაღი ცხოვრების წესი და პრევენცია.",
       icon: <Heart className="size-6" />,
       gradient: "from-emerald-500/20 to-teal-500/20",
@@ -126,15 +126,15 @@ export default function LandingPage() {
       iconColor: "text-emerald-500",
     },
     {
-      title: "მეცნიერება და აღმოჩენები",
-      description: "საოცარი ფაქტები და თანამედროვე კვლევები.",
+      title: "მეცნიერება და ინოვაციები",
+      description: "საინტერესო ფაქტები და თანამედროვე კვლევები.",
       icon: <Atom className="size-6" />,
       gradient: "from-blue-500/20 to-cyan-500/20",
       borderColor: "border-blue-500/30",
       iconColor: "text-blue-500",
     },
     {
-      title: "ზრდა და ტრანსფორმაცია",
+      title: "პიროვნული ზრდა და ტრანსფორმაცია",
       description: "პრაქტიკული რჩევები თვითგანვითარებისთვის.",
       icon: <Sparkles className="size-6" />,
       gradient: "from-amber-500/20 to-orange-500/20",
@@ -193,7 +193,7 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto">
-                ჩაღრმავდი მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის თემებში
+                აღმოაჩინე მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის სიღრმეები
                 <span className="text-white font-medium"> გვანცა ველთაურთან ერთად.</span>
               </p>
 
@@ -480,12 +480,12 @@ export default function LandingPage() {
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">გვანცა ველთაური</h2>
                 <div className="space-y-4 text-neutral-400">
                   <p>
-                    ვისაუბრებთ მნიშვნელოვან და საინტერესო თემებზე საინტერესო სტუმრებთან, სხვადასხვა დარგის
-                    სპეციალისტებთან თუ უბრალოდ გამორჩეულ ადამიანებთან ერთად.
+                  აღმოაჩინე მენტალური ჯანმრთელობის, მეცნიერებისა და გონების არქიტექტურის სიღრმეები გვანცა ველთაურთან ერთად.
+
+
                   </p>
                   <p>
-                    დიდი იმედი მაქვს, რომ თითოეული პოდკასტიდან მინიმუმ ერთი ადამიანი მაინც გაიგებს ახალ რამეს
-                    ან სხვა თვალით შეხედავს უკვე არსებულს.
+                  აქ, დარგის ექსპერტებთან და გამორჩეულ სტუმრებთან ერთად, უმნიშვნელოვანეს საკითხებს სიღრმისეულად განვიხილავთ. დარწმუნებული ვარ, თითოეული ეპიზოდი ახალ ცოდნას მოგცემთ და დაგეხმარებათ, სამყაროს სრულიად განსხვავებული რაკურსით შეხედოთ.
                   </p>
                 </div>
               </motion.div>
@@ -508,8 +508,8 @@ export default function LandingPage() {
                 შეისწავლე ცნობიერების პრინციპები
               </h2>
               <p className="text-neutral-400 text-lg mb-10">
-                გეპატიჟებით პრაქტიკულ სემინარებზე, სადაც ცნობიერებასთან და მის მექანიზმებთან
-                დაკავშირებულ საკითხებს განვიხილავთ.
+                გეპატიჟებით პრაქტიკულ სემინარებზე, სადაც ცნობიერების მექანიზმებსა და პიროვნული 
+                ტრანსფორმაციის საკითხებს სიღრმისეულად განვიხილავთ.
               </p>
               <Button
                 size="lg"
@@ -536,16 +536,15 @@ export default function LandingPage() {
               transition={{ duration: 0.6 }}
               className="max-w-3xl mx-auto text-center"
             >
-              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">შინაგანი წრე</p>
+              <p className="text-xs uppercase tracking-widest text-amber-500 mb-4 font-semibold">მხარდამჭერთა კლუბი</p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                შეუერთდი შინაგან წრეს
+              შემოუერთდი ჩვენს საზოგადოებას!
               </h2>
               <p className="text-neutral-400 text-lg mb-4">
-                ყველა ეპიზოდი ყოველთვის სრულიად უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის
-                ხელმისაწვდომი უნდა იყოს!
+              ჩვენი ეპიზოდები ყოველთვის უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის ხელმისაწვდომი უნდა იყოს.
               </p>
               <p className="text-neutral-500 mb-10">
-                მხარი დაუჭირე დამოუკიდებელ ჟურნალისტიკას და მიიღე ადრეული წვდომა სემინარებზე.
+              მხარი დაუჭირე დამოუკიდებელ კონტენტს და მიიღე პრიორიტეტული წვდომა სემინარებზე.
               </p>
               <Button
                 size="lg"

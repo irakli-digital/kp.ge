@@ -40,13 +40,13 @@ export default async function BlogPage() {
             <div className="mb-12 text-center">
               <h1 className="mb-4 text-4xl font-bold tracking-tight text-primary">ბლოგი</h1>
               <p className="text-xl text-muted-foreground">
-                სტატიები ცნობიერების, პიროვნული განვითარების და მეცნიერების შესახებ
+                სტატიები ცნობიერების, პიროვნული განვითარებისა და მეცნიერების შესახებ
               </p>
             </div>
 
             {posts.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">ჯერ არ არის ბლოგ პოსტები.</p>
+                <p className="text-muted-foreground">ბლოგ-პოსტები ჯერ არ არის.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -82,7 +82,7 @@ export default async function BlogPage() {
                       </CardHeader>
                       <CardContent className="pt-0">
                         <div className="flex items-center text-sm text-primary font-medium group-hover:gap-2 transition-all">
-                          <span>წაიკითხე მეტი</span>
+                          <span>სრულად ნახვა</span>
                           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </CardContent>

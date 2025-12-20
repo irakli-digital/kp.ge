@@ -3,10 +3,10 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "მომსახურების პირობები | Mypen.ge",
-  description: "Mypen.ge-ის მომსახურების პირობები და წესები. გაეცანით ჩვენს პლატფორმის გამოყენების პირობებს.",
+  title: "მომსახურების პირობები | KP.ge",
+  description: "KP.ge-ის მომსახურების პირობები და წესები. გაეცანით ჩვენს პლატფორმის გამოყენების პირობებს.",
   alternates: {
-    canonical: "https://mypen.ge/terms",
+    canonical: "https://kp.ge/terms",
   },
   robots: {
     index: false,
@@ -25,9 +25,9 @@ export default function TermsOfServicePage() {
             <p className="text-sm text-muted-foreground mb-8">ბოლო განახლება: 18 მარტი, 2025</p>
 
             <p className="mb-6">
-              კეთილი იყოს თქვენი მობრძანება mypen.ge-ზე ("პლატფორმა"), AI-ზე მომუშავე ტექსტის დამუშავების პლატფორმაზე.
+              კეთილი იყოს თქვენი მობრძანება kp.ge-ზე ("პლატფორმა").
               მომსახურების ეს პირობები ("პირობები") არეგულირებს თქვენს წვდომას და გამოყენებას ჩვენს ვებსაიტზე
-              (mypen.ge), სერვისებზე, პროგრამულ უზრუნველყოფასა და აპლიკაციებზე (ერთობლივად, "სერვისები"). გთხოვთ,
+              (kp.ge) და სერვისებზე. გთხოვთ,
               ყურადღებით წაიკითხოთ ეს პირობები ჩვენი სერვისების გამოყენებამდე.
             </p>
 
@@ -289,7 +289,7 @@ export default function TermsOfServicePage() {
             <h3 className="text-xl font-semibold mt-6 mb-3">საკონტაქტო ინფორმაცია:</h3>
             <p className="mb-2">თუ თქვენ გაქვთ რაიმე შეკითხვა ამ პირობებთან დაკავშირებით, გთხოვთ, დაგვიკავშირდეთ:</p>
             <p className="mb-2">
-              <strong>ელექტრონული ფოსტა:</strong> support@mypen.ge
+              <strong>ელექტრონული ფოსტა:</strong> contact@kp.ge
             </p>
             <p className="mb-2">
               <strong>შპს ნუტრიბუსტი:</strong> 405607188

@@ -13,7 +13,7 @@ export default function ContactPage() {
   const contactMethods = [
     {
       title: "YouTube",
-      description: "გამოგვყევი და დაწერე კომენტარი ჩვენს ეპიზოდებზე",
+      description: "გამოიწერეთ არხი და გაგვიზიარეთ თქვენი მოსაზრებები კომენტარებში",
       icon: <Youtube className="size-6" />,
       href: "https://www.youtube.com/@KPODCAST_GE",
       color: "text-red-500",
@@ -22,7 +22,7 @@ export default function ContactPage() {
     },
     {
       title: "ელფოსტა",
-      description: "დაგვიკავშირდით ელფოსტით",
+      description: "მოგვწერეთ ელფოსტაზე",
       icon: <Mail className="size-6" />,
       href: "mailto:contact@kp.ge",
       color: "text-amber-500",
@@ -57,8 +57,8 @@ export default function ContactPage() {
               </h1>
 
               <p className="text-muted-foreground text-lg mb-12 max-w-xl mx-auto">
-                გაქვს კითხვა, შეთავაზება ან უბრალოდ გინდა გვესაუბრო?
-                აირჩიე შენთვის მოსახერხებელი გზა.
+                გაქვთ კითხვა, შეთავაზება ან უბრალოდ გსურთ საუბარი? 
+                აირჩიეთ თქვენთვის მოსახერხებელი საკომუნიკაციო არხი.
               </p>
 
               {/* Contact methods */}
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 <h2 className="text-xl font-bold mb-4">გვანცა ველთაური</h2>
                 <p className="text-muted-foreground mb-6">
                   ცოდნისმოყვარე პოდკასტის ავტორი და წამყვანი.
-                  მოხარული ვიქნები შენს გამოხმაურებას!
+                  მოხარული ვიქნები თქვენი გამოხმაურებით!
                 </p>
                 <Button
                   size="lg"

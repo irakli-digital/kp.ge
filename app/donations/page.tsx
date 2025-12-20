@@ -70,21 +70,21 @@ export default function DonationsPage() {
 
               <div className="text-muted-foreground space-y-4 mb-10">
                 <p className="text-lg">
-                  ჩვენი პოდკასტის მისია, ცოდნისმოყვარეობის გაღვივება და საინტერესო
-                  აღმოჩენების ხელშეწყობაა.
+                  ჩვენი პოდკასტის მისიაა ცნობისმოყვარეობის გაღვივება და ახალი 
+                  აღმოჩენების ხელშეწყობა.
                 </p>
                 <p className="text-lg font-medium text-foreground">
-                  ყველა ეპიზოდი ყოველთვის სრულიად უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის ხელმისაწვდომი უნდა იყოს!
+                  ჩვენი ეპიზოდები ყოველთვის უფასო იქნება, რადგან გვჯერა, რომ ცოდნა ყველასთვის ხელმისაწვდომი უნდა იყოს.
                 </p>
                 <p>
-                  თუ გაქვს სურვილი, შეგიძლია პოდკასტის მხარდაჭერა დონაციით გამოხატო. დიდი მადლობა!
+                  თუ სურვილი გაქვთ, შეგიძლიათ მხარი დაუჭიროთ პოდკასტს დონაციით. დიდი მადლობა!
                 </p>
               </div>
 
               {/* Bank Accounts */}
               <div className="max-w-md mx-auto space-y-4 mb-10">
                 <p className="text-sm text-muted-foreground mb-6">
-                  დააკოპირე სასურველი ბანკის ანგარიში
+                  დააკოპირეთ სასურველი საბანკო ანგარიში
                 </p>
 
                 {bankAccounts.map((account) => (
@@ -144,14 +144,14 @@ export default function DonationsPage() {
                 <Heart className="size-12 mx-auto mb-4 text-amber-500" />
                 <h2 className="text-xl font-bold mb-2">მადლობა მხარდაჭერისთვის!</h2>
                 <p className="text-muted-foreground text-sm">
-                  შენი წვლილი გვეხმარება უფრო მეტი საინტერესო კონტენტის შექმნაში.
+                  თქვენი წვლილი გვეხმარება უფრო მეტი საინტერესო კონტენტის შექმნაში.
                 </p>
               </motion.div>
 
               {/* YouTube CTA */}
               <div className="pt-12">
                 <p className="text-muted-foreground mb-4">
-                  ასევე შეგიძლია მხარი დაუჭირო პოდკასტს YouTube არხის გამოწერით
+                  ასევე, შეგიძლიათ მხარი დაუჭიროთ პოდკასტს YouTube არხის გამოწერით.
                 </p>
                 <Button
                   size="lg"

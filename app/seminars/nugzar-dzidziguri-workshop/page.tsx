@@ -166,7 +166,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                   <div className="mb-8">
                     <p className="text-xs uppercase tracking-widest text-purple-500 mb-3 font-semibold">მომავალი ვორქშოპი</p>
                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                      გამოტოვე? შემდეგი მალე.
+                      გამოტოვე? დაესწარი შემდეგს..
                     </h2>
                     <p className="text-neutral-400">
                       დარეგისტრირდი პრიორიტეტულ სიაში და პირველმა შეიტყვე მომავალი ვორქშოპის შესახებ.
@@ -490,7 +490,7 @@ export default function NugzarDzidziguriWorkshopPage() {
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">გვანცა ველთაური</h3>
                   <p className="text-purple-500 uppercase tracking-widest text-xs font-semibold mb-4">ფასილიტატორი</p>
                   <p className="text-neutral-500 text-sm leading-relaxed">
-                    სისტემური კონსტელაციების ფასილიტატორი და ტრენერი
+                  ფასილიტატორი
                   </p>
                 </div>
               </motion.div>
