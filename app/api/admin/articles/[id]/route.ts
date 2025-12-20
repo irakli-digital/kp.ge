@@ -58,7 +58,8 @@ export async function PUT(
       content_ka,
       excerpt,
       excerpt_ka,
-      published
+      published,
+      featured_image
     } = body;
 
     // If publishing, also set published_at
@@ -73,6 +74,7 @@ export async function PUT(
           excerpt = ${excerpt},
           excerpt_ka = ${excerpt_ka},
           published = ${published},
+          featured_image = ${featured_image},
           published_at = COALESCE(published_at, NOW()),
           updated_at = NOW()
         WHERE id = ${articleId}
@@ -88,6 +90,7 @@ export async function PUT(
           excerpt = ${excerpt},
           excerpt_ka = ${excerpt_ka},
           published = ${published},
+          featured_image = ${featured_image},
           updated_at = NOW()
         WHERE id = ${articleId}
       `;

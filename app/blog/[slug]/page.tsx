@@ -108,54 +108,104 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <div className="min-h-screen bg-background">
         <Header />
-      <main className="container mx-auto px-4 py-16">
-        {/* Optimal reading width: 680px (max-w-2xl) */}
-        <article className="mx-auto max-w-2xl">
-          <Link href="/blog">
-            <Button variant="ghost" className="mb-8">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              ბლოგზე დაბრუნება
-            </Button>
-          </Link>
 
-          <header className="mb-10">
-            <h1 className="mb-5 text-4xl font-bold tracking-tight text-primary leading-tight">
-              {post.title_ka}
-            </h1>
+        {/* Hero Banner (when featured image exists) */}
+        {post.featured_image ? (
+          <div className="relative h-[350px] w-full overflow-hidden">
+            {/* Background Image */}
+            <img
+              src={post.featured_image}
+              alt={post.title_ka}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4" />
-                <time dateTime={new Date(post.published_at).toISOString()}>
-                  {format(new Date(post.published_at), "d MMMM, yyyy", { locale: ka })}
-                </time>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4" />
-                <span>{readingTime} წთ წასაკითხი</span>
+            {/* Content over hero */}
+            <div className="relative h-full container mx-auto px-4 flex flex-col justify-between py-6">
+              {/* Back link at top */}
+              <Link href="/blog">
+                <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 w-fit">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  ბლოგზე დაბრუნება
+                </Button>
+              </Link>
+
+              {/* Title and meta at bottom */}
+              <div className="max-w-3xl">
+                <h1 className="mb-4 text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
+                  {post.title_ka}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-sm text-white/70">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4" />
+                    <time dateTime={new Date(post.published_at).toISOString()}>
+                      {format(new Date(post.published_at), "d MMMM, yyyy", { locale: ka })}
+                    </time>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="h-4 w-4" />
+                    <span>{readingTime} წთ წასაკითხი</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </header>
-
-          <Separator className="mb-10 opacity-40" />
-
-          {/* Medical disclaimer for psychology content */}
-          <MedicalDisclaimer />
-
-          {/* Article content with optimized dark mode typography */}
-          <ArticleContent html={post.content_ka} />
-
-          <Separator className="my-14 opacity-40" />
-
-          <div className="flex justify-between items-center">
-            <Link href="/blog">
-              <Button variant="outline">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                ყველა პოსტი
-              </Button>
-            </Link>
           </div>
-        </article>
+        ) : null}
+
+        <main className="container mx-auto px-4 py-16">
+          {/* Optimal reading width: 680px (max-w-2xl) */}
+          <article className="mx-auto max-w-2xl">
+            {/* Show back button and header only if no hero image */}
+            {!post.featured_image && (
+              <>
+                <Link href="/blog">
+                  <Button variant="ghost" className="mb-8">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    ბლოგზე დაბრუნება
+                  </Button>
+                </Link>
+
+                <header className="mb-10">
+                  <h1 className="mb-5 text-4xl font-bold tracking-tight text-primary leading-tight">
+                    {post.title_ka}
+                  </h1>
+
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-4 w-4" />
+                      <time dateTime={new Date(post.published_at).toISOString()}>
+                        {format(new Date(post.published_at), "d MMMM, yyyy", { locale: ka })}
+                      </time>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-4 w-4" />
+                      <span>{readingTime} წთ წასაკითხი</span>
+                    </div>
+                  </div>
+                </header>
+
+                <Separator className="mb-10 opacity-40" />
+              </>
+            )}
+
+            {/* Medical disclaimer for psychology content */}
+            <MedicalDisclaimer />
+
+            {/* Article content with optimized dark mode typography */}
+            <ArticleContent html={post.content_ka} />
+
+            <Separator className="my-14 opacity-40" />
+
+            <div className="flex justify-between items-center">
+              <Link href="/blog">
+                <Button variant="outline">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  ყველა პოსტი
+                </Button>
+              </Link>
+            </div>
+          </article>
         </main>
         <Footer />
       </div>

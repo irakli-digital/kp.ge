@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { Upload, Loader2, X } from 'lucide-react';
 import WysiwygEditor from '@/components/admin/WysiwygEditor';
 import AssetUploader from '@/components/admin/AssetUploader';
 
@@ -15,6 +16,7 @@ interface Article {
   excerpt: string | null;
   excerpt_ka: string | null;
   published: boolean;
+  featured_image: string | null;
 }
 
 export default function EditArticle() {
@@ -27,6 +29,8 @@ export default function EditArticle() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [assetsOpen, setAssetsOpen] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const featuredImageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchArticle();
@@ -74,6 +78,7 @@ export default function EditArticle() {
           excerpt: article.excerpt,
           excerpt_ka: article.excerpt_ka,
           published: article.published,
+          featured_image: article.featured_image,
         }),
       });
 
@@ -87,6 +92,38 @@ export default function EditArticle() {
       setError('Failed to save article');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleFeaturedImageUpload = async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      setError('Only images allowed');
+      return;
+    }
+
+    setUploadingImage(true);
+    setError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.url) {
+        setArticle(prev => prev ? { ...prev, featured_image: data.url } : null);
+      } else {
+        setError(data.error || 'Upload failed');
+      }
+    } catch (err) {
+      setError('Upload failed');
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -199,6 +236,74 @@ export default function EditArticle() {
                 Published
               </label>
             </div>
+          </div>
+
+          {/* Featured Image */}
+          <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-6">
+            <h2 className="text-lg font-semibold text-white mb-4">Featured Image</h2>
+            <p className="text-zinc-500 text-sm mb-4">
+              This image appears as the hero banner on the article page and as a thumbnail in the blog listing.
+            </p>
+
+            <input
+              ref={featuredImageInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleFeaturedImageUpload(file);
+                if (featuredImageInputRef.current) featuredImageInputRef.current.value = '';
+              }}
+              className="hidden"
+            />
+
+            {article.featured_image ? (
+              <div className="relative">
+                <img
+                  src={article.featured_image}
+                  alt="Featured"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-colors rounded-lg flex items-center justify-center gap-2 opacity-0 hover:opacity-100">
+                  <button
+                    type="button"
+                    onClick={() => featuredImageInputRef.current?.click()}
+                    disabled={uploadingImage}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-md"
+                  >
+                    Replace
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setArticle({ ...article, featured_image: null })}
+                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm rounded-md"
+                  >
+                    Remove
+                  </button>
+                </div>
+                {uploadingImage && (
+                  <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => featuredImageInputRef.current?.click()}
+                disabled={uploadingImage}
+                className="w-full h-48 border-2 border-dashed border-zinc-700 hover:border-zinc-500 rounded-lg flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-400 transition-colors"
+              >
+                {uploadingImage ? (
+                  <Loader2 className="w-8 h-8 animate-spin" />
+                ) : (
+                  <>
+                    <Upload className="w-8 h-8" />
+                    <span className="text-sm">Click to upload featured image</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {/* Assets */}
