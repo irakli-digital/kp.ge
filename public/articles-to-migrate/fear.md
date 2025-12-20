@@ -34,7 +34,7 @@ silo: mental-health
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/jz5DtxINxFY"
     title="შიშის ფსიქოლოგია - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

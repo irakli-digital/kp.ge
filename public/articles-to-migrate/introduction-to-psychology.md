@@ -28,7 +28,7 @@ silo: psychology-education
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/nZx3z2mHWDs"
     title="ფსიქოლოგიის შესავალი: რატომ ფსიქოლოგია?"
     frameborder="0"
     allowfullscreen>

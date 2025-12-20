@@ -6,6 +6,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  transpilePackages: ['@react-pdf/renderer'],
   async redirects() {
     return [
       // Old Mypen routes → Home

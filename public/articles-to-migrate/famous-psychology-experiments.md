@@ -32,7 +32,7 @@ silo: psychology-education
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/q7kIFLK-kNs"
     title="ცნობილი ფსიქოლოგიური ექსპერიმენტები - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

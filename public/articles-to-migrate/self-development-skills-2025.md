@@ -32,7 +32,7 @@ silo: self-development
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/2EUJUTO8PfQ"
     title="თვითგანვითარების უნარები 2025 - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

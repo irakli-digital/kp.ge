@@ -34,7 +34,7 @@ silo: aggression
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/g_bg9rO6jbw"
     title="აგრესიის ტიპები და მართვა - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

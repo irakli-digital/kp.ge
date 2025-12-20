@@ -34,7 +34,7 @@ silo: mental-health
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/vyu3Es5B1_o"
     title="დეპრესიის სიმპტომები და მკურნალობა - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

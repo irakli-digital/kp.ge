@@ -30,7 +30,7 @@ silo: mental-health
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/eoHyQ7T0fQ8"
     title="სოციალური შფოთვის მიზეზები - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

@@ -34,7 +34,7 @@ silo: self-development
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/v6g1Ou8y0a8"
     title="თვითშეფასების გაუმჯობესება - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

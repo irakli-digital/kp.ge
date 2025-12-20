@@ -28,7 +28,7 @@ silo: mental-health
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/PYOOzr2rdnM"
     title="შფოთვა: რა არის და როგორ გავუმკლავდეთ"
     frameborder="0"
     allowfullscreen>

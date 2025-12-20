@@ -11,6 +11,7 @@ import JsonLd from "@/components/JsonLd";
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/schema";
 import { format } from "date-fns";
 import { ka } from "date-fns/locale";
+import ArticleContent from "@/components/blog/ArticleContent";
 
 interface BlogPostPageProps {
   params: {
@@ -138,10 +139,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <Separator className="mb-10 opacity-40" />
 
           {/* Article content with optimized dark mode typography */}
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: post.content_ka }}
-          />
+          <ArticleContent html={post.content_ka} />
 
           <Separator className="my-14 opacity-40" />
 

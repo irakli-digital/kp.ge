@@ -30,7 +30,7 @@ silo: psychology-education
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/I4hIocEA3t4"
     title="საუკეთესო ფსიქოლოგიის წიგნები - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

@@ -32,7 +32,7 @@ silo: psychology-education
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/SP2uxTGomwQ"
     title="ფსიქოლოგიის კარიერა - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

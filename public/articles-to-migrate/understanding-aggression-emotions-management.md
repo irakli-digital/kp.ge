@@ -32,7 +32,7 @@ silo: aggression
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/eoHyQ7T0fQ8"
     title="აგრესიის მართვა - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

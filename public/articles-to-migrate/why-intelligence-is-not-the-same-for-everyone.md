@@ -34,7 +34,7 @@ silo: cognitive-psychology
 
 <div class="video-container">
   <iframe
-    src="https://www.youtube.com/embed/[VIDEO_ID]"
+    src="https://www.youtube.com/embed/q7kIFLK-kNs"
     title="მრავალმხრივი ინტელექტის თეორია - KP.ge პოდკასტი"
     frameborder="0"
     allowfullscreen>

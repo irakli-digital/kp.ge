@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
   ArrowLeft,
-  Package,
-  Zap,
   Check,
   Star,
   Award,
@@ -14,9 +13,49 @@ import {
   Clock,
   Send,
   Loader2,
-  ChevronRight
+  Download,
+  Video,
+  Mic,
+  Share2,
+  Globe,
+  Sparkles,
+  Users,
+  Eye,
+  Shield,
 } from 'lucide-react';
 import { CalculatorProvider, useCalculator } from '@/components/calculator/CalculatorContext';
+
+// Dynamic import for PDF (client-side only)
+const PDFDownloadLink = dynamic(
+  () => import('@react-pdf/renderer').then((mod) => mod.PDFDownloadLink),
+  { ssr: false, loading: () => <span className="text-zinc-500">იტვირთება...</span> }
+);
+
+const ProposalPDFComponent = dynamic(
+  () => import('@/components/calculator/ProposalPDF').then((mod) => mod.ProposalPDF),
+  { ssr: false }
+);
+
+// Feature icon mapping
+const featureIcons: Record<string, typeof Check> = {
+  'ლოგო': Video,
+  'ვიდეო': Video,
+  'მოხსენიება': Mic,
+  'სოციალური': Share2,
+  'ვებსაიტ': Globe,
+  'ინტერვიუ': Sparkles,
+  'პრიორიტეტ': Star,
+  'წუთი': Mic,
+  'პოსტ': Share2,
+};
+
+const getFeatureIcon = (feature: string) => {
+  const lowerFeature = feature.toLowerCase();
+  for (const [key, Icon] of Object.entries(featureIcons)) {
+    if (lowerFeature.includes(key)) return Icon;
+  }
+  return Check;
+};
 
 function CalculatorContent() {
   const {
@@ -30,18 +69,18 @@ function CalculatorContent() {
     selectedDuration,
     selectedServices,
     selectedEpisodeCount,
+    originalPrice,
     monthlyPrice,
     totalPrice,
     discountAmount,
+    discountPercent,
     setMode,
     selectPackage,
     selectDuration,
     toggleService,
     selectEpisodeCount,
-    reset,
   } = useCalculator();
 
-  const [step, setStep] = useState(1);
   const [showContactForm, setShowContactForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -68,7 +107,6 @@ function CalculatorContent() {
 
   const handleModeSelect = (newMode: 'subscription' | 'one_time') => {
     setMode(newMode);
-    setStep(2);
     if (newMode === 'subscription') {
       scrollToRef(packageSectionRef);
     } else {
@@ -78,23 +116,16 @@ function CalculatorContent() {
 
   const handlePackageSelect = (pkg: typeof selectedPackage) => {
     selectPackage(pkg);
-    setStep(3);
     scrollToRef(durationSectionRef);
   };
 
   const handleDurationSelect = (duration: typeof selectedDuration) => {
     selectDuration(duration);
-    setStep(4);
     scrollToRef(summarySectionRef);
-  };
-
-  const handleServiceToggle = (service: typeof services[0]) => {
-    toggleService(service);
   };
 
   const handleEpisodeSelect = (episode: typeof selectedEpisodeCount) => {
     selectEpisodeCount(episode);
-    setStep(4);
     scrollToRef(summarySectionRef);
   };
 
@@ -135,27 +166,24 @@ function CalculatorContent() {
     }
   };
 
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('ka-GE');
-  };
+  const formatPrice = (price: number) => price.toLocaleString('ka-GE');
 
   const getPackageIcon = (type: string) => {
     switch (type) {
       case 'bronze': return Star;
       case 'silver': return Award;
       case 'gold': return Trophy;
-      default: return Package;
+      default: return Star;
     }
   };
 
-  const getPackageGradient = (type: string) => {
-    switch (type) {
-      case 'bronze': return 'from-amber-700/20 to-amber-900/10 border-amber-700/30';
-      case 'silver': return 'from-zinc-400/20 to-zinc-600/10 border-zinc-500/30';
-      case 'gold': return 'from-yellow-500/20 to-yellow-700/10 border-yellow-500/30';
-      default: return 'from-zinc-800 to-zinc-900 border-zinc-700';
-    }
-  };
+  // Sort packages to ensure silver is in the middle
+  const sortedPackages = useMemo(() => {
+    return [...packages].sort((a, b) => {
+      const order = { bronze: 0, silver: 1, gold: 2 };
+      return (order[a.type as keyof typeof order] ?? 0) - (order[b.type as keyof typeof order] ?? 0);
+    });
+  }, [packages]);
 
   if (loading) {
     return (
@@ -195,95 +223,97 @@ function CalculatorContent() {
   return (
     <div className="min-h-screen bg-zinc-950">
       {/* Header */}
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-lg sticky top-0 z-50">
+      <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
-            <span className="text-sm">უკან</span>
+            <span className="text-sm hidden sm:inline">უკან</span>
           </Link>
-          <h1 className="text-lg font-bold text-white">სპონსორობის კალკულატორი</h1>
+          <h1 className="text-lg font-bold text-white">სპონსორობის კონფიგურატორი</h1>
           <div className="w-16"></div>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8 md:py-12">
-        {/* Intro Section */}
+        {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-widest text-amber-500 bg-amber-500/10 rounded-full mb-4">
-            თანამშრომლობა
-          </span>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800/50 rounded-full border border-zinc-700">
+              <Eye className="w-4 h-4 text-amber-500" />
+              <span className="text-sm text-zinc-300">3.3M+ ნახვა</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800/50 rounded-full border border-zinc-700">
+              <Users className="w-4 h-4 text-amber-500" />
+              <span className="text-sm text-zinc-300">Premium აუდიტორია</span>
+            </div>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            აირჩიეთ თქვენთვის სასურველი ვარიანტი
+            შექმენით თქვენი პარტნიორობა
           </h2>
           <p className="text-zinc-400 max-w-2xl mx-auto">
-            გამოთვალეთ თქვენი სპონსორობის ღირებულება და მიიღეთ პერსონალიზებული შეთავაზება
+            აირჩიეთ თანამშრომლობის ტიპი და მიიღეთ პერსონალიზებული შეთავაზება
           </p>
         </motion.div>
 
-        {/* Step 1: Mode Selection */}
+        {/* Step 1: Mode Selection - Glossy Segmented Toggle */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mb-12"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-black font-bold text-sm">1</span>
-            <h3 className="text-xl font-semibold text-white">აირჩიეთ თანამშრომლობის ტიპი</h3>
-          </div>
+          <div className="relative max-w-lg mx-auto">
+            <div className="relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-1.5">
+              {/* Sliding Background */}
+              <motion.div
+                className="absolute inset-y-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-500/30"
+                initial={false}
+                animate={{
+                  left: mode === 'subscription' || mode === null ? '6px' : '50%',
+                  right: mode === 'one_time' ? '6px' : '50%',
+                }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                style={{ display: mode ? 'block' : 'none' }}
+              />
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <button
-              onClick={() => handleModeSelect('subscription')}
-              className={`p-6 rounded-xl border-2 transition-all text-left ${
-                mode === 'subscription'
-                  ? 'border-amber-500 bg-amber-500/10'
-                  : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-              }`}
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`p-3 rounded-lg ${mode === 'subscription' ? 'bg-amber-500/20 text-amber-500' : 'bg-zinc-800 text-zinc-400'}`}>
-                  <Package className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-white">სააბონემენტო პაკეტი</h4>
-                  <p className="text-sm text-zinc-500">გრძელვადიანი თანამშრომლობა</p>
-                </div>
-              </div>
-              <p className="text-zinc-400 text-sm">
-                აირჩიეთ Bronze, Silver ან Gold პაკეტი და მიიღეთ ფასდაკლება გრძელვადიან კონტრაქტზე
-              </p>
-            </button>
+              <div className="relative grid grid-cols-2 gap-1">
+                <button
+                  onClick={() => handleModeSelect('subscription')}
+                  className={`relative z-10 px-4 py-4 rounded-xl transition-all duration-300 ${
+                    mode === 'subscription' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="font-semibold">გრძელვადიანი პარტნიორი</span>
+                    <span className={`text-xs ${mode === 'subscription' ? 'text-amber-400' : 'text-zinc-500'}`}>
+                      საუკეთესო ღირებულება
+                    </span>
+                  </div>
+                </button>
 
-            <button
-              onClick={() => handleModeSelect('one_time')}
-              className={`p-6 rounded-xl border-2 transition-all text-left ${
-                mode === 'one_time'
-                  ? 'border-amber-500 bg-amber-500/10'
-                  : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-              }`}
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`p-3 rounded-lg ${mode === 'one_time' ? 'bg-amber-500/20 text-amber-500' : 'bg-zinc-800 text-zinc-400'}`}>
-                  <Zap className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-white">ერთჯერადი სერვისები</h4>
-                  <p className="text-sm text-zinc-500">ინდივიდუალური განთავსებები</p>
-                </div>
+                <button
+                  onClick={() => handleModeSelect('one_time')}
+                  className={`relative z-10 px-4 py-4 rounded-xl transition-all duration-300 ${
+                    mode === 'one_time' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="font-semibold">ერთჯერადი ფიჩერი</span>
+                    <span className={`text-xs ${mode === 'one_time' ? 'text-amber-400' : 'text-zinc-500'}`}>
+                      მოქნილი ვარიანტი
+                    </span>
+                  </div>
+                </button>
               </div>
-              <p className="text-zinc-400 text-sm">
-                აირჩიეთ კონკრეტული სერვისები და ეპიზოდების რაოდენობა თქვენი საჭიროებისამებრ
-              </p>
-            </button>
+            </div>
           </div>
         </motion.section>
 
-        {/* Step 2: Package/Service Selection */}
+        {/* Step 2: Package Selection (Subscription Mode) */}
         <AnimatePresence mode="wait">
           {mode === 'subscription' && (
             <motion.section
@@ -293,53 +323,104 @@ function CalculatorContent() {
               exit={{ opacity: 0, y: -20 }}
               className="mb-12"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <span className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${step >= 2 ? 'bg-amber-500 text-black' : 'bg-zinc-800 text-zinc-400'}`}>2</span>
-                <h3 className="text-xl font-semibold text-white">აირჩიეთ პაკეტი</h3>
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">აირჩიეთ თქვენი პაკეტი</h3>
+                <p className="text-zinc-500">სრული სპონსორობის პაკეტები ფასდაკლებით</p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-4">
-                {packages.map((pkg) => {
+              <div className="grid md:grid-cols-3 gap-4 md:gap-6 items-stretch">
+                {sortedPackages.map((pkg, index) => {
                   const Icon = getPackageIcon(pkg.type);
                   const isSelected = selectedPackage?.id === pkg.id;
+                  const isSilver = pkg.type === 'silver';
+                  const isGold = pkg.type === 'gold';
 
                   return (
-                    <button
+                    <motion.button
                       key={pkg.id}
                       onClick={() => handlePackageSelect(pkg)}
-                      className={`relative p-6 rounded-xl border-2 transition-all text-left bg-gradient-to-br ${getPackageGradient(pkg.type)} ${
-                        isSelected ? 'border-amber-500 ring-2 ring-amber-500/30' : 'hover:border-zinc-600'
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`relative text-left rounded-2xl border-2 transition-all duration-300 ${
+                        isSilver ? 'md:scale-105 md:z-10' : ''
+                      } ${
+                        isSelected
+                          ? 'border-amber-500 shadow-lg shadow-amber-500/20'
+                          : isSilver
+                          ? 'border-zinc-600 hover:border-zinc-500'
+                          : 'border-zinc-800 hover:border-zinc-700'
+                      } ${
+                        isGold
+                          ? 'bg-gradient-to-br from-yellow-500/10 via-zinc-900 to-zinc-900'
+                          : isSilver
+                          ? 'bg-gradient-to-br from-zinc-700/30 via-zinc-900 to-zinc-900'
+                          : 'bg-zinc-900'
                       }`}
                     >
-                      <span className={`absolute top-4 right-4 px-2 py-0.5 text-xs font-medium rounded-full ${pkg.tag_classes}`}>
-                        {pkg.tag}
-                      </span>
+                      {/* Recommended Badge for Silver */}
+                      {isSilver && (
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full text-xs font-bold text-black">
+                          რეკომენდებული
+                        </div>
+                      )}
 
-                      <div className={`p-3 rounded-lg inline-block mb-4 ${isSelected ? 'bg-amber-500/20 text-amber-500' : 'bg-zinc-800/50 text-zinc-400'}`}>
-                        <Icon className="w-6 h-6" />
+                      <div className="p-6">
+                        {/* Tag */}
+                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 ${pkg.tag_classes}`}>
+                          {pkg.tag}
+                        </span>
+
+                        {/* Icon & Name */}
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className={`p-2.5 rounded-xl ${
+                            isSelected ? 'bg-amber-500/20 text-amber-500' : 'bg-zinc-800 text-zinc-400'
+                          }`}>
+                            <Icon className="w-6 h-6" />
+                          </div>
+                          <h4 className="text-xl font-bold text-white">{pkg.name}</h4>
+                        </div>
+
+                        {/* Price */}
+                        <div className="mb-6">
+                          <span className="text-3xl font-bold text-amber-500">{formatPrice(Number(pkg.base_price))}</span>
+                          <span className="text-zinc-500 ml-1">₾/თვე</span>
+                        </div>
+
+                        {/* Features with Icons */}
+                        <ul className="space-y-3">
+                          {pkg.features?.map((feature) => {
+                            const FeatureIcon = getFeatureIcon(feature.feature);
+                            return (
+                              <li key={feature.id} className="flex items-start gap-3">
+                                <FeatureIcon className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+                                  isSelected ? 'text-amber-500' : 'text-green-500'
+                                }`} />
+                                <span className="text-sm text-zinc-300">{feature.feature}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+
+                        {/* Selection Indicator */}
+                        {isSelected && (
+                          <div className="mt-6 flex items-center justify-center gap-2 text-amber-500 font-medium">
+                            <Check className="w-5 h-5" />
+                            არჩეულია
+                          </div>
+                        )}
                       </div>
-
-                      <h4 className="text-lg font-semibold text-white mb-2">{pkg.name}</h4>
-
-                      <p className="text-2xl font-bold text-amber-500 mb-4">
-                        {formatPrice(pkg.base_price)} <span className="text-sm font-normal text-zinc-500">₾/თვე</span>
-                      </p>
-
-                      <ul className="space-y-2">
-                        {pkg.features.map((feature) => (
-                          <li key={feature.id} className="flex items-start gap-2 text-sm text-zinc-400">
-                            <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                            {feature.feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
             </motion.section>
           )}
+        </AnimatePresence>
 
+        {/* Step 2: Service Selection (One-Time Mode) */}
+        <AnimatePresence>
           {mode === 'one_time' && (
             <motion.section
               ref={serviceSectionRef}
@@ -348,78 +429,84 @@ function CalculatorContent() {
               exit={{ opacity: 0, y: -20 }}
               className="mb-12"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <span className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${step >= 2 ? 'bg-amber-500 text-black' : 'bg-zinc-800 text-zinc-400'}`}>2</span>
-                <h3 className="text-xl font-semibold text-white">აირჩიეთ სერვისები</h3>
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">აირჩიეთ სერვისები</h3>
+                <p className="text-zinc-500">შეარჩიეთ თქვენთვის სასურველი სერვისები</p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4 mb-8">
-                {services.map((service) => {
+                {services.map((service, index) => {
                   const isSelected = selectedServices.some(s => s.id === service.id);
 
                   return (
-                    <button
+                    <motion.button
                       key={service.id}
-                      onClick={() => handleServiceToggle(service)}
-                      className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      onClick={() => toggleService(service)}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`p-5 rounded-xl border-2 transition-all text-left ${
                         isSelected
                           ? 'border-amber-500 bg-amber-500/10'
                           : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                       }`}
                     >
                       <div className="flex items-start justify-between">
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-semibold text-white mb-1">{service.name}</h4>
                           {service.description && (
                             <p className="text-sm text-zinc-500">{service.description}</p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-amber-500 font-semibold">{formatPrice(service.price)} ₾</span>
-                          <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                        <div className="flex items-center gap-3 ml-4">
+                          <span className="text-lg font-bold text-amber-500">{formatPrice(Number(service.price))} ₾</span>
+                          <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
                             isSelected ? 'border-amber-500 bg-amber-500' : 'border-zinc-600'
                           }`}>
-                            {isSelected && <Check className="w-3 h-3 text-black" />}
+                            {isSelected && <Check className="w-4 h-4 text-black" />}
                           </div>
                         </div>
                       </div>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
 
+              {/* Episode Count Selection */}
               {selectedServices.length > 0 && (
                 <motion.div
                   ref={episodeSectionRef}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${step >= 3 ? 'bg-amber-500 text-black' : 'bg-zinc-800 text-zinc-400'}`}>3</span>
-                    <h3 className="text-xl font-semibold text-white">აირჩიეთ ეპიზოდების რაოდენობა</h3>
+                  <div className="text-center mb-6">
+                    <h3 className="text-xl font-bold text-white mb-2">რამდენი ეპიზოდი?</h3>
+                    <p className="text-zinc-500 text-sm">მეტი ეპიზოდი = მეტი ფასდაკლება</p>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {episodeCounts.map((ep) => {
                       const isSelected = selectedEpisodeCount?.id === ep.id;
 
                       return (
-                        <button
+                        <motion.button
                           key={ep.id}
                           onClick={() => handleEpisodeSelect(ep)}
+                          whileTap={{ scale: 0.95 }}
                           className={`p-4 rounded-xl border-2 transition-all text-center ${
                             isSelected
                               ? 'border-amber-500 bg-amber-500/10'
                               : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                           }`}
                         >
-                          <p className="text-lg font-semibold text-white">{ep.label}</p>
+                          <p className="text-lg font-bold text-white">{ep.label}</p>
                           {ep.discount_percent > 0 && (
-                            <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">
-                              -{ep.discount_percent}%
+                            <span className="inline-block mt-2 px-2 py-0.5 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">
+                              დაზოგე {ep.discount_percent}%
                             </span>
                           )}
-                        </button>
+                        </motion.button>
                       );
                     })}
                   </div>
@@ -429,7 +516,7 @@ function CalculatorContent() {
           )}
         </AnimatePresence>
 
-        {/* Step 3: Duration (Subscription only) */}
+        {/* Step 3: Duration Selection (Subscription only) */}
         <AnimatePresence>
           {mode === 'subscription' && selectedPackage && (
             <motion.section
@@ -439,33 +526,45 @@ function CalculatorContent() {
               exit={{ opacity: 0, y: -20 }}
               className="mb-12"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <span className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${step >= 3 ? 'bg-amber-500 text-black' : 'bg-zinc-800 text-zinc-400'}`}>3</span>
-                <h3 className="text-xl font-semibold text-white">აირჩიეთ ხანგრძლივობა</h3>
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">აირჩიეთ ხანგრძლივობა</h3>
+                <p className="text-zinc-500">გრძელვადიანი კონტრაქტი = მეტი დანაზოგი</p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {durations.map((duration) => {
                   const isSelected = selectedDuration?.id === duration.id;
+                  const basePrice = Number(selectedPackage.base_price);
+                  const totalOriginal = basePrice * duration.months;
+                  const discounted = totalOriginal - (totalOriginal * duration.discount_percent / 100);
+                  const savings = totalOriginal - discounted;
 
                   return (
-                    <button
+                    <motion.button
                       key={duration.id}
                       onClick={() => handleDurationSelect(duration)}
-                      className={`p-4 rounded-xl border-2 transition-all text-center ${
+                      whileTap={{ scale: 0.95 }}
+                      className={`p-5 rounded-xl border-2 transition-all text-center ${
                         isSelected
                           ? 'border-amber-500 bg-amber-500/10'
                           : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                       }`}
                     >
                       <Clock className={`w-5 h-5 mx-auto mb-2 ${isSelected ? 'text-amber-500' : 'text-zinc-500'}`} />
-                      <p className="text-lg font-semibold text-white">{duration.label}</p>
-                      {duration.discount_percent > 0 && (
-                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">
-                          -{duration.discount_percent}%
-                        </span>
+                      <p className="text-lg font-bold text-white mb-2">{duration.label}</p>
+
+                      {duration.discount_percent > 0 ? (
+                        <>
+                          <p className="text-sm text-red-400 line-through">{formatPrice(totalOriginal)} ₾</p>
+                          <p className="text-lg font-bold text-green-400">{formatPrice(Math.round(discounted))} ₾</p>
+                          <span className="inline-block mt-2 px-2 py-1 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">
+                            დაზოგავთ {formatPrice(Math.round(savings))} ₾
+                          </span>
+                        </>
+                      ) : (
+                        <p className="text-lg font-bold text-white">{formatPrice(totalOriginal)} ₾</p>
                       )}
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -477,7 +576,7 @@ function CalculatorContent() {
           )}
         </AnimatePresence>
 
-        {/* Price Summary */}
+        {/* Price Summary - Custom Proposal Card */}
         <AnimatePresence>
           {totalPrice > 0 && (
             <motion.section
@@ -487,81 +586,149 @@ function CalculatorContent() {
               exit={{ opacity: 0, y: -20 }}
               className="mb-12"
             >
-              <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-6 md:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500 text-black font-bold text-sm">
-                    {mode === 'subscription' ? '4' : '4'}
-                  </span>
-                  <h3 className="text-xl font-semibold text-white">თქვენი შეთავაზება</h3>
-                </div>
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-950 border border-zinc-800">
+                {/* Gradient Border Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-amber-500/20 opacity-50" />
 
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">არჩეული პარამეტრები</h4>
-                    <ul className="space-y-3">
-                      {mode === 'subscription' ? (
-                        <>
-                          <li className="flex items-center justify-between text-zinc-300">
-                            <span>პაკეტი:</span>
-                            <span className="font-medium text-white">{selectedPackage?.name}</span>
-                          </li>
-                          <li className="flex items-center justify-between text-zinc-300">
-                            <span>ხანგრძლივობა:</span>
-                            <span className="font-medium text-white">{selectedDuration?.label}</span>
-                          </li>
-                          <li className="flex items-center justify-between text-zinc-300">
-                            <span>თვიური ფასი:</span>
-                            <span className="font-medium text-white">{formatPrice(monthlyPrice)} ₾</span>
-                          </li>
-                        </>
-                      ) : (
-                        <>
-                          <li className="text-zinc-300">
-                            <span className="text-zinc-500">სერვისები:</span>
-                            <ul className="mt-2 space-y-1">
-                              {selectedServices.map(s => (
-                                <li key={s.id} className="flex items-center gap-2 text-sm">
-                                  <Check className="w-3 h-3 text-green-500" />
-                                  {s.name}
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                          <li className="flex items-center justify-between text-zinc-300">
-                            <span>ეპიზოდები:</span>
-                            <span className="font-medium text-white">{selectedEpisodeCount?.label}</span>
-                          </li>
-                          <li className="flex items-center justify-between text-zinc-300">
-                            <span>ფასი/ეპიზოდი:</span>
-                            <span className="font-medium text-white">{formatPrice(monthlyPrice)} ₾</span>
-                          </li>
-                        </>
-                      )}
-                    </ul>
+                <div className="relative p-6 md:p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-amber-500/20 rounded-lg">
+                      <Shield className="w-5 h-5 text-amber-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">თქვენი პერსონალური შეთავაზება</h3>
+                      <p className="text-sm text-zinc-500">Custom Proposal</p>
+                    </div>
                   </div>
 
-                  <div className="bg-zinc-800/50 rounded-xl p-6">
-                    <h4 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">ჯამური ღირებულება</h4>
-
-                    {discountAmount > 0 && (
-                      <div className="flex items-center justify-between text-green-400 mb-2">
-                        <span>ფასდაკლება:</span>
-                        <span>-{formatPrice(discountAmount)} ₾</span>
-                      </div>
-                    )}
-
-                    <div className="flex items-end justify-between">
-                      <span className="text-zinc-400">ჯამი:</span>
-                      <span className="text-4xl font-bold text-amber-500">{formatPrice(totalPrice)} <span className="text-lg">₾</span></span>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {/* Selected Options */}
+                    <div>
+                      <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">არჩეული პარამეტრები</h4>
+                      <ul className="space-y-3">
+                        {mode === 'subscription' ? (
+                          <>
+                            <li className="flex items-center justify-between text-zinc-300">
+                              <span className="text-zinc-500">პაკეტი:</span>
+                              <span className="font-medium text-white">{selectedPackage?.name}</span>
+                            </li>
+                            <li className="flex items-center justify-between text-zinc-300">
+                              <span className="text-zinc-500">ხანგრძლივობა:</span>
+                              <span className="font-medium text-white">{selectedDuration?.label}</span>
+                            </li>
+                            <li className="flex items-center justify-between text-zinc-300">
+                              <span className="text-zinc-500">თვიური ფასი:</span>
+                              <span className="font-medium text-white">{formatPrice(monthlyPrice)} ₾</span>
+                            </li>
+                          </>
+                        ) : (
+                          <>
+                            <li className="text-zinc-300">
+                              <span className="text-zinc-500 block mb-2">სერვისები:</span>
+                              <ul className="space-y-1 ml-2">
+                                {selectedServices.map(s => (
+                                  <li key={s.id} className="flex items-center gap-2 text-sm">
+                                    <Check className="w-3 h-3 text-green-500" />
+                                    {s.name}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                            <li className="flex items-center justify-between text-zinc-300">
+                              <span className="text-zinc-500">ეპიზოდები:</span>
+                              <span className="font-medium text-white">{selectedEpisodeCount?.label}</span>
+                            </li>
+                            <li className="flex items-center justify-between text-zinc-300">
+                              <span className="text-zinc-500">ფასი/ეპიზოდი:</span>
+                              <span className="font-medium text-white">{formatPrice(monthlyPrice)} ₾</span>
+                            </li>
+                          </>
+                        )}
+                      </ul>
                     </div>
 
-                    <button
-                      onClick={() => setShowContactForm(true)}
-                      className="w-full mt-6 flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-lg transition-colors"
-                    >
-                      შეთავაზების მოთხოვნა
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
+                    {/* Price Summary */}
+                    <div className="bg-zinc-800/50 rounded-xl p-6">
+                      <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">ჯამური ინვესტიცია</h4>
+
+                      {discountAmount > 0 && (
+                        <>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-zinc-500">ორიგინალი ფასი:</span>
+                            <span className="text-lg text-red-400 line-through">{formatPrice(originalPrice)} ₾</span>
+                          </div>
+                          <div className="flex items-center gap-2 mb-4">
+                            <span className="px-3 py-1.5 bg-green-500/20 text-green-400 rounded-lg text-sm font-bold">
+                              დაზოგავთ {formatPrice(discountAmount)} ₾ ({discountPercent}%)
+                            </span>
+                          </div>
+                        </>
+                      )}
+
+                      <div className="flex items-end justify-between mb-6">
+                        <span className="text-zinc-400">ჯამი:</span>
+                        <span className="text-4xl font-bold text-green-400">{formatPrice(totalPrice)} <span className="text-lg">₾</span></span>
+                      </div>
+
+                      {/* CTAs */}
+                      <div className="space-y-3">
+                        <button
+                          onClick={() => setShowContactForm(true)}
+                          className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20"
+                        >
+                          <Shield className="w-5 h-5" />
+                          დაიკავეთ თქვენი ადგილი
+                        </button>
+
+                        <PDFDownloadLink
+                          document={
+                            <ProposalPDFComponent
+                              mode={mode as 'subscription' | 'one_time'}
+                              packageName={selectedPackage?.name}
+                              packageType={selectedPackage?.type}
+                              features={selectedPackage?.features?.map(f => f.feature) || []}
+                              durationLabel={selectedDuration?.label}
+                              durationMonths={selectedDuration?.months}
+                              services={selectedServices.map(s => s.name)}
+                              episodeCount={selectedEpisodeCount?.count}
+                              originalPrice={originalPrice}
+                              finalPrice={totalPrice}
+                              monthlyPrice={monthlyPrice}
+                              savings={discountAmount}
+                            />
+                          }
+                          fileName={`KP-Sponsorship-Proposal-${new Date().toISOString().split('T')[0]}.pdf`}
+                          className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-zinc-700 hover:border-zinc-600 text-zinc-300 hover:text-white font-medium rounded-xl transition-all"
+                        >
+                          {({ loading: pdfLoading }) =>
+                            pdfLoading ? (
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                              <>
+                                <Download className="w-5 h-5" />
+                                PDF-ის ჩამოტვირთვა
+                              </>
+                            )
+                          }
+                        </PDFDownloadLink>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Trust Badges */}
+                  <div className="flex flex-wrap items-center justify-center gap-4 mt-8 pt-6 border-t border-zinc-800">
+                    <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                      <Eye className="w-4 h-4" />
+                      <span>3.3M+ ნახვა</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                      <Users className="w-4 h-4" />
+                      <span>100K+ აქტიური მომხმარებელი</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                      <Shield className="w-4 h-4" />
+                      <span>გარანტირებული ROI</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -582,34 +749,41 @@ function CalculatorContent() {
               }}
             >
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-2xl"
               >
-                <h3 className="text-2xl font-bold text-white mb-2">მოთხოვნის გაგზავნა</h3>
-                <p className="text-zinc-400 mb-6">შეავსეთ ფორმა და ჩვენ დაგიკავშირდებით</p>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 bg-amber-500/20 rounded-lg">
+                    <Send className="w-5 h-5 text-amber-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">დაასრულეთ მოთხოვნა</h3>
+                    <p className="text-sm text-zinc-500">მალე დაგიკავშირდებით</p>
+                  </div>
+                </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-zinc-400 mb-1">სახელი *</label>
+                      <label className="block text-sm text-zinc-400 mb-2">სახელი *</label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors"
                         placeholder="თქვენი სახელი"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-zinc-400 mb-1">კომპანია</label>
+                      <label className="block text-sm text-zinc-400 mb-2">კომპანია</label>
                       <input
                         type="text"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors"
                         placeholder="კომპანიის სახელი"
                       />
                     </div>
@@ -617,35 +791,35 @@ function CalculatorContent() {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-zinc-400 mb-1">ელ-ფოსტა *</label>
+                      <label className="block text-sm text-zinc-400 mb-2">ელ-ფოსტა *</label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-amber-500 transition-colors"
-                        placeholder="example@company.com"
+                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors"
+                        placeholder="email@company.com"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-zinc-400 mb-1">ტელეფონი</label>
+                      <label className="block text-sm text-zinc-400 mb-2">ტელეფონი</label>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors"
                         placeholder="+995 XXX XXX XXX"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm text-zinc-400 mb-1">დამატებითი შეტყობინება</label>
+                    <label className="block text-sm text-zinc-400 mb-2">დამატებითი ინფორმაცია</label>
                     <textarea
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       rows={3}
-                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-amber-500 transition-colors resize-none"
+                      className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-xl text-white focus:outline-none focus:border-amber-500 transition-colors resize-none"
                       placeholder="თქვენი კომენტარი ან კითხვა..."
                     />
                   </div>
@@ -658,14 +832,14 @@ function CalculatorContent() {
                     <button
                       type="button"
                       onClick={() => setShowContactForm(false)}
-                      className="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-lg transition-colors"
+                      className="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl transition-colors"
                     >
                       გაუქმება
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-500/50 text-black font-semibold rounded-lg transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 disabled:opacity-50 text-black font-bold rounded-xl transition-all"
                     >
                       {submitting ? (
                         <Loader2 className="w-5 h-5 animate-spin" />

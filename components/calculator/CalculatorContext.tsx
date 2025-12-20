@@ -57,9 +57,11 @@ interface CalculatorState {
   selectedEpisodeCount: EpisodeCount | null;
 
   // Calculated prices
+  originalPrice: number;
   monthlyPrice: number;
   totalPrice: number;
   discountAmount: number;
+  discountPercent: number;
 
   // Actions
   setMode: (mode: CalculatorMode) => void;
@@ -88,9 +90,11 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
   const [selectedEpisodeCount, setSelectedEpisodeCount] = useState<EpisodeCount | null>(null);
 
   // Calculated prices
+  const [originalPrice, setOriginalPrice] = useState(0);
   const [monthlyPrice, setMonthlyPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountAmount, setDiscountAmount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
 
   // Fetch data on mount
   useEffect(() => {
@@ -131,52 +135,64 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
     } else if (mode === 'one_time') {
       calculateOneTimePrice();
     } else {
+      setOriginalPrice(0);
       setMonthlyPrice(0);
       setTotalPrice(0);
       setDiscountAmount(0);
+      setDiscountPercent(0);
     }
   }, [mode, selectedPackage, selectedDuration, selectedServices, selectedEpisodeCount]);
 
   const calculateSubscriptionPrice = () => {
     if (!selectedPackage || !selectedDuration) {
+      setOriginalPrice(0);
       setMonthlyPrice(0);
       setTotalPrice(0);
       setDiscountAmount(0);
+      setDiscountPercent(0);
       return;
     }
 
-    const basePrice = selectedPackage.base_price;
-    const discountPercent = selectedDuration.discount_percent;
+    const basePrice = Number(selectedPackage.base_price);
+    const discPercent = selectedDuration.discount_percent;
     const months = selectedDuration.months;
 
-    const discountedMonthly = basePrice - (basePrice * discountPercent / 100);
+    const original = basePrice * months;
+    const discountedMonthly = basePrice - (basePrice * discPercent / 100);
     const total = discountedMonthly * months;
-    const discount = (basePrice * months) - total;
+    const discount = original - total;
 
+    setOriginalPrice(Math.round(original));
     setMonthlyPrice(Math.round(discountedMonthly));
     setTotalPrice(Math.round(total));
     setDiscountAmount(Math.round(discount));
+    setDiscountPercent(discPercent);
   };
 
   const calculateOneTimePrice = () => {
     if (selectedServices.length === 0 || !selectedEpisodeCount) {
+      setOriginalPrice(0);
       setMonthlyPrice(0);
       setTotalPrice(0);
       setDiscountAmount(0);
+      setDiscountPercent(0);
       return;
     }
 
-    const basePrice = selectedServices.reduce((sum, s) => sum + s.price, 0);
-    const discountPercent = selectedEpisodeCount.discount_percent;
+    const basePrice = selectedServices.reduce((sum, s) => sum + Number(s.price), 0);
+    const discPercent = selectedEpisodeCount.discount_percent;
     const episodes = selectedEpisodeCount.count;
 
-    const discountedPerEpisode = basePrice - (basePrice * discountPercent / 100);
+    const original = basePrice * episodes;
+    const discountedPerEpisode = basePrice - (basePrice * discPercent / 100);
     const total = discountedPerEpisode * episodes;
-    const discount = (basePrice * episodes) - total;
+    const discount = original - total;
 
+    setOriginalPrice(Math.round(original));
     setMonthlyPrice(Math.round(discountedPerEpisode));
     setTotalPrice(Math.round(total));
     setDiscountAmount(Math.round(discount));
+    setDiscountPercent(discPercent);
   };
 
   const handleSetMode = (newMode: CalculatorMode) => {
@@ -219,9 +235,11 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
         selectedDuration,
         selectedServices,
         selectedEpisodeCount,
+        originalPrice,
         monthlyPrice,
         totalPrice,
         discountAmount,
+        discountPercent,
         setMode: handleSetMode,
         selectPackage: setSelectedPackage,
         selectDuration: setSelectedDuration,
