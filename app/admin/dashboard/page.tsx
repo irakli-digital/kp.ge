@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Upload, Loader2 } from 'lucide-react';
 
 interface Article {
@@ -144,10 +145,12 @@ function ImageUploadCell({
         </div>
       ) : currentImage ? (
         <>
-          <img
+          <Image
             src={currentImage}
             alt="Featured"
-            className="w-full h-full object-cover rounded-md"
+            fill
+            sizes="64px"
+            className="object-cover rounded-md"
           />
           <div className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
             <Upload className="w-4 h-4 text-white" />

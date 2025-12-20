@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getPublishedPosts } from "@/lib/queries";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, ArrowRight } from "lucide-react";
@@ -55,10 +56,12 @@ export default async function BlogPage() {
                     <Card className="h-full transition-all hover:shadow-md hover:-translate-y-1 group">
                       {post.featured_image && (
                         <div className="aspect-[16/9] relative overflow-hidden rounded-t-lg">
-                          <img
+                          <Image
                             src={post.featured_image}
                             alt={post.title_ka || post.title}
-                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       )}

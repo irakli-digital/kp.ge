@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import {
   ArrowLeft,
   Check,
@@ -25,16 +24,7 @@ import {
 } from 'lucide-react';
 import { CalculatorProvider, useCalculator } from '@/components/calculator/CalculatorContext';
 
-// Dynamic import for PDF (client-side only)
-const PDFDownloadLink = dynamic(
-  () => import('@react-pdf/renderer').then((mod) => mod.PDFDownloadLink),
-  { ssr: false, loading: () => <span className="text-zinc-500">იტვირთება...</span> }
-);
-
-const ProposalPDFComponent = dynamic(
-  () => import('@/components/calculator/ProposalPDF').then((mod) => mod.ProposalPDF),
-  { ssr: false }
-);
+// PDF will be generated on-demand when button is clicked
 
 // Feature icon mapping
 const featureIcons: Record<string, typeof Check> = {
@@ -92,6 +82,7 @@ function CalculatorContent() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const packageSectionRef = useRef<HTMLDivElement>(null);
   const durationSectionRef = useRef<HTMLDivElement>(null);
@@ -127,6 +118,50 @@ function CalculatorContent() {
   const handleEpisodeSelect = (episode: typeof selectedEpisodeCount) => {
     selectEpisodeCount(episode);
     scrollToRef(summarySectionRef);
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!mode) return;
+
+    setGeneratingPdf(true);
+    try {
+      // Dynamically import PDF modules only when needed
+      const [{ pdf }, { ProposalPDF }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('@/components/calculator/ProposalPDF'),
+      ]);
+
+      const doc = (
+        <ProposalPDF
+          mode={mode as 'subscription' | 'one_time'}
+          packageName={selectedPackage?.name}
+          packageType={selectedPackage?.type}
+          features={selectedPackage?.features?.map(f => f.feature) || []}
+          durationLabel={selectedDuration?.label}
+          durationMonths={selectedDuration?.months}
+          services={selectedServices.map(s => s.name)}
+          episodeCount={selectedEpisodeCount?.count}
+          originalPrice={originalPrice}
+          finalPrice={totalPrice}
+          monthlyPrice={monthlyPrice}
+          savings={discountAmount}
+        />
+      );
+
+      const blob = await pdf(doc).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `KP-Sponsorship-Proposal-${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF generation error:', err);
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -328,7 +363,7 @@ function CalculatorContent() {
                 <p className="text-zinc-500">სრული სპონსორობის პაკეტები ფასდაკლებით</p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-4 md:gap-6 items-stretch">
+              <div className="grid md:grid-cols-3 gap-4 md:gap-6 items-start">
                 {sortedPackages.map((pkg, index) => {
                   const Icon = getPackageIcon(pkg.type);
                   const isSelected = selectedPackage?.id === pkg.id;
@@ -345,7 +380,7 @@ function CalculatorContent() {
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20, delay: index * 0.1 }}
                       className={`relative text-left rounded-2xl border-2 transition-all duration-300 ${
-                        isSilver ? 'md:scale-105 md:z-10' : ''
+                        isSilver ? 'md:scale-105 md:z-10 mt-4' : ''
                       } ${
                         isSelected
                           ? 'border-amber-500 shadow-lg shadow-amber-500/20'
@@ -367,13 +402,11 @@ function CalculatorContent() {
                         </div>
                       )}
 
-                      <div className={`p-6 ${isSilver ? 'pt-8' : ''}`}>
-                        {/* Tag - Fixed height container for alignment */}
-                        <div className="h-8 flex items-start">
-                          <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${pkg.tag_classes}`}>
-                            {pkg.tag}
-                          </span>
-                        </div>
+                      <div className="p-6">
+                        {/* Tag */}
+                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4 ${pkg.tag_classes}`}>
+                          {pkg.tag}
+                        </span>
 
                         {/* Icon & Name */}
                         <div className="flex items-center gap-3 mb-4">
@@ -702,37 +735,20 @@ function CalculatorContent() {
                           პარტნიორობის დაწყება
                         </motion.button>
 
-                        <PDFDownloadLink
-                          document={
-                            <ProposalPDFComponent
-                              mode={mode as 'subscription' | 'one_time'}
-                              packageName={selectedPackage?.name}
-                              packageType={selectedPackage?.type}
-                              features={selectedPackage?.features?.map(f => f.feature) || []}
-                              durationLabel={selectedDuration?.label}
-                              durationMonths={selectedDuration?.months}
-                              services={selectedServices.map(s => s.name)}
-                              episodeCount={selectedEpisodeCount?.count}
-                              originalPrice={originalPrice}
-                              finalPrice={totalPrice}
-                              monthlyPrice={monthlyPrice}
-                              savings={discountAmount}
-                            />
-                          }
-                          fileName={`KP-Sponsorship-Proposal-${new Date().toISOString().split('T')[0]}.pdf`}
-                          className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-zinc-700 hover:border-zinc-600 text-zinc-300 hover:text-white font-medium rounded-xl transition-all"
+                        <button
+                          onClick={handleDownloadPdf}
+                          disabled={generatingPdf}
+                          className="w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-zinc-700 hover:border-zinc-600 text-zinc-300 hover:text-white font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          {({ loading: pdfLoading }) =>
-                            pdfLoading ? (
-                              <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                              <>
-                                <Download className="w-5 h-5" />
-                                PDF-ის ჩამოტვირთვა
-                              </>
-                            )
-                          }
-                        </PDFDownloadLink>
+                          {generatingPdf ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <>
+                              <Download className="w-5 h-5" />
+                              PDF-ის ჩამოტვირთვა
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
                   </div>

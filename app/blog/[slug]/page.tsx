@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -113,10 +114,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {post.featured_image ? (
           <div className="relative h-[350px] w-full overflow-hidden">
             {/* Background Image */}
-            <img
+            <Image
               src={post.featured_image}
               alt={post.title_ka}
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
             {/* Dark Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />

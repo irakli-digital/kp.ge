@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import Image from 'next/image';
 import { Upload, Loader2, X } from 'lucide-react';
 import WysiwygEditor from '@/components/admin/WysiwygEditor';
 import AssetUploader from '@/components/admin/AssetUploader';
@@ -258,11 +259,13 @@ export default function EditArticle() {
             />
 
             {article.featured_image ? (
-              <div className="relative">
-                <img
+              <div className="relative h-48">
+                <Image
                   src={article.featured_image}
                   alt="Featured"
-                  className="w-full h-48 object-cover rounded-lg"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  className="object-cover rounded-lg"
                 />
                 <div className="absolute inset-0 bg-black/0 hover:bg-black/40 transition-colors rounded-lg flex items-center justify-center gap-2 opacity-0 hover:opacity-100">
                   <button
