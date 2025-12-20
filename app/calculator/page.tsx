@@ -341,15 +341,16 @@ function CalculatorContent() {
                       onClick={() => handlePackageSelect(pkg)}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: isSilver ? 1.03 : 1.01, y: -4 }}
                       whileTap={{ scale: 0.98 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20, delay: index * 0.1 }}
                       className={`relative text-left rounded-2xl border-2 transition-all duration-300 ${
                         isSilver ? 'md:scale-105 md:z-10' : ''
                       } ${
                         isSelected
                           ? 'border-amber-500 shadow-lg shadow-amber-500/20'
                           : isSilver
-                          ? 'border-zinc-600 hover:border-zinc-500'
+                          ? 'border-zinc-500 hover:border-zinc-400 shadow-[0_0_40px_-10px_rgba(148,163,184,0.4)]'
                           : 'border-zinc-800 hover:border-zinc-700'
                       } ${
                         isGold
@@ -493,7 +494,9 @@ function CalculatorContent() {
                         <motion.button
                           key={ep.id}
                           onClick={() => handleEpisodeSelect(ep)}
+                          whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.95 }}
+                          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                           className={`p-4 rounded-xl border-2 transition-all text-center ${
                             isSelected
                               ? 'border-amber-500 bg-amber-500/10'
@@ -502,7 +505,7 @@ function CalculatorContent() {
                         >
                           <p className="text-lg font-bold text-white">{ep.label}</p>
                           {ep.discount_percent > 0 && (
-                            <span className="inline-block mt-2 px-2 py-0.5 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">
+                            <span className="inline-block mt-2 px-2.5 py-1 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">
                               დაზოგე {ep.discount_percent}%
                             </span>
                           )}
@@ -538,19 +541,34 @@ function CalculatorContent() {
                   const totalOriginal = basePrice * duration.months;
                   const discounted = totalOriginal - (totalOriginal * duration.discount_percent / 100);
                   const savings = totalOriginal - discounted;
+                  const isBestValue = duration.months === 12;
 
                   return (
                     <motion.button
                       key={duration.id}
                       onClick={() => handleDurationSelect(duration)}
+                      whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`p-5 rounded-xl border-2 transition-all text-center ${
+                      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                      className={`relative p-5 rounded-xl border-2 transition-all text-center ${
                         isSelected
                           ? 'border-amber-500 bg-amber-500/10'
+                          : isBestValue
+                          ? 'border-green-500/50 bg-green-500/5 hover:border-green-500/70'
                           : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
                       }`}
                     >
-                      <Clock className={`w-5 h-5 mx-auto mb-2 ${isSelected ? 'text-amber-500' : 'text-zinc-500'}`} />
+                      {/* Best Value Badge */}
+                      {isBestValue && (
+                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-bold bg-green-500 text-black rounded-full whitespace-nowrap">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            საუკეთესო
+                          </span>
+                        </div>
+                      )}
+
+                      <Clock className={`w-5 h-5 mx-auto mb-2 ${isSelected ? 'text-amber-500' : isBestValue ? 'text-green-400' : 'text-zinc-500'}`} />
                       <p className="text-lg font-bold text-white mb-2">{duration.label}</p>
 
                       {duration.discount_percent > 0 ? (
@@ -672,13 +690,15 @@ function CalculatorContent() {
 
                       {/* CTAs */}
                       <div className="space-y-3">
-                        <button
+                        <motion.button
                           onClick={() => setShowContactForm(true)}
-                          className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold rounded-xl transition-all shadow-lg shadow-amber-500/25"
                         >
-                          <Shield className="w-5 h-5" />
-                          დაიკავეთ თქვენი ადგილი
-                        </button>
+                          <Sparkles className="w-5 h-5" />
+                          პარტნიორობის დაწყება
+                        </motion.button>
 
                         <PDFDownloadLink
                           document={

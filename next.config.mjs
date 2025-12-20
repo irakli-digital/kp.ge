@@ -111,6 +111,12 @@ const nextConfig = {
         destination: '/seminars/consciousness',
         permanent: true,
       },
+      // Old psychology blog URLs → New blog URLs (SEO preservation)
+      {
+        source: '/psychology/:slug',
+        destination: '/blog/:slug',
+        permanent: true,
+      },
     ]
   },
   images: {

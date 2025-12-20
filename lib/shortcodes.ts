@@ -1,6 +1,6 @@
 // Shortcode definitions and processing utilities
 
-export type ShortcodeType = 'newsletter' | 'youtube';
+export type ShortcodeType = 'newsletter' | 'youtube-channel';
 
 export interface ContentPart {
   type: 'html' | 'shortcode';
@@ -11,7 +11,10 @@ export interface ContentPart {
 // Patterns for shortcodes
 const SHORTCODE_PATTERNS = {
   // Matches [გამოიწერეთ უფასოდ] or [გამოიწერეთ Newsletter]
-  newsletter: /\[გამოიწერეთ\s*(უფასოდ|Newsletter)?\]/gi,
+  // Also captures optional surrounding <strong>, <em>, <b>, <i> tags
+  newsletter: /(?:<(?:strong|em|b|i)>)?\s*\[გამოიწერეთ\s*(უფასოდ|Newsletter)?\]\s*(?:<\/(?:strong|em|b|i)>)?/gi,
+  // Matches [YouTube არხი] - link to YouTube channel
+  youtubeChannel: /(?:<(?:strong|em|b|i)>)?\s*\[YouTube\s*არხი\]\s*(?:<\/(?:strong|em|b|i)>)?/gi,
 };
 
 /**
@@ -23,7 +26,7 @@ export function parseContentWithShortcodes(html: string): ContentPart[] {
 
   // Combined pattern for all shortcodes
   const combinedPattern = new RegExp(
-    `(${SHORTCODE_PATTERNS.newsletter.source})`,
+    `(${SHORTCODE_PATTERNS.newsletter.source}|${SHORTCODE_PATTERNS.youtubeChannel.source})`,
     'gi'
   );
 
@@ -41,12 +44,19 @@ export function parseContentWithShortcodes(html: string): ContentPart[] {
     const matchedText = match[0];
     let shortcodeType: ShortcodeType = 'newsletter';
 
-    if (SHORTCODE_PATTERNS.newsletter.test(matchedText)) {
+    // Reset regex lastIndex before testing
+    SHORTCODE_PATTERNS.newsletter.lastIndex = 0;
+    SHORTCODE_PATTERNS.youtubeChannel.lastIndex = 0;
+
+    if (SHORTCODE_PATTERNS.youtubeChannel.test(matchedText)) {
+      shortcodeType = 'youtube-channel';
+    } else if (SHORTCODE_PATTERNS.newsletter.test(matchedText)) {
       shortcodeType = 'newsletter';
     }
 
     // Reset regex lastIndex since we used .test()
     SHORTCODE_PATTERNS.newsletter.lastIndex = 0;
+    SHORTCODE_PATTERNS.youtubeChannel.lastIndex = 0;
 
     parts.push({
       type: 'shortcode',

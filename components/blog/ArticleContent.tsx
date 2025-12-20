@@ -1,7 +1,8 @@
 "use client"
 
-import { parseContentWithShortcodes, ContentPart } from "@/lib/shortcodes"
+import { parseContentWithShortcodes } from "@/lib/shortcodes"
 import NewsletterCTA from "./NewsletterCTA"
+import YouTubeChannelButton from "./YouTubeChannelButton"
 
 interface ArticleContentProps {
   html: string;
@@ -26,6 +27,8 @@ export default function ArticleContent({ html }: ArticleContentProps) {
           switch (part.shortcodeType) {
             case 'newsletter':
               return <NewsletterCTA key={index} />;
+            case 'youtube-channel':
+              return <YouTubeChannelButton key={index} />;
             default:
               return null;
           }
