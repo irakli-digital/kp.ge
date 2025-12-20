@@ -14,9 +14,9 @@ export default function Footer() {
               <Image
                 src="/images/kpodcast-logo.webp"
                 alt="ცოდნისმოყვარე პოდკასტი"
-                width={200}
-                height={56}
-                className="h-14 w-auto"
+                width={276}
+                height={74}
+                className="h-[74px] w-auto"
               />
             </Link>
             <p className="text-sm text-muted-foreground">

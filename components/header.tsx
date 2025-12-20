@@ -71,19 +71,19 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
     <header
       className={`${notSticky ? '' : 'sticky top-0'} z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? "bg-background/80 shadow-md" : "bg-transparent"}`}
     >
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-bold">
+      <div className="container flex h-20 items-center justify-between relative">
+        <Link href="/" className="flex items-center gap-2 font-bold z-10">
           <Image
             src="/images/kpodcast-logo.webp"
             alt="ცოდნისმოყვარე პოდკასტი"
-            width={240}
-            height={64}
-            className="h-16 w-auto"
+            width={276}
+            height={74}
+            className="h-[74px] w-auto"
             priority
           />
         </Link>
         {!hideNavigation && (
-          <nav className="hidden md:flex gap-6">
+          <nav className="hidden md:flex gap-6 absolute left-1/2 -translate-x-1/2">
             <Link
               href="https://www.youtube.com/@KPODCAST_GE"
               target="_blank"
@@ -178,7 +178,7 @@ export default function Header({ hideNavigation = false, notSticky = false }: He
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-16 inset-x-0 bg-[#0a0a0a] border-b border-neutral-800 overflow-hidden"
+            className="md:hidden absolute top-20 inset-x-0 bg-[#0a0a0a] border-b border-neutral-800 overflow-hidden"
           >
             <div className="container py-6 flex flex-col gap-1">
               {!hideNavigation && (

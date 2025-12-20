@@ -265,7 +265,7 @@ export default function LandingPage() {
 
               {/* Video embed with custom overlay */}
               <div className="relative group">
-                <div className="aspect-video bg-neutral-900 rounded-lg overflow-hidden border border-neutral-800">
+                <div className="aspect-video bg-neutral-900 rounded-lg overflow-hidden border border-neutral-800 brightness-90 hover:brightness-100 transition-all duration-300">
                   <iframe
                     width="100%"
                     height="100%"
