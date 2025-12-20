@@ -400,7 +400,7 @@ export default function PrivacyPolicyPage() {
               პრაქტიკასთან დაკავშირებით, გთხოვთ, დაგვიკავშირდეთ შემდეგ მისამართზე:
             </p>
             <p className="mb-2">
-              <strong>ელექტრონული ფოსტა:</strong> contact@kp.ge
+              <strong>ელექტრონული ფოსტა:</strong> gvantsa@kp.ge
             </p>
             <p className="mb-6">
               <strong>იურიდიული მისამართი:</strong> თრიფების ქუჩა 1, თბილისი, საქართველო

@@ -24,7 +24,7 @@ export default function ContactPage() {
       title: "ელფოსტა",
       description: "მოგვწერეთ ელფოსტაზე",
       icon: <Mail className="size-6" />,
-      href: "mailto:contact@kp.ge",
+      href: "mailto:gvantsa@kp.ge",
       color: "text-amber-500",
       bgColor: "bg-amber-500/10",
       borderColor: "border-amber-500/30",

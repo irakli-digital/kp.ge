@@ -289,7 +289,7 @@ export default function TermsOfServicePage() {
             <h3 className="text-xl font-semibold mt-6 mb-3">საკონტაქტო ინფორმაცია:</h3>
             <p className="mb-2">თუ თქვენ გაქვთ რაიმე შეკითხვა ამ პირობებთან დაკავშირებით, გთხოვთ, დაგვიკავშირდეთ:</p>
             <p className="mb-2">
-              <strong>ელექტრონული ფოსტა:</strong> contact@kp.ge
+              <strong>ელექტრონული ფოსტა:</strong> gvantsa@kp.ge
             </p>
             <p className="mb-2">
               <strong>შპს ნუტრიბუსტი:</strong> 405607188
