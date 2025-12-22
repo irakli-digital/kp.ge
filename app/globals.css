@@ -134,13 +134,13 @@
   }
 
   /* YouTube CTA button - exclude from article link styling */
-  .article-content .youtube-cta-button {
-    color: white !important;
+  .article-content a.youtube-cta-button,
+  .article-content a.youtube-cta-button:link,
+  .article-content a.youtube-cta-button:visited,
+  .article-content a.youtube-cta-button:hover,
+  .article-content a.youtube-cta-button:active {
+    color: #ffffff !important;
     text-decoration: none !important;
-  }
-
-  .article-content .youtube-cta-button:hover {
-    color: white !important;
   }
 
   .article-content strong,

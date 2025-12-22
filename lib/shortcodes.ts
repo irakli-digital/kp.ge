@@ -22,16 +22,30 @@ const SHORTCODE_PATTERNS = {
  */
 function cleanEmptyElements(html: string): string {
   // Remove empty paragraphs, blockquotes, and other common wrappers
-  return html
-    .replace(/<p>\s*<\/p>/gi, '')
-    .replace(/<blockquote>\s*<\/blockquote>/gi, '')
-    .replace(/<div>\s*<\/div>/gi, '')
-    .replace(/<span>\s*<\/span>/gi, '')
-    .replace(/<strong>\s*<\/strong>/gi, '')
-    .replace(/<em>\s*<\/em>/gi, '')
-    // Also clean up paragraphs/blockquotes that only contain whitespace or line breaks
-    .replace(/<p>(\s|<br\s*\/?>)*<\/p>/gi, '')
-    .replace(/<blockquote>(\s|<br\s*\/?>)*<\/blockquote>/gi, '');
+  // Run multiple passes to handle nested empty elements
+  let cleaned = html;
+  let prevLength;
+
+  do {
+    prevLength = cleaned.length;
+    cleaned = cleaned
+      // Basic empty elements
+      .replace(/<p>\s*<\/p>/gi, '')
+      .replace(/<blockquote>\s*<\/blockquote>/gi, '')
+      .replace(/<div>\s*<\/div>/gi, '')
+      .replace(/<span>\s*<\/span>/gi, '')
+      .replace(/<strong>\s*<\/strong>/gi, '')
+      .replace(/<em>\s*<\/em>/gi, '')
+      // Elements with only whitespace, line breaks, or &nbsp;
+      .replace(/<p>(\s|<br\s*\/?>|&nbsp;)*<\/p>/gi, '')
+      .replace(/<blockquote>(\s|<br\s*\/?>|&nbsp;|\n|\r)*<\/blockquote>/gi, '')
+      // Blockquotes that only contain empty paragraphs
+      .replace(/<blockquote>\s*(<p>\s*<\/p>\s*)*<\/blockquote>/gi, '')
+      // Clean up multiple consecutive line breaks/whitespace
+      .replace(/(\s*\n\s*){3,}/g, '\n\n');
+  } while (cleaned.length !== prevLength);
+
+  return cleaned;
 }
 
 /**
@@ -43,7 +57,7 @@ export function parseContentWithShortcodes(html: string): ContentPart[] {
 
   // Combined pattern for all shortcodes - also capture surrounding paragraph/blockquote tags
   const combinedPattern = new RegExp(
-    `(<p>\\s*)?(${SHORTCODE_PATTERNS.newsletter.source}|${SHORTCODE_PATTERNS.youtubeChannel.source})(\\s*<\\/p>)?`,
+    `(<(?:p|blockquote)>\\s*)?(${SHORTCODE_PATTERNS.newsletter.source}|${SHORTCODE_PATTERNS.youtubeChannel.source})(\\s*<\\/(?:p|blockquote)>)?`,
     'gi'
   );
 

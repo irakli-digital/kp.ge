@@ -149,6 +149,7 @@ function CalculatorContent() {
           finalPrice={totalPrice}
           monthlyPrice={monthlyPrice}
           savings={discountAmount}
+          baseUrl={baseUrl}
         />
       );
 
@@ -341,7 +342,7 @@ function CalculatorContent() {
                   }`}
                 >
                   <div className="flex flex-col items-center gap-1">
-                    <span className="font-semibold">ერთჯერადი ფიჩერი</span>
+                    <span className="font-semibold">ერთჯერადი განთავსება</span>
                     <span className={`text-xs ${mode === 'one_time' ? 'text-amber-400' : 'text-zinc-500'}`}>
                       მოქნილი ვარიანტი
                     </span>
