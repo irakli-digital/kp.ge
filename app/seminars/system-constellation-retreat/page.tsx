@@ -296,6 +296,196 @@ export default function SystemConstellationRetreatPage() {
           </div>
         </section>
 
+        {/* What is Systemic Constellation - Educational SEO Section */}
+        <section className="w-full py-20 md:py-28 border-t border-border bg-muted/20">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-4xl mx-auto"
+            >
+              <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold text-center">რა არის</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8 text-center">
+                სისტემური განლაგება
+              </h2>
+
+              <div className="prose prose-invert max-w-none">
+                <div className="grid md:grid-cols-2 gap-8 mb-12">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-foreground">თერაპიული მეთოდი</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      <strong className="text-foreground">სისტემური განლაგება</strong> (ინგლ. Family Constellations, გერმ. Familienaufstellung) —
+                      თერაპიული მიდგომაა, რომელიც შეიმუშავა გერმანელმა ფსიქოთერაპევტმა <strong className="text-emerald-400">ბერტ ჰელინგერმა</strong> (Bert Hellinger)
+                      1990-იან წლებში.
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      მეთოდი ეფუძნება იდეას, რომ ოჯახური სისტემა ფუნქციონირებს გარკვეული კანონზომიერებებით,
+                      და როდესაც ეს კანონზომიერებები ირღვევა, ეს გავლენას ახდენს ოჯახის წევრებზე —
+                      ზოგჯერ თაობებში გადაცემული ტრავმის სახით.
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-foreground">როგორ მუშაობს?</h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      სესიის დროს მონაწილე „აყენებს" (ანუ განალაგებს) სხვა მონაწილეებს სივრცეში, როგორც
+                      თავისი ოჯახის წევრების წარმომადგენლებს. ეს „წარმომადგენლები" იწყებენ
+                      უცნაური, მაგრამ ზუსტი შეგრძნებების განცდას.
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      ამ პროცესში ვლინდება <strong className="text-foreground">უხილავი დინამიკები</strong>:
+                      გამორიცხული ოჯახის წევრები, გადაულახავი ტრავმები, ლოიალობის კავშირები —
+                      რაც შემდეგ შესაძლებელია „განიკურნოს" სპეციალური რიტუალებით.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-card/50 border border-border p-6 md:p-8">
+                  <h3 className="text-xl font-semibold text-foreground mb-4">ვისთვის არის სისტემური განლაგება?</h3>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>ოჯახური კონფლიქტების მქონე პირებისთვის</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>განმეორებადი ურთიერთობის პრობლემებისთვის</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>ტრავმული წარსულის მქონე ადამიანებისთვის</span>
+                      </li>
+                    </ul>
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>კარიერული ბლოკების გამოსავლენად</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>თვითშემეცნების მსურველებისთვის</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle className="size-5 text-emerald-500 mt-0.5 shrink-0" />
+                        <span>წინაპრებთან კავშირის აღსადგენად</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* FAQ Section with Schema */}
+        <section className="w-full py-20 md:py-28 border-t border-border">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl mx-auto"
+            >
+              <p className="text-xs uppercase tracking-widest text-emerald-500 mb-4 font-semibold text-center">FAQ</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
+                ხშირად დასმული კითხვები
+              </h2>
+
+              <div className="space-y-6">
+                <div className="border border-border bg-card/30 p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">რა არის სისტემური განლაგება?</h3>
+                  <p className="text-muted-foreground">
+                    სისტემური განლაგება (Family Constellations) არის თერაპიული მეთოდი, რომელიც ეხმარება ადამიანებს
+                    გამოავლინონ და გადაჭრან ოჯახური სისტემის ფარული დინამიკები. მეთოდი შეიმუშავა ბერტ ჰელინგერმა
+                    და დღეს მსოფლიოში ფართოდ გამოიყენება.
+                  </p>
+                </div>
+
+                <div className="border border-border bg-card/30 p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">რამდენ ხანს გრძელდება სისტემური განლაგების სესია?</h3>
+                  <p className="text-muted-foreground">
+                    ინდივიდუალური განლაგება ჩვეულებრივ 1-2 საათს გრძელდება. ჯგუფურ სესიებზე, როგორიც ჩვენი რითრითია,
+                    რამდენიმე ადამიანი ატარებს განლაგებას მონაცვლეობით, და პროცესი მთელი დღე გრძელდება.
+                  </p>
+                </div>
+
+                <div className="border border-border bg-card/30 p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">უნდა მოვიყვანო ოჯახის წევრები განლაგებაზე?</h3>
+                  <p className="text-muted-foreground">
+                    არა, ოჯახის წევრების მოყვანა საჭირო არ არის. ჯგუფის სხვა მონაწილეები „წარმომადგენლობენ"
+                    თქვენი ოჯახის წევრებს. ეს მეთოდის ერთ-ერთი უნიკალური თავისებურებაა.
+                  </p>
+                </div>
+
+                <div className="border border-border bg-card/30 p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">არის თუ არა სისტემური განლაგება მეცნიერულად დადასტურებული?</h3>
+                  <p className="text-muted-foreground">
+                    სისტემური განლაგება მიეკუთვნება ალტერნატიული თერაპიის სფეროს. მიუხედავად იმისა, რომ
+                    სამეცნიერო კვლევები შეზღუდულია, ბევრი ადამიანი აღნიშნავს მნიშვნელოვან პოზიტიურ ცვლილებებს
+                    სესიების შემდეგ.
+                  </p>
+                </div>
+
+                <div className="border border-border bg-card/30 p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">რა ღირს სისტემური განლაგების რითრითი?</h3>
+                  <p className="text-muted-foreground">
+                    ჩვენი 3-დღიანი რითრითის ღირებულება შეადგენს 2000 ლარს, რაც მოიცავს: სისტემური განლაგებების სესიებს,
+                    ბგერით თერაპიას, 2 ღამის განთავსებას გუდაური ლოჯში, საუზმეს და ვახშამს.
+                  </p>
+                </div>
+              </div>
+
+              {/* FAQ Schema Script */}
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                      {
+                        "@type": "Question",
+                        "name": "რა არის სისტემური განლაგება?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "სისტემური განლაგება (Family Constellations) არის თერაპიული მეთოდი, რომელიც ეხმარება ადამიანებს გამოავლინონ და გადაჭრან ოჯახური სისტემის ფარული დინამიკები. მეთოდი შეიმუშავა ბერტ ჰელინგერმა და დღეს მსოფლიოში ფართოდ გამოიყენება."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "რამდენ ხანს გრძელდება სისტემური განლაგების სესია?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "ინდივიდუალური განლაგება ჩვეულებრივ 1-2 საათს გრძელდება. ჯგუფურ სესიებზე რამდენიმე ადამიანი ატარებს განლაგებას მონაცვლეობით, და პროცესი მთელი დღე გრძელდება."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "უნდა მოვიყვანო ოჯახის წევრები განლაგებაზე?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "არა, ოჯახის წევრების მოყვანა საჭირო არ არის. ჯგუფის სხვა მონაწილეები წარმომადგენლობენ თქვენი ოჯახის წევრებს."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "რა ღირს სისტემური განლაგების რითრითი?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "3-დღიანი რითრითის ღირებულება შეადგენს 2000 ლარს, რაც მოიცავს სისტემური განლაგებების სესიებს, ბგერით თერაპიას, 2 ღამის განთავსებას, საუზმეს და ვახშამს."
+                        }
+                      }
+                    ]
+                  })
+                }}
+              />
+            </motion.div>
+          </div>
+        </section>
+
         {/* Venue Gallery */}
         <section className="w-full py-20 md:py-28 border-t border-border">
           <div className="container px-4 md:px-6">

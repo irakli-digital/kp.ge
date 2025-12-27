@@ -7,6 +7,7 @@ featured_image: anxiety-symptoms-treatment-georgia.jpg
 hub_article: true
 silo: mental-health
 faq_schema: true
+published: true
 ---
 
 # შფოთვა: სიმპტომები, მიზეზები და მკურნალობის გზები

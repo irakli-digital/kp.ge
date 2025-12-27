@@ -12,7 +12,7 @@ import Footer from "@/components/footer"
 export default function SeminarsPage() {
   const seminars = [
     {
-      title: "სისტემური განლაგებების რიტრიტი",
+      title: "სისტემური განლაგებება რითრითი გუდაურში",
       description: "სამდღიანი ტრანსფორმაციული რიტრიტი გუდაურში: სისტემური განლაგებები, ბგერითი თერაპია და თვითაღმოჩენის უნიკალური გამოცდილება.",
       href: "/seminars/system-constellation-retreat",
       status: "past",

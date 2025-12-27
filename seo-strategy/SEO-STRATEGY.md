@@ -1,5 +1,55 @@
 # KP.ge Master SEO Strategy (Psychology Podcast Blueprint)
 
+---
+
+## 0. SEARCH CONSOLE INSIGHTS (December 2025)
+
+> **Data Period:** Last 3 months | **Total Impressions:** 1,847 | **Total Clicks:** 176
+
+### Current Performance Overview
+
+#### WINNING Keywords (Protect These!)
+| Keyword | Position | CTR | Status |
+|---------|----------|-----|--------|
+| თვითგანვითარება | 1.72 | 36% | #1 - PROTECT |
+| ყველაზე კარგი ანტიდეპრესანტი | 5.5 | 3.02% | Top performer |
+| ფსიქოლოგიის მიმართულებები | 3.32 | 21.43% | Strong |
+| დაბალი თვითშეფასება | 6.3 | 6.67% | Good position |
+| აშის ექსპერიმენტი | 4.09 | - | Featured snippet potential |
+
+#### CRITICAL: Keywords Needing Rescue
+| Keyword | Position | Impressions | Problem |
+|---------|----------|-------------|---------|
+| **შფოთვა** | 64.82 | 17 | Hub page failing |
+| **შფოთვა სიმპტომები** | 55.3 | 37 | High volume, invisible |
+| **თვითშეფასება** | 43.75 | 36 | Hub not ranking |
+| **დეპრესია** | 59.6 | 5 | Content invisible |
+| **აგრესია** | 29.36 | 53 | Page 3, should be page 1 |
+
+#### Quick Win Opportunities (Position 8-12)
+| Keyword | Position | Action |
+|---------|----------|--------|
+| **სისტემური განლაგება** | 8.62 | ✅ Optimized hub page |
+| პასიური აგრესია | 8.11 | ✅ Added dedicated section |
+| რობერტ ჩალდინი | 9.04 | ✅ New article created |
+| ანტიდეპრესანტები | 9.91 | ✅ Optimized existing |
+| ახალი თაობის ანტიდეპრესანტი | 8.11 | ✅ Added section |
+
+#### HIGH OPPORTUNITY: სისტემური განლაგება (Seminars)
+| Keyword | Impressions | Clicks | Position | CTR |
+|---------|-------------|--------|----------|-----|
+| სისტემური განლაგება | 183 | 4 | 8.62 | 2.19% |
+
+**Status:** 2nd highest impressions after antidepressants! Hub page optimized with educational content and FAQ schema.
+
+#### Top Performing Pages
+1. **25-best-psychology-books-2024** - 27 clicks, 362 impressions
+2. **famous-psychology-experiments** - 18 clicks, 239 impressions
+3. **antidepressants-overview** - 17 clicks, 569 impressions (highest volume!)
+4. **self-development-skills-2025** - 11 clicks, 22.45% CTR (best CTR!)
+
+---
+
 ## 1. Executive Summary & Positioning
 
 **The Identity:** KP.ge is not just a blog. It is a **Psychology Knowledge Hub** and **Podcast Gateway**.
@@ -20,13 +70,16 @@ The website structure is designed to capture traffic at every awareness stage �
 
 ### The "Psychology" Clusters
 
-| Priority | Cluster Name | User Intent | Primary Keywords (Concept) | Target Hub Article |
-| --- | --- | --- | --- | --- |
-| **P1** | **Mental Health (Awareness)** | "What is wrong with me?" | `დეპრესია`, `შფოთვა`, `სოციალური შფოთვა`, `შიში` | `anxiety.md` or dedicated hub |
-| **P1** | **Self-Development (Growth)** | "How do I improve myself?" | `თვითშეფასება`, `თვითგანვითარება`, `დაბალი თვითშეფასება` | `tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi.md` |
-| **P2** | **Psychology Education (Learning)** | "I want to understand psychology" | `ფსიქოლოგია`, `ფსიქოლოგიის შესავალი`, `ფსიქოლოგიის წიგნები` | `introduction-to-psychology.md` |
-| **P2** | **Aggression & Emotions (Management)** | "Why am I angry?" | `აგრესია`, `ემოციების მართვა`, `ბრაზი` | `understanding-aggression-types-management.md` |
-| **P3** | **Cognitive Psychology (Theory)** | "How does the mind work?" | `ინტელექტი`, `სწავლის სტილები`, `იუნგი` | `why-intelligence-is-not-the-same-for-everyone.md` |
+| Priority | Cluster Name | User Intent | Primary Keywords (Concept) | Target Hub Article | Status |
+| --- | --- | --- | --- | --- | --- |
+| **P0** | **Mental Health (Awareness)** | "What is wrong with me?" | `შფოთვა`, `შფოთვა სიმპტომები`, `პანიკური შეტევები`, `შფოთვა მკურნალობა` | `anxiety.md` | **CRITICAL - Position 35** |
+| **P1** | **Self-Development (Growth)** | "How do I improve myself?" | `თვითშეფასება`, `თვითგანვითარება`, `დაბალი თვითშეფასება` | `tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi.md` | Hub needs optimization |
+| **P1** | **Antidepressants (Medical)** | "What medication can help?" | `ანტიდეპრესანტები`, `ყველაზე კარგი ანტიდეპრესანტი`, `ახალი თაობის ანტიდეპრესანტი` | `antidepressants-overview-uses-types.md` | **WINNING - 569 impressions** |
+| **P2** | **Psychology Education (Learning)** | "I want to understand psychology" | `ფსიქოლოგია`, `ფსიქოლოგიის შესავალი`, `ფსიქოლოგიის წიგნები`, `რობერტ ჩალდინი` | `introduction-to-psychology.md` | Expand with book reviews |
+| **P2** | **Aggression & Emotions (Management)** | "Why am I angry?" | `აგრესია`, `პასიური აგრესია`, `ემოციების მართვა`, `ბრაზი` | `understanding-aggression-types-management.md` | Position 29 - needs push |
+| **P2** | **Parenting Psychology (NEW)** | "How do I handle my child?" | `ბავშვის აგრესია`, `ბავშვის ფსიქოლოგია`, `მოზარდის ფსიქოლოგია` | `child-aggression-management.md` | **NEW SILO - 15 impressions untapped** |
+| **P1** | **Seminars & Retreats** | "Transform my life" | `სისტემური განლაგება`, `family constellations`, `ბერტ ჰელინგერი`, `რითრითი` | `/seminars/system-constellation-retreat` | **183 impressions - Position 8.62** |
+| **P3** | **Cognitive Psychology (Theory)** | "How does the mind work?" | `ინტელექტი`, `სწავლის სტილები`, `იუნგი` | `why-intelligence-is-not-the-same-for-everyone.md` | Stable |
 
 ---
 
@@ -58,44 +111,90 @@ Use **Semantic Silos** to pass authority from your high-traffic articles to hub 
 
 ### The "Hub & Spoke" Model
 
-#### A. The "Mental Health" Silo
+#### A. The "Mental Health" Silo ⚠️ CRITICAL - NEEDS RESCUE
 
 * **The Hub:** `anxiety.md` (Comprehensive anxiety overview)
+* **Current Status:** Position 35.41, 1 click, 97 impressions - FAILING
+* **Target Keywords:** შფოთვა, შფოთვა სიმპტომები, შფოთვა მკურნალობა, რა არის შფოთვა
+* **Action Required:** Complete content rewrite with FAQ schema
 * **The Spokes:**
   * `understanding-depression-symptoms.md` → **Links to Hub** with anchor: "შფოთვითი აშლილობები"
   * `social-anxiety-disorder.md` → **Links to Hub**
   * `social-anxiety-disorder-explained.md` → **Links to Hub**
-  * `social-anxiety-disorder-overview.md` → **Links to Hub**
+  * `social-anxiety-disorder-overview.md` → **Links to Hub** (⚠️ Consider consolidating 3 social anxiety articles)
   * `fear.md` → **Links to Hub**
-  * `antidepressants-overview-uses-types.md` → **Links to Hub**
+  * `panic-attacks.md` → **NEW** (Target: პაროქსიზმული შფოთვა - 13 impressions)
 
-#### B. The "Self-Development" Silo
+#### B. The "Self-Development" Silo ⚠️ Hub Needs Optimization
 
 * **The Hub:** `tvitshefaseba-pirovnuli-girebuleba-cxovrebis-xarisxi.md`
+* **Current Status:** Position 43.75 for "თვითშეფასება" - not ranking for core term
+* **Winning Keyword:** თვითგანვითარება - Position 1.72, 36% CTR (PROTECT!)
+* **Action Required:** Optimize H1/title for "თვითშეფასება"
 * **The Spokes:**
-  * `low-self-esteem-signs-and-solutions.md` → **Links to Hub**
+  * `low-self-esteem-signs-and-solutions.md` → **Links to Hub** (Position 6.3 - Good!)
   * `low-self-esteem-improvement-tips.md` → **Links to Hub**
   * `self-development-skills-15-essential-skills-2023.md` → **Links to Hub**
-  * `self-development-skills-2025.md` → **Links to Hub**
+  * `self-development-skills-2025.md` → **Links to Hub** (22.45% CTR - Best performer!)
 
 #### C. The "Psychology Education" Silo
 
 * **The Hub:** `introduction-to-psychology.md`
+* **Current Status:** Position 15.62, needs improvement
 * **The Spokes:**
-  * `psychology-degree-options.md` → **Links to Hub**
-  * `famous-psychology-experiments.md` → **Links to Hub**
-  * `25-best-psychology-books-2024.md` → **Links to Hub**
+  * `psychology-degree-options.md` → **Links to Hub** (9.27% CTR - Strong!)
+  * `famous-psychology-experiments.md` → **Links to Hub** (18 clicks - Top performer)
+  * `25-best-psychology-books-2024.md` → **Links to Hub** (27 clicks - #1 page!)
+  * `robert-cialdini-influence-psychology.md` → **NEW** (Target: რობერტ ჩალდინი - 46 impressions)
 
 #### D. The "Aggression" Silo
 
 * **The Hub:** `understanding-aggression-types-management.md`
+* **Current Status:** Position 29.36 for "აგრესია" - needs improvement
+* **Quick Win:** "პასიური აგრესია" at position 8.11
 * **The Spokes:**
   * `understanding-aggression-emotions.md` → **Links to Hub**
   * `understanding-aggression-emotions-management.md` → **Links to Hub**
+  * `passive-aggression.md` → **NEW** or add section (Target: პასიური აგრესია - 18 impressions)
 
-#### E. The "Cognitive Psychology" Silo
+#### E. The "Parenting Psychology" Silo 🆕 NEW
+
+* **The Hub:** `child-aggression-management.md` (To be created)
+* **Opportunity:** "როგორ ვმართოთ ბავშვის აგრესია" - 15 impressions, NO competition
+* **Target Keywords:** ბავშვის აგრესია, ბავშვის ფსიქოლოგია, მოზარდის ფსიქოლოგია
+* **The Spokes:** (Future expansion)
+  * `child-psychology-basics.md`
+  * `teenager-psychology.md`
+  * `parenting-tips-psychology.md`
+
+#### F. The "Seminars & Retreats" Silo 🎯 HIGH PRIORITY
+
+* **The Hub:** `/seminars/system-constellation-retreat` (Live page)
+* **Status:** ✅ Optimized with educational content + FAQ schema
+* **Performance:** 183 impressions, 4 clicks, Position 8.62, CTR 2.19%
+* **Target Keywords:**
+  - Primary: `სისტემური განლაგება`, `სისტემური განლაგებები`
+  - Secondary: `family constellations`, `ოჯახური განლაგებები`
+  - Authority: `ბერტ ჰელინგერი`, `bert hellinger`
+  - Translit: `sistemuri ganlageba`
+* **Content Structure:**
+  - ✅ Educational section: "რა არის სისტემური განლაგება?"
+  - ✅ Bert Hellinger founder information
+  - ✅ How it works explanation
+  - ✅ Who it's for (target audience)
+  - ✅ FAQ section with JSON-LD schema (4 Q&As)
+  - ✅ Retreat details (Gudauri, 3-day program)
+* **The Spokes:** (Future expansion)
+  * `what-is-systemic-constellation.md` - Deep dive article
+  * `bert-hellinger-biography.md` - Founder profile
+  * `family-constellations-case-studies.md` - Success stories
+  * `sound-therapy-retreat.md` - Related retreat offering
+* **Conversion Goal:** Retreat signups
+
+#### G. The "Cognitive Psychology" Silo
 
 * **The Hub:** `why-intelligence-is-not-the-same-for-everyone.md`
+* **Current Status:** Position 10.25, 12 impressions - stable
 * **The Spokes:**
   * `learning-styles-jung-theory.md` → **Links to Hub**
 
@@ -196,13 +295,31 @@ Article Value = (Research Depth × Georgian Relevance × Video Integration) + Ne
 
 ## 9. Success Metrics (KPIs)
 
-| Metric | Target (90 Days) |
-|--------|------------------|
-| Newsletter Signups | 500+ subscribers |
-| Organic Traffic | 50% increase |
-| YouTube Referrals | 20% of article readers watch embedded videos |
-| Top 10 Rankings | 5+ articles in top 10 for target keywords |
-| Email Open Rate | 25%+ |
+### Current Baseline (December 2025)
+| Metric | Current Value |
+|--------|---------------|
+| Total Impressions | 1,847 / 3 months |
+| Total Clicks | 176 / 3 months |
+| Average Position | ~15 |
+| Top 10 Keywords | 8 keywords |
+| Position 1-3 Keywords | 3 keywords |
+
+### Targets (Next 90 Days)
+| Metric | Current | Target | Priority |
+|--------|---------|--------|----------|
+| Anxiety Hub Position | 35 | Top 5 | **CRITICAL** |
+| Self-Esteem Hub Position | 43 | Top 10 | High |
+| Total Clicks | 176 | 350+ | Medium |
+| Keywords in Top 10 | 8 | 15+ | High |
+| Newsletter Signups | - | 500+ | High |
+| YouTube Referrals | - | 20% watch rate | Medium |
+
+### Key Performance Indicators to Track
+- **შფოთვა** keywords cluster: Position 55 → Top 10
+- **ანტიდეპრესანტები** cluster: Position 9 → Top 5 (protect & improve)
+- **თვითგანვითარება**: Position 1.72 → MAINTAIN #1
+- **სისტემური განლაგება**: Position 8.62 → Top 3 (high volume, optimize CTR)
+- **New articles** (ბავშვის აგრესია, რობერტ ჩალდინი): Index within 2 weeks
 
 ---
 
@@ -217,5 +334,5 @@ This strategy positions KP.ge as the authoritative Georgian psychology resource.
 
 ---
 
-*Last Updated: December 2024*
-*Version: 1.0 - KP.ge Psychology Podcast*
+*Last Updated: December 27, 2025*
+*Version: 3.0 - Added Seminars & Retreats Silo (სისტემური განლაგება)*

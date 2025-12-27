@@ -117,6 +117,17 @@ const nextConfig = {
         destination: '/blog/:slug',
         permanent: true,
       },
+      // Social anxiety article consolidation (SEO - avoid keyword cannibalization)
+      {
+        source: '/blog/social-anxiety-disorder',
+        destination: '/blog/social-anxiety-disorder-explained',
+        permanent: true,
+      },
+      {
+        source: '/blog/social-anxiety-disorder-overview',
+        destination: '/blog/social-anxiety-disorder-explained',
+        permanent: true,
+      },
     ]
   },
   images: {

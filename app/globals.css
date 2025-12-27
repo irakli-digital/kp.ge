@@ -164,6 +164,15 @@
     height: auto;
   }
 
+  /* YouTube and video iframes - Full width responsive */
+  .article-content iframe {
+    @apply rounded-lg my-10;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+  }
+
   /* First paragraph after headings should have less top margin */
   .article-content h1 + p,
   .article-content h2 + p,
