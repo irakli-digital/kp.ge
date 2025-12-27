@@ -34,3 +34,10 @@ export interface FAQ {
   created_at: string | Date;
   updated_at: string | Date;
 }
+
+export interface ClapResponse {
+  totalClaps: number;
+  visitorClaps: number;
+  acceptedClaps?: number;
+  message?: string;
+}

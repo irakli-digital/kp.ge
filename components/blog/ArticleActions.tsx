@@ -1,14 +1,19 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Share2, Link, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { generateVisitorId } from "@/lib/utils"
+import { ClapResponse } from "@/lib/types"
 
 interface ArticleActionsProps {
   slug: string
   title: string
   initialClaps: number
 }
+
+const MAX_CLAPS = 50
+const DEBOUNCE_MS = 500
 
 // Clapping hands icon
 function ClapIcon({ className, filled }: { className?: string; filled?: boolean }) {
@@ -79,17 +84,51 @@ function LinkedInIcon({ className }: { className?: string }) {
 
 export default function ArticleActions({ slug, title, initialClaps }: ArticleActionsProps) {
   const [claps, setClaps] = useState(initialClaps)
-  const [hasClapped, setHasClapped] = useState(false)
+  const [userClaps, setUserClaps] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [copied, setCopied] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const [visitorId, setVisitorId] = useState<string | null>(null)
+  const [pendingClaps, setPendingClaps] = useState(0)
+  const [isSyncing, setIsSyncing] = useState(false)
 
+  const menuRef = useRef<HTMLDivElement>(null)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const pendingClapsRef = useRef(0)
+
+  // Initialize visitor ID and load stored claps
   useEffect(() => {
-    const userClapped = localStorage.getItem(`user-clapped-${slug}`)
-    if (userClapped) setHasClapped(true)
+    // Migration: convert old boolean storage to new format
+    const oldClapped = localStorage.getItem(`user-clapped-${slug}`)
+    if (oldClapped === 'true') {
+      localStorage.setItem(`claps-${slug}`, '1')
+      localStorage.removeItem(`user-clapped-${slug}`)
+    }
+
+    // Get or create visitor ID
+    let storedVisitorId = localStorage.getItem('visitor-id')
+    if (!storedVisitorId) {
+      storedVisitorId = generateVisitorId()
+      localStorage.setItem('visitor-id', storedVisitorId)
+    }
+    setVisitorId(storedVisitorId)
+
+    // Get stored clap count for this article
+    const storedClaps = localStorage.getItem(`claps-${slug}`)
+    if (storedClaps) {
+      const count = parseInt(storedClaps, 10)
+      if (!isNaN(count) && count > 0) {
+        setUserClaps(count)
+      }
+    }
   }, [slug])
 
+  // Keep ref in sync with state for cleanup
+  useEffect(() => {
+    pendingClapsRef.current = pendingClaps
+  }, [pendingClaps])
+
+  // Handle click outside share menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -106,30 +145,91 @@ export default function ArticleActions({ slug, title, initialClaps }: ArticleAct
     }
   }, [showShareMenu])
 
-  const handleClap = async () => {
-    if (hasClapped) return
+  // Sync claps to server
+  const syncClapsToServer = useCallback(async (clapsToSync: number) => {
+    if (clapsToSync === 0 || !visitorId || isSyncing) return
 
-    setClaps(prev => prev + 1)
-    setHasClapped(true)
-    setIsAnimating(true)
-    localStorage.setItem(`user-clapped-${slug}`, "true")
-
-    setTimeout(() => setIsAnimating(false), 700)
+    setIsSyncing(true)
 
     try {
       const response = await fetch('/api/blog/clap', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug }),
+        body: JSON.stringify({
+          slug,
+          visitorId,
+          clapCount: clapsToSync
+        }),
       })
 
       if (response.ok) {
-        const data = await response.json()
-        setClaps(data.claps)
+        const data: ClapResponse = await response.json()
+        // Sync with server's authoritative counts
+        setClaps(data.totalClaps)
+        setUserClaps(data.visitorClaps)
+        localStorage.setItem(`claps-${slug}`, String(data.visitorClaps))
+      } else if (response.status === 429) {
+        // User hit rate limit - sync with server state
+        const data: ClapResponse = await response.json()
+        setUserClaps(data.visitorClaps)
+        setClaps(data.totalClaps)
+        localStorage.setItem(`claps-${slug}`, String(data.visitorClaps))
       }
     } catch (error) {
-      console.error('Failed to save clap:', error)
+      console.error('Failed to sync claps:', error)
+      // Keep optimistic state, don't revert
+    } finally {
+      setIsSyncing(false)
     }
+  }, [slug, visitorId, isSyncing])
+
+  // Cleanup on unmount - sync any pending claps
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+      // Fire and forget any pending claps
+      if (pendingClapsRef.current > 0 && visitorId) {
+        const clapsToSync = pendingClapsRef.current
+        fetch('/api/blog/clap', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug,
+            visitorId,
+            clapCount: clapsToSync
+          }),
+        }).catch(() => {})
+      }
+    }
+  }, [slug, visitorId])
+
+  const handleClap = () => {
+    if (userClaps >= MAX_CLAPS) return
+
+    // Optimistic UI update
+    setClaps(prev => prev + 1)
+    setUserClaps(prev => prev + 1)
+    setPendingClaps(prev => prev + 1)
+    setIsAnimating(true)
+
+    // Update localStorage immediately for persistence
+    localStorage.setItem(`claps-${slug}`, String(userClaps + 1))
+
+    setTimeout(() => setIsAnimating(false), 300)
+
+    // Clear existing debounce timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
+    // Set new debounce timer
+    debounceTimerRef.current = setTimeout(() => {
+      const clapsToSync = pendingClapsRef.current
+      setPendingClaps(0)
+      syncClapsToServer(clapsToSync)
+    }, DEBOUNCE_MS)
   }
 
   const toggleShareMenu = () => {
@@ -215,19 +315,19 @@ export default function ArticleActions({ slug, title, initialClaps }: ArticleAct
           {/* Clap Button */}
           <button
             onClick={handleClap}
-            disabled={hasClapped}
+            disabled={userClaps >= MAX_CLAPS}
             className={cn(
               "relative flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full transition-all",
-              hasClapped
+              userClaps >= MAX_CLAPS
                 ? "text-primary cursor-default"
                 : "hover:bg-muted/50 active:scale-95"
             )}
-            aria-label="მოწონება"
+            aria-label={userClaps >= MAX_CLAPS ? "მაქსიმუმი მიღწეულია" : "მოწონება"}
           >
             <span className={cn("relative", isAnimating && "animate-bounce-clap")}>
               <ClapIcon
                 className="h-5 w-5 sm:h-6 sm:w-6"
-                filled={hasClapped}
+                filled={userClaps > 0}
               />
               <SparkAnimation isActive={isAnimating} />
             </span>
