@@ -13,6 +13,7 @@ export interface BlogPost {
   published: boolean;
   featured_image: string | null;
   schema_keywords: string[] | null; // Latin keywords for invisible SEO
+  claps: number;
 }
 
 export type BlogPostPreview = Pick<

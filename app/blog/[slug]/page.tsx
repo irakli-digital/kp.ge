@@ -14,6 +14,8 @@ import { format } from "date-fns";
 import { ka } from "date-fns/locale";
 import ArticleContent from "@/components/blog/ArticleContent";
 import MedicalDisclaimer from "@/components/blog/MedicalDisclaimer";
+import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
+import ArticleActions from "@/components/blog/ArticleActions";
 
 interface BlogPostPageProps {
   params: {
@@ -46,15 +48,17 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: "პოსტი ვერ მოიძებნა | Mypen.ge",
+      title: "პოსტი ვერ მოიძებნა | KP.ge",
     };
   }
 
   const description = post.excerpt_ka || post.content_ka.substring(0, 160).replace(/<[^>]*>/g, '');
-  const canonicalUrl = `https://mypen.ge/blog/${post.slug}`;
+  const canonicalUrl = `https://kp.ge/blog/${post.slug}`;
+  const defaultOgImage = 'https://kp.ge/images/og-image.webp';
+  const ogImage = post.featured_image || defaultOgImage;
 
   return {
-    title: `${post.title_ka} | Mypen.ge`,
+    title: `${post.title_ka} | KP.ge`,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -64,23 +68,23 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title_ka,
       description,
       url: canonicalUrl,
-      siteName: 'Mypen.ge',
-      images: post.featured_image ? [{
-        url: post.featured_image,
+      siteName: 'ცოდნისმოყვარე პოდკასტი',
+      images: [{
+        url: ogImage,
         width: 1200,
         height: 630,
         alt: post.title_ka,
-      }] : undefined,
+      }],
       publishedTime: new Date(post.published_at).toISOString(),
       modifiedTime: new Date(post.updated_at).toISOString(),
-      authors: ['Mypen.ge'],
+      authors: ['ცოდნისმოყვარე პოდკასტი'],
       locale: 'ka_GE',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title_ka,
       description,
-      images: post.featured_image ? [post.featured_image] : undefined,
+      images: [ogImage],
     },
   };
 }
@@ -108,6 +112,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <JsonLd data={generateBreadcrumbSchema(breadcrumbs)} />
 
       <div className="min-h-screen bg-background">
+        <ReadingProgressBar />
         <Header />
 
         {/* Hero Banner (when featured image exists) */}
@@ -198,6 +203,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Article content with optimized dark mode typography */}
             <ArticleContent html={post.content_ka} />
+
+            {/* Sticky social actions (clap + share) */}
+            <ArticleActions slug={post.slug} title={post.title_ka} initialClaps={post.claps} />
 
             <Separator className="my-14 opacity-40" />
 
