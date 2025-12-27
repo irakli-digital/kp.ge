@@ -1,19 +1,19 @@
 import type { BlogPost, FAQ } from './types'
 
-const BASE_URL = 'https://mypen.ge'
-const LOGO_URL = `${BASE_URL}/images/logo.png`
+const BASE_URL = 'https://kp.ge'
+const LOGO_URL = `${BASE_URL}/images/kpodcast-logo.webp`
 
 // Organization Schema - Use on all pages
 export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Mypen.ge',
+    name: 'ცოდნისმოყვარე პოდკასტი',
     url: BASE_URL,
     logo: LOGO_URL,
-    description: 'AI Aggregator - ChatGPT, Claude, Gemini ერთ პლატფორმაზე ქართულად',
+    description: 'პოდკასტი მენტალური ჯანმრთელობის, მეცნიერებისა და პიროვნული განვითარების შესახებ',
     sameAs: [
-      'https://facebook.com/mypen.ge',
+      'https://www.youtube.com/@KPODCAST_GE',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
@@ -23,68 +23,13 @@ export function generateOrganizationSchema() {
   }
 }
 
-// SoftwareApplication Schema - Use on home and product pages
-export function generateSoftwareApplicationSchema(options?: {
-  keywords?: string[]
-}) {
-  const defaultKeywords = [
-    'chatgpt georgia',
-    'claude ai kartulad',
-    'ai chat saqartveloshi',
-    'gemini georgia',
-    'ai assistant georgian',
-  ]
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Mypen',
-    applicationCategory: 'BusinessApplication',
-    applicationSubCategory: 'AI Assistant',
-    operatingSystem: 'Web',
-    url: BASE_URL,
-    description: 'ყველა AI მოდელი ერთ პლატფორმაზე - ChatGPT, Claude, Gemini ქართულად',
-    offers: [
-      {
-        '@type': 'Offer',
-        name: 'Mypen Light',
-        price: '0',
-        priceCurrency: 'GEL',
-        description: 'უფასო წვდომა საბაზისო AI მოდელებზე',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Mypen PRO',
-        price: '29',
-        priceCurrency: 'GEL',
-        description: 'GPT-4o, Gemini 2.5 Flash და სხვა პრემიუმ მოდელები',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Mypen ULTRA',
-        price: '69',
-        priceCurrency: 'GEL',
-        description: 'GPT-5, Claude Opus, Gemini 3.0 Pro - ყველა მოდელზე სრული წვდომა',
-      },
-    ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '10000',
-      bestRating: '5',
-      worstRating: '1',
-    },
-    keywords: options?.keywords || defaultKeywords,
-  }
-}
-
 // Article Schema - Use on blog posts (with Latin keyword injection)
 export function generateArticleSchema(post: BlogPost, schemaKeywords?: string[] | null) {
   const defaultKeywords = [
-    'ai',
-    'artificial intelligence',
-    'mypen',
+    'podcast',
     'georgia',
+    'mental health',
+    'psychology',
   ]
 
   return {
@@ -97,12 +42,12 @@ export function generateArticleSchema(post: BlogPost, schemaKeywords?: string[] 
     dateModified: new Date(post.updated_at).toISOString(),
     author: {
       '@type': 'Organization',
-      name: 'Mypen.ge',
+      name: 'ცოდნისმოყვარე პოდკასტი',
       url: BASE_URL,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Mypen.ge',
+      name: 'ცოდნისმოყვარე პოდკასტი',
       logo: {
         '@type': 'ImageObject',
         url: LOGO_URL,
@@ -161,45 +106,12 @@ export function generateWebPageSchema(options: {
     url: options.url,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'Mypen.ge',
+      name: 'ცოდნისმოყვარე პოდკასტი',
       url: BASE_URL,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Mypen.ge',
+      name: 'ცოდნისმოყვარე პოდკასტი',
     },
-  }
-}
-
-// Product/Service Schema - Use on hub pages (models, tools, templates)
-export function generateProductSchema(options: {
-  name: string
-  description: string
-  url: string
-  category: 'AI Model' | 'AI Tool' | 'Template'
-  keywords: string[]
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: options.name,
-    description: options.description,
-    url: options.url,
-    applicationCategory: 'BusinessApplication',
-    applicationSubCategory: options.category,
-    operatingSystem: 'Web',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'GEL',
-      availability: 'https://schema.org/InStock',
-    },
-    provider: {
-      '@type': 'Organization',
-      name: 'Mypen.ge',
-      url: BASE_URL,
-    },
-    // Latin keywords for invisible SEO layer
-    keywords: options.keywords,
   }
 }

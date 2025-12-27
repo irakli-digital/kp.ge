@@ -100,9 +100,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Breadcrumb schema data
   const breadcrumbs = [
-    { name: 'მთავარი', url: 'https://mypen.ge' },
-    { name: 'ბლოგი', url: 'https://mypen.ge/blog' },
-    { name: post.title_ka, url: `https://mypen.ge/blog/${post.slug}` },
+    { name: 'მთავარი', url: 'https://kp.ge' },
+    { name: 'ბლოგი', url: 'https://kp.ge/blog' },
+    { name: post.title_ka, url: `https://kp.ge/blog/${post.slug}` },
   ];
 
   return (
@@ -163,8 +163,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         ) : null}
 
         <main className="container mx-auto px-4 py-16">
-          {/* Optimal reading width: 680px (max-w-2xl) */}
-          <article className="mx-auto max-w-2xl">
+          {/* Optimal reading width: 680px */}
+          <article className="mx-auto" style={{ maxWidth: '680px' }}>
             {/* Show back button and header only if no hero image */}
             {!post.featured_image && (
               <>

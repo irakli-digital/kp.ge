@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: 'https://mypen.ge/sitemap.xml',
+    sitemap: 'https://kp.ge/sitemap.xml',
   }
 }
