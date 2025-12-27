@@ -397,14 +397,19 @@ Current state: 3 articles competing for same keywords
 - **Famous experiments (ID: 4):** Added 5 FAQ questions, expanded schema keywords, faq_schema: true
 - **25 Best Books (ID: 1):** Added faq_schema: true, expanded schema keywords, added internal links to Robert Cialdini article
 
-### Phase 4: EXPAND (Future)
+### Phase 4: EXPAND (December 28, 2025) ✅ COMPLETE
 
 | Priority | Action | Status |
 |----------|--------|--------|
-| HIGH | Write სისტემური დესენსიტიზაცია article | 🔄 PLANNED |
-| MEDIUM | Write კოგნიტური დისონანსი article | 🔄 PLANNED |
-| MEDIUM | Write მასლოუს პირამიდა article | 🔄 PLANNED |
+| HIGH | Write სისტემური დესენსიტიზაცია article | ✅ DONE - ID: 25 |
+| MEDIUM | Write კოგნიტური დისონანსი article | ✅ DONE - ID: 26 |
+| MEDIUM | Write მასლოუს პირამიდა article | ✅ DONE - ID: 27 |
 | LOW | Expand Parenting Psychology silo | 🔄 PLANNED |
+
+#### Phase 4 New Articles:
+- **#25 სისტემური დესენსიტიზაცია** (ID: 25) - Mental Health silo, links to anxiety hub
+- **#26 კოგნიტური დისონანსი** (ID: 26) - Psychology Education silo, Festinger's theory
+- **#27 მასლოუს პირამიდა** (ID: 27) - Psychology Education silo, high-volume keyword
 
 ---
 
@@ -452,7 +457,7 @@ For each article, verify:
 | Average CTR | 9.5% |
 | Keywords in Top 10 | 8 |
 | Keywords Position 1-5 | 5 |
-| **Total Articles Live** | **24** |
+| **Total Articles Live** | **27** |
 
 ### Keyword Position Tracking
 
@@ -478,6 +483,9 @@ For each article, verify:
 | გავლენის ფსიქოლოგია | #23 | ✅ Article live |
 | პანიკური შეტევა | #24 | ✅ Article live |
 | პაროქსიზმული შფოთვა | #24 | ✅ Article live |
+| სისტემური დესენსიტიზაცია | #25 | ✅ NEW - December 28, 2025 |
+| კოგნიტური დისონანსი | #26 | ✅ NEW - December 28, 2025 |
+| მასლოუს პირამიდა | #27 | ✅ NEW - December 28, 2025 |
 
 ### Monthly Review Checkpoints
 - [ ] **Week 2:** Check anxiety hub & self-esteem hub positions
@@ -487,5 +495,5 @@ For each article, verify:
 
 ---
 
-*Last Updated: December 27, 2025*
-*Version: 3.1 - Added Seminars & Retreats Silo (სისტემური განლაგება)*
+*Last Updated: December 28, 2025*
+*Version: 4.0 - Phase 4 Complete (27 articles live)*
