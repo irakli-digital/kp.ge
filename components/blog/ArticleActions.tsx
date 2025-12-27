@@ -10,7 +10,7 @@ interface ArticleActionsProps {
   initialClaps: number
 }
 
-// Medium-style clapping hands icon
+// Hand/Palm icon for clap
 function ClapIcon({ className, filled }: { className?: string; filled?: boolean }) {
   return (
     <svg
@@ -24,17 +24,16 @@ function ClapIcon({ className, filled }: { className?: string; filled?: boolean 
     >
       {filled ? (
         // Filled version
-        <path d="M8.5 3.5c.5-.5 1.3-.5 1.8 0l1.2 1.2c.5.5.5 1.3 0 1.8l-.3.3 2.2 2.2c.5-.3 1.1-.2 1.5.2l3.6 3.6c1.8 1.8 1.8 4.6 0 6.4l-1.2 1.2c-1.8 1.8-4.6 1.8-6.4 0l-5.4-5.4c-.5-.5-.5-1.3 0-1.8.4-.4 1-.5 1.5-.2l-2.5-2.5c-.5-.5-.5-1.3 0-1.8.4-.4 1-.5 1.5-.2L4 6.5c-.5-.5-.5-1.3 0-1.8s1.3-.5 1.8 0l2.7 2.7V3.5zM3 12l.7.7M6.5 8.5l.7.7" />
+        <path d="M18 11V6a1 1 0 0 0-2 0v4m0 0V4a1 1 0 0 0-2 0v6m0 0V3a1 1 0 0 0-2 0v7m0 0V5a1 1 0 0 0-2 0v5.5M6 11a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4v-1H6v1zm0 0V9a2 2 0 0 1 2-2h.5" />
       ) : (
-        // Outline version
+        // Outline version - raised hand/palm
         <>
-          <path d="M8.5 14.5L5.5 11.5C5 11 5 10.2 5.5 9.7s1.3-.3 1.8.2" />
-          <path d="M11 12L7.5 8.5C7 8 7 7.2 7.5 6.7s1.3-.3 1.8.2" />
-          <path d="M13.5 14L9.5 10C9 9.5 9 8.7 9.5 8.2s1.3-.3 1.8.2l5.2 5.2c1.6 1.6 1.6 4.1 0 5.7l-.7.7c-1.6 1.6-4.1 1.6-5.7 0l-4.6-4.6c-.5-.5-.5-1.3 0-1.8s1.3-.3 1.8.2" />
-          <path d="M12 10l-1.5-1.5c-.5-.5-.5-1.3 0-1.8s1.3-.5 1.8 0l4.2 4.2" />
-          <path d="M12 2v3" />
-          <path d="M7 4L5.5 5.5" />
-          <path d="M17 4l1.5 1.5" />
+          <path d="M18 10V6a1 1 0 0 0-1-1 1 1 0 0 0-1 1v4" />
+          <path d="M16 6V4a1 1 0 0 0-1-1 1 1 0 0 0-1 1v6" />
+          <path d="M14 4V3a1 1 0 0 0-1-1 1 1 0 0 0-1 1v7" />
+          <path d="M12 5V4a1 1 0 0 0-1-1 1 1 0 0 0-1 1v6" />
+          <path d="M10 9V7a1 1 0 0 0-1-1 1 1 0 0 0-1 1v5" />
+          <path d="M8 13v-2a1 1 0 0 0-1-1 1 1 0 0 0-1 1v4c0 3.5 2.5 6 6 6h1c3.5 0 6-2.5 6-6v-3" />
         </>
       )}
     </svg>
