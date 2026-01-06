@@ -4,20 +4,20 @@ const { neon } = require('@neondatabase/serverless');
 async function addBlogPost() {
   const sql = neon(process.env.DATABASE_URL);
 
-  const title = 'How to Save Tokens on MyPen: Smart Strategies to Maximize Your AI Usage';
-  const title_ka = 'როგორ დავზოგოთ ტოკენები MyPen-ზე: ჭკვიანური სტრატეგიები თქვენი AI-ის მაქსიმალური გამოყენებისთვის';
+  const title = 'How to Save Tokens on Mypen: Smart Strategies to Maximize Your AI Usage';
+  const title_ka = 'როგორ დავზოგოთ ტოკენები Mypen-ზე: ჭკვიანური სტრატეგიები თქვენი AI-ის მაქსიმალური გამოყენებისთვის';
   const slug = 'save-tokens-on-mypen';
 
-  const excerpt = 'Make the most of your MyPen subscription with proven tips to reduce token usage without sacrificing quality.';
-  const excerpt_ka = 'მიიღეთ მაქსიმუმი თქვენი MyPen-ის გამოწერიდან — გამოიყენეთ გამოცდილი მომხმარებლების რჩევები ტოკენების დასაზოგად.';
+  const excerpt = 'Make the most of your Mypen subscription with proven tips to reduce token usage without sacrificing quality.';
+  const excerpt_ka = 'მიიღეთ მაქსიმუმი თქვენი Mypen-ის გამოწერიდან — გამოიყენეთ გამოცდილი მომხმარებლების რჩევები ტოკენების დასაზოგად.';
 
   const content = `
-    <h2>Understanding Token Usage on MyPen</h2>
-    <p>Before saving strategies, it helps to understand how tokens work. Like ChatGPT, MyPen counts both your input (prompts) and the AI's output. Different models have different "appetites":</p>
+    <h2>Understanding Token Usage on Mypen</h2>
+    <p>Before saving strategies, it helps to understand how tokens work. Like ChatGPT, Mypen counts both your input (prompts) and the AI's output. Different models have different "appetites":</p>
     <ul>
-      <li><strong>MyPen LIGHT:</strong> Most economical for basic tasks.</li>
-      <li><strong>MyPen PRO:</strong> Balanced performance and consumption.</li>
-      <li><strong>MyPen ULTRA:</strong> Most powerful, highest token use.</li>
+      <li><strong>Mypen LIGHT:</strong> Most economical for basic tasks.</li>
+      <li><strong>Mypen PRO:</strong> Balanced performance and consumption.</li>
+      <li><strong>Mypen ULTRA:</strong> Most powerful, highest token use.</li>
     </ul>
 
     <h2>🎯 Model Selection Strategies</h2>
@@ -87,12 +87,12 @@ async function addBlogPost() {
   `;
 
   const content_ka = `
-    <h2>ტოკენების მოხმარების გაგება MyPen-ზე</h2>
-    <p>სანამ დაზოგვის სტრატეგიებზე გადავალთ, მნიშვნელოვანია გვესმოდეს, როგორ მუშაობს ტოკენები ჩვენს პლატფორმაზე. ისევე როგორც ChatGPT, MyPen ითვლის ტოკენებს როგორც თქვენს შეყვანილ ტექსტზე (კითხვები/პრომპტები), ასევე AI-ის პასუხებზე (გამომავალი ინფორმაცია). სხვადასხვა მოდელს განსხვავებული „მადა“ აქვს:</p>
+    <h2>ტოკენების მოხმარების გაგება Mypen-ზე</h2>
+    <p>სანამ დაზოგვის სტრატეგიებზე გადავალთ, მნიშვნელოვანია გვესმოდეს, როგორ მუშაობს ტოკენები ჩვენს პლატფორმაზე. ისევე როგორც ChatGPT, Mypen ითვლის ტოკენებს როგორც თქვენს შეყვანილ ტექსტზე (კითხვები/პრომპტები), ასევე AI-ის პასუხებზე (გამომავალი ინფორმაცია). სხვადასხვა მოდელს განსხვავებული „მადა“ აქვს:</p>
     <ul>
-      <li><strong>MyPen LIGHT:</strong> ყველაზე ეკონომიური, იდეალურია საბაზისო ამოცანებისთვის.</li>
-      <li><strong>MyPen PRO:</strong> დაბალანსებული წარმადობა და ტოკენების მოხმარება.</li>
-      <li><strong>MyPen ULTRA:</strong> ყველაზე მძლავრი, მაგრამ ტოკენების ყველაზე მაღალი ხარჯით.</li>
+      <li><strong>Mypen LIGHT:</strong> ყველაზე ეკონომიური, იდეალურია საბაზისო ამოცანებისთვის.</li>
+      <li><strong>Mypen PRO:</strong> დაბალანსებული წარმადობა და ტოკენების მოხმარება.</li>
+      <li><strong>Mypen ULTRA:</strong> ყველაზე მძლავრი, მაგრამ ტოკენების ყველაზე მაღალი ხარჯით.</li>
     </ul>
 
     <h2>🎯 მოდელის შერჩევის სტრატეგიები</h2>
