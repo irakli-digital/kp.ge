@@ -37,7 +37,7 @@ export function generateArticleSchema(post: BlogPost, schemaKeywords?: string[] 
     '@type': 'Article',
     headline: post.title_ka,
     description: post.excerpt_ka || post.content_ka.substring(0, 160),
-    image: post.featured_image || `${BASE_URL}/images/og-image.webp`,
+    image: post.featured_image || `${BASE_URL}/og-cover.png`,
     datePublished: new Date(post.published_at).toISOString(),
     dateModified: new Date(post.updated_at).toISOString(),
     author: {

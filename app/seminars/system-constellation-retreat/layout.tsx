@@ -22,11 +22,20 @@ export const metadata: Metadata = {
     description: "3 დღიანი ტრანსფორმაციული გამოცდილება მთებში. სისტემური განლაგებები, ბგერითი თერაპია და თვითაღმოჩენა.",
     type: "website",
     locale: "ka_GE",
+    images: [
+      {
+        url: '/og-cover.png',
+        width: 1200,
+        height: 630,
+        alt: 'სისტემური განლაგება | რითრითი გუდაურში',
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "სისტემური განლაგება | რითრითი გუდაურში",
     description: "3 დღიანი ტრანსფორმაციული გამოცდილება მთებში.",
+    images: ['/og-cover.png'],
   },
   alternates: {
     canonical: "https://kp.ge/seminars/system-constellation-retreat",

@@ -20,8 +20,22 @@ export const metadata: Metadata = {
     description: "სტატიები ცნობიერების, პიროვნული განვითარების, ჯანმრთელობისა და მეცნიერების შესახებ.",
     url: "https://kp.ge/blog",
     siteName: "ცოდნისმოყვარე პოდკასტი",
+    images: [
+      {
+        url: '/og-cover.png',
+        width: 1200,
+        height: 630,
+        alt: 'ცოდნისმოყვარე პოდკასტი - ბლოგი',
+      }
+    ],
     locale: "ka_GE",
     type: "website",
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "ბლოგი - ცოდნისმოყვარე პოდკასტი",
+    description: "სტატიები ცნობიერების, პიროვნული განვითარების, ჯანმრთელობისა და მეცნიერების შესახებ.",
+    images: ['/og-cover.png'],
   },
 };
 

@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   const description = post.excerpt_ka || post.content_ka.substring(0, 160).replace(/<[^>]*>/g, '');
   const canonicalUrl = `https://kp.ge/blog/${post.slug}`;
-  const defaultOgImage = 'https://kp.ge/images/og-image.webp';
+  const defaultOgImage = 'https://kp.ge/og-cover.png';
   const ogImage = post.featured_image || defaultOgImage;
 
   return {

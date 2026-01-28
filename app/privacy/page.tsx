@@ -12,6 +12,28 @@ export const metadata: Metadata = {
     index: false,
     follow: true,
   },
+  openGraph: {
+    title: "კონფიდენციალურობის პოლიტიკა | KP.ge",
+    description: "გაიგეთ, როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს პერსონალურ მონაცემებს.",
+    url: "https://kp.ge/privacy",
+    siteName: "ცოდნისმოყვარე პოდკასტი",
+    images: [
+      {
+        url: '/og-cover.png',
+        width: 1200,
+        height: 630,
+        alt: 'ცოდნისმოყვარე პოდკასტი',
+      }
+    ],
+    locale: "ka_GE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "კონფიდენციალურობის პოლიტიკა | KP.ge",
+    description: "გაიგეთ, როგორ ვაგროვებთ, ვიყენებთ და ვიცავთ თქვენს პერსონალურ მონაცემებს.",
+    images: ['/og-cover.png'],
+  },
 }
 
 export default function PrivacyPolicyPage() {

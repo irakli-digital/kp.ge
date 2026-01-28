@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: 'ცოდნისმოყვარე პოდკასტი',
     images: [
       {
-        url: '/images/og-image.webp',
+        url: '/og-cover.png',
         width: 1200,
         height: 630,
         alt: 'ცოდნისმოყვარე პოდკასტი',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "ცოდნისმოყვარე პოდკასტი - გვანცა ველთაური",
     description: "პოდკასტი, სადაც ცნობისმოყვარეობა ხვდება აღმოჩენას.",
-    images: ['/images/og-image.webp'],
+    images: ['/og-cover.png'],
   },
 }
 
